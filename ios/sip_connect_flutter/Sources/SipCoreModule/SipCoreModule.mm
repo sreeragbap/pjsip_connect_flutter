@@ -56,6 +56,17 @@ typedef id<SipCoreEventDelegate> SCDelegate;
 static NSString* str(const std::string &s) { return [NSString stringWithUTF8String:s.c_str()]; }
 static std::string cpp(NSString * _Nullable s) { return s ? std::string([s UTF8String]) : std::string(); }
 
+// pjlib aborts when called from a thread it has never seen. Entry points are
+// normally on the main thread (registered at libCreate), but CallKit delivers
+// CXCallController.request completions on a private queue, and those log via
+// writeLog. The descriptor must outlive the thread, hence thread_local.
+static void ensurePjThreadRegistered() {
+    if (pj_thread_is_registered()) return;
+    static thread_local pj_thread_desc desc;
+    static thread_local pj_thread_t *thread = nullptr;
+    pj_thread_register("sc-ext", desc, &thread);
+}
+
 struct Engine;
 
 static void emitOn(Engine *eng, void(^block)(SCDelegate));
@@ -497,6 +508,7 @@ void CoreBuddy::onBuddyState() {
 - (void)writeLog:(NSString*)msg {
     NSLog(@"[SipCore] %@", msg);
     if (_eng->initialized) {
+        ensurePjThreadRegistered();
         try { _eng->ep->utilLogWrite(3, "SipConnect", cpp(msg)); } catch (Error &) {}
     }
 }
