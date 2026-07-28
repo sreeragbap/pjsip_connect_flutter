@@ -1,4 +1,4 @@
-name: sip_connect_flutter
+name: pjsip_connect_flutter
 description: Flutter VoIP/SIP plugin for Android and iOS — voice/video calls, messaging, and BLF/presence subscriptions, built on a prebuilt native SIP engine.
 version: 1.0.0
 publish_to: 'none' # remove when ready to publish

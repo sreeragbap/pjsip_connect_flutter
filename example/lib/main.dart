@@ -8,14 +8,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 //import 'package:firebase_core/firebase_core.dart';
 //import 'package:firebase_messaging/firebase_messaging.dart';
 
-import 'package:sip_connect_flutter/accounts_model.dart';
-import 'package:sip_connect_flutter/cdrs_model.dart';
-import 'package:sip_connect_flutter/devices_model.dart';
-import 'package:sip_connect_flutter/logs_model.dart';
-import 'package:sip_connect_flutter/messages_model.dart';
-import 'package:sip_connect_flutter/network_model.dart';
-import 'package:sip_connect_flutter/sip_connect.dart';
-import 'package:sip_connect_flutter/subscriptions_model.dart';
+import 'package:pjsip_connect_flutter/accounts_model.dart';
+import 'package:pjsip_connect_flutter/cdrs_model.dart';
+import 'package:pjsip_connect_flutter/devices_model.dart';
+import 'package:pjsip_connect_flutter/logs_model.dart';
+import 'package:pjsip_connect_flutter/messages_model.dart';
+import 'package:pjsip_connect_flutter/network_model.dart';
+import 'package:pjsip_connect_flutter/pjsip_connect.dart';
+import 'package:pjsip_connect_flutter/subscriptions_model.dart';
 
 import 'accouns_model_app.dart';
 import 'account_add.dart';
@@ -91,13 +91,13 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
   //!!! Method is working in the background isolate!
   //!!! At this moment Activity may not exist or whole App could be completely stopped
-  //!!! Code below initializes SipConnect, adds saved accounts and refreshes registration (makes app ready to receive incoming call)
+  //!!! Code below initializes PjsipConnect, adds saved accounts and refreshes registration (makes app ready to receive incoming call)
 
   debugPrint("[!!!] Handling a background message id:'${message.messageId}' data:'${message.data}'");
 
   try{
-    debugPrint("Initialize sipconnect by push notif");
-    _MyAppState._initializeSipConnect();
+    debugPrint("Initialize pjsipconnect by push notif");
+    _MyAppState._initializePjsipConnect();
 
     debugPrint("Read and add accounts by push notif");
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -130,7 +130,7 @@ class MyApp extends StatefulWidget {
 
   /// Write file from assest to device and returns path to it
   static Future<String> writeAssetAndGetFilePath(String assetsFileName) async {
-    var homeFolder = await SipConnectFlutter().homeFolder();
+    var homeFolder = await PjsipConnectFlutter().homeFolder();
     var filePath = '$homeFolder$assetsFileName';
 
     var file = File(filePath);
@@ -147,7 +147,7 @@ class MyApp extends StatefulWidget {
   /// Returns path and file name for recorded file
   static Future<String> getRecFilePathName(int callId) async {
     String dateTime = DateFormat('yyyyMMdd_HHmmss_').format(DateTime.now());
-    var homeFolder = await SipConnectFlutter().homeFolder();
+    var homeFolder = await PjsipConnectFlutter().homeFolder();
     var filePath = '$homeFolder$dateTime$callId.mp3';
     return filePath;
   }
@@ -160,9 +160,9 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
-    _initializeSipConnect(context.read<LogsModel>());
+    _initializePjsipConnect(context.read<LogsModel>());
     widget
-        .writeRingtoneAsset(); //after initialize SipConnect as uses its 'homeFolder'
+        .writeRingtoneAsset(); //after initialize PjsipConnect as uses its 'homeFolder'
     _readSavedState();
 
     if (Platform.isAndroid)
@@ -178,7 +178,7 @@ class _MyAppState extends State<MyApp> {
   // Listen to the app lifecycle 'Inactive' state and send calls state to service (Android only)
   void _onAndroidAppInactive() async {
     debugPrint("_onAppLifecycleInactive");
-    await SipConnectFlutter().syncCallsState(context.read<AppCallsModel>());
+    await PjsipConnectFlutter().syncCallsState(context.read<AppCallsModel>());
   }
 
   @override
@@ -193,7 +193,7 @@ class _MyAppState extends State<MyApp> {
             const SubscrAddPage(),
       },
       home: const HomePage(),
-      title: 'SipConnect VoIP app',
+      title: 'PjsipConnect VoIP app',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
         visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -202,13 +202,13 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  static void _initializeSipConnect([LogsModel? logsModel]) async {
-    debugPrint('Initialize sipconnect');
+  static void _initializePjsipConnect([LogsModel? logsModel]) async {
+    debugPrint('Initialize pjsipconnect');
     InitData iniData = InitData();
     iniData.logLevelFile = LogLevel.debug;
     iniData.logLevelIde = LogLevel.info;
 
-    //- Set your SipConnect product license key after purchase (leave unset for trial evaluation) -//
+    //- Set your PjsipConnect product license key after purchase (leave unset for trial evaluation) -//
     //iniData.license = const String.fromEnvironment('SIP_CONNECT_LICENSE');
 
     //- Uncomment if required -//
@@ -227,17 +227,17 @@ class _MyAppState extends State<MyApp> {
     //  iniData.serviceClassName = "com.sipconnect.voip_sdk_example.MyNotifService";
     //}
     //iniData.recordStereo=true;//Record sent/receive audio as seprate channels
-    await SipConnectFlutter().initialize(iniData, logsModel);
+    await PjsipConnectFlutter().initialize(iniData, logsModel);
 
     //Set video params (if required)
     //VideoData vdoData = VideoData();
     //vdoData.noCameraImgPath = await MyApp.writeAssetAndGetFilePath("noCamera.jpg");
     //vdoData.bitrateKbps = 800;
-    //SipConnectFlutter().setVideoParams(vdoData);
+    //PjsipConnectFlutter().setVideoParams(vdoData);
 
     //Check the version
-    //String? version = await SipConnectFlutter().version();
-    //debugPrint("SipConnect version: $version");
+    //String? version = await PjsipConnectFlutter().version();
+    //debugPrint("PjsipConnect version: $version");
   }
 
   void _readSavedState() {
@@ -318,10 +318,10 @@ class _MyAppState extends State<MyApp> {
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:sip_connect_flutter/accounts_model.dart';
-import 'package:sip_connect_flutter/calls_model.dart';
-import 'package:sip_connect_flutter/logs_model.dart';
-import 'package:sip_connect_flutter/sip_connect.dart';
+import 'package:pjsip_connect_flutter/accounts_model.dart';
+import 'package:pjsip_connect_flutter/calls_model.dart';
+import 'package:pjsip_connect_flutter/logs_model.dart';
+import 'package:pjsip_connect_flutter/pjsip_connect.dart';
 
 void main() async {
   AccountsModel accountsModel = AccountsModel();
@@ -346,13 +346,13 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    _initializeSipConnect();
+    _initializePjsipConnect();
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'SipConnect VoIP app',
+      title: 'PjsipConnect VoIP app',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
         visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -400,10 +400,10 @@ class _MyAppState extends State<MyApp> {
     ]);
   }
 
-  void _initializeSipConnect([LogsModel? logsModel]) async {
+  void _initializePjsipConnect([LogsModel? logsModel]) async {
     InitData iniData = InitData();
     iniData.logLevelFile = LogLevel.info;
-    SipConnectFlutter().initialize(iniData, logsModel);
+    PjsipConnectFlutter().initialize(iniData, logsModel);
   }
 
   void _addAccount() {

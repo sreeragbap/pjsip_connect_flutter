@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'sip_connect.dart';
+import 'pjsip_connect.dart';
 
 
 /// LogLevel enum. Using as value of 'IniData.logLevelFile' 'IniData.logLevelIde'
 enum LogLevel {
   ///Most detailed log level
-  stack(SipConnectFlutter.kLogLevelStack, "Stack"),
+  stack(PjsipConnectFlutter.kLogLevelStack, "Stack"),
   ///Detailed log level for regulr debugging
-  debug(SipConnectFlutter.kLogLevelDebug, "Debug"),
+  debug(PjsipConnectFlutter.kLogLevelDebug, "Debug"),
   ///Default log level
-  info(SipConnectFlutter.kLogLevelInfo, "Info"),
+  info(PjsipConnectFlutter.kLogLevelInfo, "Info"),
   ///Display warnings only
-  warning(SipConnectFlutter.kLogLevelWarning, "Warning"),
+  warning(PjsipConnectFlutter.kLogLevelWarning, "Warning"),
   ///Display errors only
-  error(SipConnectFlutter.kLogLevelError, "Error"),
+  error(PjsipConnectFlutter.kLogLevelError, "Error"),
   ///Don't display any logs
-  none(SipConnectFlutter.kLogLevelNone, "None");
+  none(PjsipConnectFlutter.kLogLevelNone, "None");
 
   const LogLevel(this.id, this.name);
   /// Value
@@ -36,7 +36,7 @@ class LogsModel extends ChangeNotifier implements ILogsModel {
 
   /// Constructor (set event handler)
   LogsModel(this._uiLog) {
-    SipConnectFlutter().trialListener = TrialModeListener(
+    PjsipConnectFlutter().trialListener = TrialModeListener(
       notified : onTrialModeNotified
     );
   }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:sip_connect_flutter/accounts_model.dart';
-import 'package:sip_connect_flutter/calls_model.dart';
-import 'package:sip_connect_flutter/cdrs_model.dart';
+import 'package:pjsip_connect_flutter/accounts_model.dart';
+import 'package:pjsip_connect_flutter/calls_model.dart';
+import 'package:pjsip_connect_flutter/cdrs_model.dart';
 
 import 'accouns_model_app.dart';
 import 'calls_model_app.dart';

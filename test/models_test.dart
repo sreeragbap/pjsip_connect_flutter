@@ -3,23 +3,23 @@
 
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sip_connect_flutter/sip_connect_flutter.dart';
+import 'package:pjsip_connect_flutter/pjsip_connect_flutter.dart';
 
 import 'helpers/mock_native.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  late MockSipConnectNative native;
+  late MockPjsipConnectNative native;
 
   setUp(() {
-    native = MockSipConnectNative();
+    native = MockPjsipConnectNative();
   });
 
   tearDown(() {
     native.dispose();
-    SipConnectFlutter().accListener = null;
-    SipConnectFlutter().callListener = null;
+    PjsipConnectFlutter().accListener = null;
+    PjsipConnectFlutter().callListener = null;
   });
 
   group('AccountModel JSON', () {
@@ -70,7 +70,7 @@ void main() {
       native.onCall = (call) {
         if (call.method == 'Account_Add') {
           throw PlatformException(
-              code: SipConnectFlutter.eDuplicateAccount.toString(),
+              code: PjsipConnectFlutter.eDuplicateAccount.toString(),
               message: 'Duplicate account',
               details: 77); // id of the already-registered account
         }

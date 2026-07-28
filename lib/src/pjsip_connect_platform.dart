@@ -6,14 +6,14 @@ import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 //////////////////////////////////////////////////////////////////////////////////////////
 //Data interface
 
-abstract interface class ISipConnectData {
+abstract interface class IPjsipConnectData {
   Map<String, dynamic> toJson();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
-//SipConnectPlatform interface
+//PjsipConnectPlatform interface
 
-abstract class SipConnectPlatform extends PlatformInterface {
+abstract class PjsipConnectPlatform extends PlatformInterface {
   //Constants
   static const String kMethodModuleInitialize    = 'Module_Initialize';
   static const String kMethodModuleUnInitialize  = 'Module_UnInitialize';
@@ -157,14 +157,14 @@ abstract class SipConnectPlatform extends PlatformInterface {
 
   ////////////////////////////////////////////////////////////////////////////////////////
   //Channel and instance implementation
-  SipConnectPlatform() : super(token: _token);
+  PjsipConnectPlatform() : super(token: _token);
   static final Object _token = Object();
 
-  static SipConnectPlatform _instance = _StubImplementation();
+  static PjsipConnectPlatform _instance = _StubImplementation();
 
-  static SipConnectPlatform get instance => _instance;
+  static PjsipConnectPlatform get instance => _instance;
 
-  static set instance(SipConnectPlatform instance) {
+  static set instance(PjsipConnectPlatform instance) {
     PlatformInterface.verifyToken(instance, _token);
     _instance = instance;
   }
@@ -173,13 +173,13 @@ abstract class SipConnectPlatform extends PlatformInterface {
   final _methodChannel = const MethodChannel(kChannelName);
 
   ////////////////////////////////////////////////////////////////////////////////////////
-  //SipConnect module methods implementation
+  //PjsipConnect module methods implementation
 
   void setEventsHandler(Future<dynamic> Function(MethodCall call)? eventsHandler) {
      _methodChannel.setMethodCallHandler(eventsHandler);
   }
 
-  Future<void> initialize(ISipConnectData iniData) {
+  Future<void> initialize(IPjsipConnectData iniData) {
     return _methodChannel.invokeMethod<void>(kMethodModuleInitialize, iniData.toJson());
   }
 
@@ -200,13 +200,13 @@ abstract class SipConnectPlatform extends PlatformInterface {
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////
-  //SipConnect Account methods implementation
+  //PjsipConnect Account methods implementation
 
-  Future<int?> addAccount(ISipConnectData newAccount) {
+  Future<int?> addAccount(IPjsipConnectData newAccount) {
     return _methodChannel.invokeMethod<int>(kMethodAccountAdd, newAccount.toJson());
   }
 
-  Future<void> updateAccount(ISipConnectData updAccount) {
+  Future<void> updateAccount(IPjsipConnectData updAccount) {
     return _methodChannel.invokeMethod<void>(kMethodAccountUpdate, updAccount.toJson());
   }
 
@@ -230,9 +230,9 @@ abstract class SipConnectPlatform extends PlatformInterface {
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////
-  //SipConnect Calls methods implementation
+  //PjsipConnect Calls methods implementation
 
-  Future<int?> invite(ISipConnectData destData) {
+  Future<int?> invite(IPjsipConnectData destData) {
     return _methodChannel.invokeMethod<int>(kMethodCallInvite, destData.toJson());
   }
 
@@ -337,7 +337,7 @@ abstract class SipConnectPlatform extends PlatformInterface {
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////
-  //SipConnect Mixer methods implementation
+  //PjsipConnect Mixer methods implementation
 
   Future<void> switchToCall(int callId) {
     return _methodChannel.invokeMethod<void>(kMethodMixerSwitchToCall,
@@ -349,9 +349,9 @@ abstract class SipConnectPlatform extends PlatformInterface {
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////
-  //SipConnect subscriptions
+  //PjsipConnect subscriptions
 
-  Future<int?> addSubscription(ISipConnectData subscriptionData) {
+  Future<int?> addSubscription(IPjsipConnectData subscriptionData) {
     return _methodChannel.invokeMethod<int>(kMethodSubscriptionAdd,
       subscriptionData.toJson());
   }
@@ -362,16 +362,16 @@ abstract class SipConnectPlatform extends PlatformInterface {
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////
-  //SipConnect message
+  //PjsipConnect message
 
-  Future<int?> sendMessage(ISipConnectData messageData) {
+  Future<int?> sendMessage(IPjsipConnectData messageData) {
     return _methodChannel.invokeMethod<int>(kMethodMessageSend,
       messageData.toJson());
   }
 
 
   ////////////////////////////////////////////////////////////////////////////////////////
-  //SipConnect Devices methods implementation
+  //PjsipConnect Devices methods implementation
 
   Future<int?> getPlayoutDevices() {
     return _methodChannel.invokeMethod<int>(kMethodDvcGetPlayoutNumber, {});
@@ -420,7 +420,7 @@ abstract class SipConnectPlatform extends PlatformInterface {
       {kArgDvcIndex:index} );
   }
 
-  Future<void> setVideoParams(ISipConnectData videoData) {
+  Future<void> setVideoParams(IPjsipConnectData videoData) {
     return _methodChannel.invokeMethod<void>(kMethodDvcSetVideoParams, videoData.toJson() );
   }
 
@@ -433,7 +433,7 @@ abstract class SipConnectPlatform extends PlatformInterface {
 
 
   ////////////////////////////////////////////////////////////////////////////////////////
-  //SipConnect video renderers
+  //PjsipConnect video renderers
 
   Future<int?> videoRendererCreate() {
     return _methodChannel.invokeMethod<int>(kMethodVideoRendererCreate, {});
@@ -504,14 +504,14 @@ abstract class SipConnectPlatform extends PlatformInterface {
     return null;
   }
 
-  Future<void>? syncCallsState(ISipConnectData callsData) {
+  Future<void>? syncCallsState(IPjsipConnectData callsData) {
     if(Platform.isAndroid) {
       return _methodChannel.invokeMethod<void>(kMethodDvcSyncCallsState, callsData.toJson());
     }
     return null;
   }
 
-}//SipConnectPlatform
+}//PjsipConnectPlatform
 
 
-class _StubImplementation extends SipConnectPlatform {}
+class _StubImplementation extends PjsipConnectPlatform {}

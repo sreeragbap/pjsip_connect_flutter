@@ -1,6 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'src/sip_connect_platform.dart';
+import 'src/pjsip_connect_platform.dart';
 import 'package:flutter/services.dart';
 
 import 'subscriptions_model.dart';
@@ -20,15 +20,15 @@ class AccRegStateArg {
     int argsCounter=0;
     int stateVal=0;
     argsMap.forEach((key, value) {
-      if((key == SipConnectPlatform.kArgAccId)&&(value is int))    { accId    = value; argsCounter+=1; } else
-      if((key == SipConnectPlatform.kRegState)&&(value is int))    { stateVal = value; argsCounter+=1; } else
-      if((key == SipConnectPlatform.kResponse)&&(value is String)) { response = value; argsCounter+=1; }
+      if((key == PjsipConnectPlatform.kArgAccId)&&(value is int))    { accId    = value; argsCounter+=1; } else
+      if((key == PjsipConnectPlatform.kRegState)&&(value is int))    { stateVal = value; argsCounter+=1; } else
+      if((key == PjsipConnectPlatform.kResponse)&&(value is String)) { response = value; argsCounter+=1; }
     });
 
     switch (stateVal) {
-      case SipConnectFlutter.kRegStateSuccess: regState = RegState.success;
-      case SipConnectFlutter.kRegStateFailed:  regState = RegState.failed;
-      case SipConnectFlutter.kRegStateRemoved: regState = RegState.removed;
+      case PjsipConnectFlutter.kRegStateSuccess: regState = RegState.success;
+      case PjsipConnectFlutter.kRegStateFailed:  regState = RegState.failed;
+      case PjsipConnectFlutter.kRegStateRemoved: regState = RegState.removed;
     }
     return (argsCounter==3);
   }
@@ -45,15 +45,15 @@ class SubscriptionStateArg {
     int argsCounter=0;
     int stateVal=0;
     argsMap.forEach((key, value) {
-      if((key == SipConnectPlatform.kArgSubscrId)&&(value is int)) { subscrId = value; argsCounter+=1; } else
-      if((key == SipConnectPlatform.kSubscrState)&&(value is int)) { stateVal = value; argsCounter+=1; } else
-      if((key == SipConnectPlatform.kResponse)&&(value is String)) { response = value; argsCounter+=1; }
+      if((key == PjsipConnectPlatform.kArgSubscrId)&&(value is int)) { subscrId = value; argsCounter+=1; } else
+      if((key == PjsipConnectPlatform.kSubscrState)&&(value is int)) { stateVal = value; argsCounter+=1; } else
+      if((key == PjsipConnectPlatform.kResponse)&&(value is String)) { response = value; argsCounter+=1; }
     });
 
     switch (stateVal) {
-      case SipConnectFlutter.kSubscrStateCreated:   state = SubscriptionState.created;
-      case SipConnectFlutter.kSubscrStateUpdated:   state = SubscriptionState.updated;
-      case SipConnectFlutter.kSubscrStateDestroyed: state = SubscriptionState.destroyed;
+      case PjsipConnectFlutter.kSubscrStateCreated:   state = SubscriptionState.created;
+      case PjsipConnectFlutter.kSubscrStateUpdated:   state = SubscriptionState.updated;
+      case PjsipConnectFlutter.kSubscrStateDestroyed: state = SubscriptionState.destroyed;
     }
     return (argsCounter==3);
   }
@@ -68,14 +68,14 @@ class NetworkStateArg {
     int argsCounter=0;
     int stateVal=0;
     argsMap.forEach((key, value) {
-      if((key == SipConnectPlatform.kArgName)&&(value is String)) { name     = value; argsCounter+=1; }
-      if((key == SipConnectPlatform.kNetState)&&(value is int))   { stateVal = value; argsCounter+=1; }
+      if((key == PjsipConnectPlatform.kArgName)&&(value is String)) { name     = value; argsCounter+=1; }
+      if((key == PjsipConnectPlatform.kNetState)&&(value is int))   { stateVal = value; argsCounter+=1; }
     });
 
     switch (stateVal) {
-      case SipConnectFlutter.kNetStateLost:      state = NetState.lost;
-      case SipConnectFlutter.kNetStateRestored:  state = NetState.restored;
-      case SipConnectFlutter.kNetStateSwitched:  state = NetState.switched;
+      case PjsipConnectFlutter.kNetStateLost:      state = NetState.lost;
+      case PjsipConnectFlutter.kNetStateRestored:  state = NetState.restored;
+      case PjsipConnectFlutter.kNetStateSwitched:  state = NetState.switched;
     }
 
     return (argsCounter==2);
@@ -91,8 +91,8 @@ class PlayerStateArg {
   bool fromMap(Map<dynamic, dynamic> argsMap) {
     int argsCounter=0;
     argsMap.forEach((key, value) {
-      if((key == SipConnectPlatform.kArgPlayerId)&&(value is int))    { playerId = value; argsCounter+=1; } else
-      if((key == SipConnectPlatform.kPlayerState)&&(value is int))    { state = PlayerState.from(value); argsCounter+=1; }
+      if((key == PjsipConnectPlatform.kArgPlayerId)&&(value is int))    { playerId = value; argsCounter+=1; } else
+      if((key == PjsipConnectPlatform.kPlayerState)&&(value is int))    { state = PlayerState.from(value); argsCounter+=1; }
     });
 
     return (argsCounter==2);
@@ -106,8 +106,8 @@ class CallProceedingArg {
   bool fromMap(Map<dynamic, dynamic> argsMap) {
     int argsCounter=0;
     argsMap.forEach((key, value) {
-      if((key == SipConnectPlatform.kArgCallId)&&(value is int))   { callId   = value; argsCounter+=1; } else
-      if((key == SipConnectPlatform.kResponse)&&(value is String)) { response = value; argsCounter+=1; }
+      if((key == PjsipConnectPlatform.kArgCallId)&&(value is int))   { callId   = value; argsCounter+=1; } else
+      if((key == PjsipConnectPlatform.kResponse)&&(value is String)) { response = value; argsCounter+=1; }
     });
     return (argsCounter==2);
   }
@@ -123,11 +123,11 @@ class CallIncomingArg {
   bool fromMap(Map<dynamic, dynamic> argsMap) {
     int argsCounter=0;
     argsMap.forEach((key, value) {
-      if((key == SipConnectPlatform.kArgAccId)&&(value is int))      { accId     = value; argsCounter+=1; } else
-      if((key == SipConnectPlatform.kArgCallId)&&(value is int))     { callId    = value; argsCounter+=1; } else
-      if((key == SipConnectPlatform.kArgWithVideo)&&(value is bool)) { withVideo = value; argsCounter+=1; } else
-      if((key == SipConnectPlatform.kFrom)&&(value is String))       { from      = value; argsCounter+=1; } else
-      if((key == SipConnectPlatform.kTo)&&(value is String))         { to        = value; argsCounter+=1; }
+      if((key == PjsipConnectPlatform.kArgAccId)&&(value is int))      { accId     = value; argsCounter+=1; } else
+      if((key == PjsipConnectPlatform.kArgCallId)&&(value is int))     { callId    = value; argsCounter+=1; } else
+      if((key == PjsipConnectPlatform.kArgWithVideo)&&(value is bool)) { withVideo = value; argsCounter+=1; } else
+      if((key == PjsipConnectPlatform.kFrom)&&(value is String))       { from      = value; argsCounter+=1; } else
+      if((key == PjsipConnectPlatform.kTo)&&(value is String))         { to        = value; argsCounter+=1; }
     });
     return (argsCounter==5);
   }
@@ -140,8 +140,8 @@ class CallAcceptNotifArg {
   bool fromMap(Map<dynamic, dynamic> argsMap) {
     int argsCounter=0;
     argsMap.forEach((key, value) {
-      if((key == SipConnectPlatform.kArgCallId)&&(value is int))     { callId = value;    argsCounter+=1; } else
-      if((key == SipConnectPlatform.kArgWithVideo)&&(value is bool)) { withVideo = value; argsCounter+=1; }
+      if((key == PjsipConnectPlatform.kArgCallId)&&(value is int))     { callId = value;    argsCounter+=1; } else
+      if((key == PjsipConnectPlatform.kArgWithVideo)&&(value is bool)) { withVideo = value; argsCounter+=1; }
     });
     return (argsCounter==2);
   }
@@ -156,10 +156,10 @@ class CallConnectedArg {
   bool fromMap(Map<dynamic, dynamic> argsMap) {
     int argsCounter=0;
     argsMap.forEach((key, value) {
-      if((key == SipConnectPlatform.kArgWithVideo)&&(value is bool)) { withVideo = value; argsCounter+=1; } else
-      if((key == SipConnectPlatform.kArgCallId)&&(value is int))     { callId = value; argsCounter+=1; } else
-      if((key == SipConnectPlatform.kFrom)&&(value is String))       { from   = value; argsCounter+=1; } else
-      if((key == SipConnectPlatform.kTo)&&(value is String))         { to     = value; argsCounter+=1; }
+      if((key == PjsipConnectPlatform.kArgWithVideo)&&(value is bool)) { withVideo = value; argsCounter+=1; } else
+      if((key == PjsipConnectPlatform.kArgCallId)&&(value is int))     { callId = value; argsCounter+=1; } else
+      if((key == PjsipConnectPlatform.kFrom)&&(value is String))       { from   = value; argsCounter+=1; } else
+      if((key == PjsipConnectPlatform.kTo)&&(value is String))         { to     = value; argsCounter+=1; }
     });
     return (argsCounter==4);
   }
@@ -172,8 +172,8 @@ class CallTerminatedArg {
   bool fromMap(Map<dynamic, dynamic> argsMap) {
     int argsCounter=0;
     argsMap.forEach((key, value) {
-      if((key == SipConnectPlatform.kArgCallId)&&(value is int))     { callId     = value; argsCounter+=1; } else
-      if((key == SipConnectPlatform.kArgStatusCode)&&(value is int)) { statusCode = value; argsCounter+=1; }
+      if((key == PjsipConnectPlatform.kArgCallId)&&(value is int))     { callId     = value; argsCounter+=1; } else
+      if((key == PjsipConnectPlatform.kArgStatusCode)&&(value is int)) { statusCode = value; argsCounter+=1; }
     });
     return (argsCounter==2);
   }
@@ -186,8 +186,8 @@ class CallDtmfReceivedArg {
   bool fromMap(Map<dynamic, dynamic> argsMap) {
     int argsCounter=0;
     argsMap.forEach((key, value) {
-      if((key == SipConnectPlatform.kArgCallId)&&(value is int)) { callId = value; argsCounter+=1; } else
-      if((key == SipConnectPlatform.kArgTone)&&(value is int))   { tone   = value; argsCounter+=1; }
+      if((key == PjsipConnectPlatform.kArgCallId)&&(value is int)) { callId = value; argsCounter+=1; } else
+      if((key == PjsipConnectPlatform.kArgTone)&&(value is int))   { tone   = value; argsCounter+=1; }
     });
     return (argsCounter==2);
   }
@@ -200,8 +200,8 @@ class CallTransferredArg {
   bool fromMap(Map<dynamic, dynamic> argsMap) {
     int argsCounter=0;
     argsMap.forEach((key, value) {
-      if((key == SipConnectPlatform.kArgCallId)&&(value is int))     { callId = value; argsCounter+=1; } else
-      if((key == SipConnectPlatform.kArgStatusCode)&&(value is int)) { statusCode = value; argsCounter+=1; }
+      if((key == PjsipConnectPlatform.kArgCallId)&&(value is int))     { callId = value; argsCounter+=1; } else
+      if((key == PjsipConnectPlatform.kArgStatusCode)&&(value is int)) { statusCode = value; argsCounter+=1; }
     });
     return (argsCounter==2);
   }
@@ -214,8 +214,8 @@ class CallVideoUpgradedArg {
   bool fromMap(Map<dynamic, dynamic> argsMap) {
     int argsCounter=0;
     argsMap.forEach((key, value) {
-      if((key == SipConnectPlatform.kArgCallId)&&(value is int))     { callId = value; argsCounter+=1; } else
-      if((key == SipConnectPlatform.kArgWithVideo)&&(value is bool)) { withVideo = value; argsCounter+=1; }
+      if((key == PjsipConnectPlatform.kArgCallId)&&(value is int))     { callId = value; argsCounter+=1; } else
+      if((key == PjsipConnectPlatform.kArgWithVideo)&&(value is bool)) { withVideo = value; argsCounter+=1; }
     });
     return (argsCounter==2);
   }
@@ -227,7 +227,7 @@ class CallVideoUpgradeRequestedArg {
   bool fromMap(Map<dynamic, dynamic> argsMap) {
     int argsCounter=0;
     argsMap.forEach((key, value) {
-      if((key == SipConnectPlatform.kArgCallId)&&(value is int))     { callId = value; argsCounter+=1; }
+      if((key == PjsipConnectPlatform.kArgCallId)&&(value is int))     { callId = value; argsCounter+=1; }
     });
     return (argsCounter==1);
   }
@@ -241,9 +241,9 @@ class CallRedirectedArg {
   bool fromMap(Map<dynamic, dynamic> argsMap) {
     int argsCounter=0;
     argsMap.forEach((key, value) {
-      if((key == SipConnectPlatform.kArgFromCallId)&&(value is int)) { origCallId = value; argsCounter+=1; } else
-      if((key == SipConnectPlatform.kArgToCallId)&&(value is int))   { relatedCallId = value; argsCounter+=1; } else
-      if((key == SipConnectPlatform.kArgToExt)&&(value is String))   { referTo = value; argsCounter+=1; }
+      if((key == PjsipConnectPlatform.kArgFromCallId)&&(value is int)) { origCallId = value; argsCounter+=1; } else
+      if((key == PjsipConnectPlatform.kArgToCallId)&&(value is int))   { relatedCallId = value; argsCounter+=1; } else
+      if((key == PjsipConnectPlatform.kArgToExt)&&(value is String))   { referTo = value; argsCounter+=1; }
     });
     return (argsCounter==3);
   }
@@ -257,8 +257,8 @@ class CallHeldArg {
     int argsCounter=0;
 
     argsMap.forEach((key, value) {
-      if((key == SipConnectPlatform.kArgCallId)&&(value is int)) { callId = value;               argsCounter+=1; } else
-      if((key == SipConnectPlatform.kHoldState)&&(value is int)) { state  = HoldState.from(value); argsCounter+=1; }
+      if((key == PjsipConnectPlatform.kArgCallId)&&(value is int)) { callId = value;               argsCounter+=1; } else
+      if((key == PjsipConnectPlatform.kHoldState)&&(value is int)) { state  = HoldState.from(value); argsCounter+=1; }
     });
     return (argsCounter==2);
   }
@@ -272,8 +272,8 @@ class CallKitMutedArg {
     int argsCounter=0;
 
     argsMap.forEach((key, value) {
-      if((key == SipConnectPlatform.kArgCallId)&&(value is int)) { callId = value; argsCounter+=1; } else
-      if((key == SipConnectPlatform.kArgMute)&&(value is bool)) { mute  = value; argsCounter+=1; }
+      if((key == PjsipConnectPlatform.kArgCallId)&&(value is int)) { callId = value; argsCounter+=1; } else
+      if((key == PjsipConnectPlatform.kArgMute)&&(value is bool)) { mute  = value; argsCounter+=1; }
     });
     return (argsCounter==2);
   }
@@ -286,7 +286,7 @@ class CallSwitchedArg {
   bool fromMap(Map<dynamic, dynamic> argsMap) {
     int argsCounter=0;
     argsMap.forEach((key, value) {
-      if((key == SipConnectPlatform.kArgCallId)&&(value is int)) { callId = value; argsCounter+=1; }
+      if((key == PjsipConnectPlatform.kArgCallId)&&(value is int)) { callId = value; argsCounter+=1; }
     });
     return (argsCounter==1);
   }
@@ -299,9 +299,9 @@ class PushIncomingArg {
   bool fromMap(Map<dynamic, dynamic> argsMap) {
     int argsCounter=0;
     argsMap.forEach((key, value) {
-      if((key == SipConnectPlatform.kArgCallKitUuid)&&(value is String)) {
+      if((key == PjsipConnectPlatform.kArgCallKitUuid)&&(value is String)) {
         callUUID = value; argsCounter+=1; }
-      if((key == SipConnectPlatform.kArgPushPayload)) {
+      if((key == PjsipConnectPlatform.kArgPushPayload)) {
         pushPayload = Map<String, dynamic>.from(value as Map);
         argsCounter+=1; }
     });
@@ -317,9 +317,9 @@ class MessageSentStateArg {
   bool fromMap(Map<dynamic, dynamic> argsMap) {
     int argsCounter=0;
     argsMap.forEach((key, value) {
-      if((key == SipConnectPlatform.kArgMsgId)&&(value is int)) { messageId = value; argsCounter+=1; } else
-      if((key == SipConnectPlatform.kSuccess)&&(value is bool)) { success = value;   argsCounter+=1; } else
-      if((key == SipConnectPlatform.kResponse)&&(value is String)) { response = value; argsCounter+=1; }
+      if((key == PjsipConnectPlatform.kArgMsgId)&&(value is int)) { messageId = value; argsCounter+=1; } else
+      if((key == PjsipConnectPlatform.kSuccess)&&(value is bool)) { success = value;   argsCounter+=1; } else
+      if((key == PjsipConnectPlatform.kResponse)&&(value is String)) { response = value; argsCounter+=1; }
     });
     return (argsCounter==3);
   }
@@ -333,10 +333,10 @@ class MessageIncomingArg {
   bool fromMap(Map<dynamic, dynamic> argsMap) {
     int argsCounter=0;
     argsMap.forEach((key, value) {
-      if((key == SipConnectPlatform.kArgMsgId)&&(value is int)) { messageId = value; argsCounter+=1; } else
-      if((key == SipConnectPlatform.kArgAccId)&&(value is int)) { accId = value; argsCounter+=1; } else
-      if((key == SipConnectPlatform.kFrom)&&(value is String))  { from = value;  argsCounter+=1; } else
-      if((key == SipConnectPlatform.kBody)&&(value is String))  { body = value;  argsCounter+=1; }
+      if((key == PjsipConnectPlatform.kArgMsgId)&&(value is int)) { messageId = value; argsCounter+=1; } else
+      if((key == PjsipConnectPlatform.kArgAccId)&&(value is int)) { accId = value; argsCounter+=1; } else
+      if((key == PjsipConnectPlatform.kFrom)&&(value is String))  { from = value;  argsCounter+=1; } else
+      if((key == PjsipConnectPlatform.kBody)&&(value is String))  { body = value;  argsCounter+=1; }
     });
     return (argsCounter==4);
   }
@@ -350,9 +350,9 @@ class SipNotifyArg {
   bool fromMap(Map<dynamic, dynamic> argsMap) {
     int argsCounter=0;
     argsMap.forEach((key, value) {
-      if((key == SipConnectPlatform.kArgAccId)&&(value is int)) { accId = value; argsCounter+=1; } else
-      if((key == SipConnectPlatform.kEvent)&&(value is String)) { hdrEvent = value;  argsCounter+=1; } else
-      if((key == SipConnectPlatform.kBody)&&(value is String))  { body = value;  argsCounter+=1; }
+      if((key == PjsipConnectPlatform.kArgAccId)&&(value is int)) { accId = value; argsCounter+=1; } else
+      if((key == PjsipConnectPlatform.kEvent)&&(value is String)) { hdrEvent = value;  argsCounter+=1; } else
+      if((key == PjsipConnectPlatform.kBody)&&(value is String))  { body = value;  argsCounter+=1; }
     });
     return (argsCounter==3);
   }
@@ -364,8 +364,8 @@ class VuMeterArg {
   bool fromMap(Map<dynamic, dynamic> argsMap) {
     int argsCounter=0;
     argsMap.forEach((key, value) {
-      if((key == SipConnectPlatform.kMicLevel)&&(value is int)) { micLevel = value; argsCounter+=1; } else
-      if((key == SipConnectPlatform.kSpkLevel)&&(value is int)) { spkLevel = value; argsCounter+=1; }
+      if((key == PjsipConnectPlatform.kMicLevel)&&(value is int)) { micLevel = value; argsCounter+=1; } else
+      if((key == PjsipConnectPlatform.kSpkLevel)&&(value is int)) { spkLevel = value; argsCounter+=1; }
     });
     return (argsCounter==2);
   }
@@ -384,8 +384,8 @@ class MediaDevice {
   bool fromMap(Map<dynamic, dynamic> argsMap) {
     int argsCounter=0;
     argsMap.forEach((key, value) {
-      if((key == SipConnectPlatform.kArgDvcName)&&(value is String)) { name = value; argsCounter+=1; }
-      if((key == SipConnectPlatform.kArgDvcGuid)&&(value is String)) { guid = value; argsCounter+=1; }
+      if((key == PjsipConnectPlatform.kArgDvcName)&&(value is String)) { name = value; argsCounter+=1; }
+      if((key == PjsipConnectPlatform.kArgDvcGuid)&&(value is String)) { guid = value; argsCounter+=1; }
       if((key == _kArgDvcIsSel)&&(value is bool)) { isSelected = value; }
     });
     return (argsCounter==2);
@@ -513,7 +513,7 @@ abstract interface class IAccountsModel {
 
 
 /// Root of the library implementation
-class SipConnectFlutter {
+class PjsipConnectFlutter {
   ///Log level constants
   static const int kLogLevelStack   = 0;
   static const int kLogLevelDebug   = 1;
@@ -597,13 +597,13 @@ class SipConnectFlutter {
   //-//////////////////////////////////////////////////////////////////////////////////////
   //-Channel and instance implementation
 
-  static final SipConnectFlutter _instance = SipConnectFlutter._internal();
-  static  SipConnectFlutter get instance => _instance;
-  factory SipConnectFlutter() { return _instance; }
+  static final PjsipConnectFlutter _instance = PjsipConnectFlutter._internal();
+  static  PjsipConnectFlutter get instance => _instance;
+  factory PjsipConnectFlutter() { return _instance; }
 
-  SipConnectFlutter._internal();
+  PjsipConnectFlutter._internal();
 
-  static SipConnectPlatform get _platform => SipConnectPlatform.instance;
+  static PjsipConnectPlatform get _platform => PjsipConnectPlatform.instance;
 
   ///Network state listener
   NetStateListener? netListener;
@@ -627,7 +627,7 @@ class SipConnectFlutter {
   /// Initialize sipconnect module
   Future<void> initialize(InitData iniData, [ILogsModel? logsModel]) async {
     _platform.setEventsHandler(_eventsHandler);
-    String brand = iniData.brandName ?? "SipConnect";
+    String brand = iniData.brandName ?? "PjsipConnect";
     try {
       await _platform.initialize(iniData);
       String verStr = await version() ?? "???";
@@ -643,9 +643,9 @@ class SipConnectFlutter {
   void unInitialize(ILogsModel? logsModel) async {
     try {
       await _platform.unInitialize();
-      logsModel?.print('SipConnect module uninitialized');
+      logsModel?.print('PjsipConnect module uninitialized');
     } on PlatformException catch (err) {
-      logsModel?.print('Can\'t uninitilize SipConnect module Err: ${err.code} ${err.message}');
+      logsModel?.print('Can\'t uninitilize PjsipConnect module Err: ${err.code} ${err.message}');
     }
   }
 
@@ -665,7 +665,7 @@ class SipConnectFlutter {
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////
-  //SipConnect Account methods implementation
+  //PjsipConnect Account methods implementation
 
   /// Add new account, return unique id assigned by library
   Future<int?> addAccount(AccountModel newAccount) {
@@ -805,7 +805,7 @@ class SipConnectFlutter {
   }
 
   //-//////////////////////////////////////////////////////////////////////////////////////
-  //-SipConnect Mixer methods implmentation
+  //-PjsipConnect Mixer methods implmentation
 
   /// Switch to the selected call (sound from microphone is sending to this call and speaker plays sound received from this call)
   Future<void> switchToCall(int callId) {
@@ -818,14 +818,14 @@ class SipConnectFlutter {
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////
-  //SipConnect message
+  //PjsipConnect message
 
-  Future<int?> sendMessage(ISipConnectData messageData) {
+  Future<int?> sendMessage(IPjsipConnectData messageData) {
     return _platform.sendMessage(messageData);
   }
 
   //-//////////////////////////////////////////////////////////////////////////////////////
-  //-SipConnect subscriptions
+  //-PjsipConnect subscriptions
 
   /// Add new subscription (sends SUBSCRIBE request)
   Future<int?> addSubscription(SubscriptionModel newSubscription) {
@@ -838,7 +838,7 @@ class SipConnectFlutter {
   }
 
   //-//////////////////////////////////////////////////////////////////////////////////////
-  //-SipConnect Devices methods implementation
+  //-PjsipConnect Devices methods implementation
 
   /// Get number of avialable spekaer devices
   Future<int?> getPlayoutDevices() {
@@ -869,17 +869,17 @@ class SipConnectFlutter {
 
   /// Get speaker device details by its index
   Future<MediaDevice?> getPlayoutDevice(int index) async {
-    return _getMediaDevice(index, SipConnectPlatform.kMethodDvcGetPlayout);
+    return _getMediaDevice(index, PjsipConnectPlatform.kMethodDvcGetPlayout);
   }
 
   /// Get microphone device details by its index
   Future<MediaDevice?> getRecordingDevice(int index) async {
-    return _getMediaDevice(index, SipConnectPlatform.kMethodDvcGetRecording);
+    return _getMediaDevice(index, PjsipConnectPlatform.kMethodDvcGetRecording);
   }
 
   /// Get camera details by its index
   Future<MediaDevice?> getVideoDevice(int index) async {
-    return _getMediaDevice(index, SipConnectPlatform.kMethodDvcGetVideo);
+    return _getMediaDevice(index, PjsipConnectPlatform.kMethodDvcGetVideo);
   }
 
   /// Set speaker device by its index
@@ -909,7 +909,7 @@ class SipConnectFlutter {
 
 
   //-//////////////////////////////////////////////////////////////////////////////////////
-  //-SipConnect video renderers
+  //-PjsipConnect video renderers
 
   /// Create video renderer
   Future<int?> videoRendererCreate() {
@@ -966,12 +966,12 @@ class SipConnectFlutter {
   }
 
   ///Provide calls state to the Android's service
-  Future<void>? syncCallsState(ISipConnectData callsData) {
+  Future<void>? syncCallsState(IPjsipConnectData callsData) {
     return _platform.syncCallsState(callsData);
   }
 
   //-//////////////////////////////////////////////////////////////////////////////////////
-  //-SipConnect callbacks handler
+  //-PjsipConnect callbacks handler
 
   ///Handles signals received from event channel
   Future<void> _eventsHandler(MethodCall methodCall) async {
@@ -982,35 +982,35 @@ class SipConnectFlutter {
 
     Map<dynamic, dynamic> argsMap = methodCall.arguments as Map<dynamic, dynamic>;
     switch(methodCall.method) {
-      case SipConnectPlatform.kOnAccountRegState  : _onAccountRegState(argsMap);  break;
-      case SipConnectPlatform.kOnSubscriptionState: _onSubscriptionState(argsMap);break;
-      case SipConnectPlatform.kOnNetworkState     : _onNetworkState(argsMap);     break;
-      case SipConnectPlatform.kOnPlayerState      : _onPlayerState(argsMap);      break;
+      case PjsipConnectPlatform.kOnAccountRegState  : _onAccountRegState(argsMap);  break;
+      case PjsipConnectPlatform.kOnSubscriptionState: _onSubscriptionState(argsMap);break;
+      case PjsipConnectPlatform.kOnNetworkState     : _onNetworkState(argsMap);     break;
+      case PjsipConnectPlatform.kOnPlayerState      : _onPlayerState(argsMap);      break;
 
-      case SipConnectPlatform.kOnPushIncoming     : _onPushIncoming(argsMap);     break;
-      case SipConnectPlatform.kOnTrialModeNotif   : _onTrialModeNotif(argsMap);   break;
-      case SipConnectPlatform.kOnDevicesChanged   : _onDevicesChanged(argsMap);   break;
+      case PjsipConnectPlatform.kOnPushIncoming     : _onPushIncoming(argsMap);     break;
+      case PjsipConnectPlatform.kOnTrialModeNotif   : _onTrialModeNotif(argsMap);   break;
+      case PjsipConnectPlatform.kOnDevicesChanged   : _onDevicesChanged(argsMap);   break;
 
-      case SipConnectPlatform.kOnCallIncoming     : _onCallIncoming(argsMap);     break;
-      case SipConnectPlatform.kOnCallAcceptNotif  : _onCallAcceptNotif(argsMap);  break;
-      case SipConnectPlatform.kOnCallConnected    : _onCallConnected(argsMap);    break;
-      case SipConnectPlatform.kOnCallTerminated   : _onCallTerminated(argsMap);   break;
-      case SipConnectPlatform.kOnCallProceeding   : _onCallProceeding(argsMap);   break;
-      case SipConnectPlatform.kOnCallDtmfReceived : _onCallDtmfReceived(argsMap); break;
-      case SipConnectPlatform.kOnCallTransferred  : _onCallTransferred(argsMap);  break;
-      case SipConnectPlatform.kOnCallRedirected   : _onCallRedirected(argsMap);   break;
-      case SipConnectPlatform.kOnCallVideoUpgraded: _onCallVideoUpgraded(argsMap); break;
-      case SipConnectPlatform.kOnCallVideoUpgradeRequested: _onCallVideoUpgradeRequested(argsMap); break;
-      case SipConnectPlatform.kOnCallSwitched     : _onCallSwitched(argsMap);     break;
-      case SipConnectPlatform.kOnCallHeld         : _onCallHeld(argsMap);         break;
-      case SipConnectPlatform.kOnCallKitMuted     : _onCallKitMuted(argsMap);     break;
-      case SipConnectPlatform.kOnCallsSyncState   : _onCallsSyncState(argsMap);   break;
+      case PjsipConnectPlatform.kOnCallIncoming     : _onCallIncoming(argsMap);     break;
+      case PjsipConnectPlatform.kOnCallAcceptNotif  : _onCallAcceptNotif(argsMap);  break;
+      case PjsipConnectPlatform.kOnCallConnected    : _onCallConnected(argsMap);    break;
+      case PjsipConnectPlatform.kOnCallTerminated   : _onCallTerminated(argsMap);   break;
+      case PjsipConnectPlatform.kOnCallProceeding   : _onCallProceeding(argsMap);   break;
+      case PjsipConnectPlatform.kOnCallDtmfReceived : _onCallDtmfReceived(argsMap); break;
+      case PjsipConnectPlatform.kOnCallTransferred  : _onCallTransferred(argsMap);  break;
+      case PjsipConnectPlatform.kOnCallRedirected   : _onCallRedirected(argsMap);   break;
+      case PjsipConnectPlatform.kOnCallVideoUpgraded: _onCallVideoUpgraded(argsMap); break;
+      case PjsipConnectPlatform.kOnCallVideoUpgradeRequested: _onCallVideoUpgradeRequested(argsMap); break;
+      case PjsipConnectPlatform.kOnCallSwitched     : _onCallSwitched(argsMap);     break;
+      case PjsipConnectPlatform.kOnCallHeld         : _onCallHeld(argsMap);         break;
+      case PjsipConnectPlatform.kOnCallKitMuted     : _onCallKitMuted(argsMap);     break;
+      case PjsipConnectPlatform.kOnCallsSyncState   : _onCallsSyncState(argsMap);   break;
 
-      case SipConnectPlatform.kOnMessageSentState : _onMessageSentState(argsMap); break;
-      case SipConnectPlatform.kOnMessageIncoming  : _onMessageIncoming(argsMap);  break;
+      case PjsipConnectPlatform.kOnMessageSentState : _onMessageSentState(argsMap); break;
+      case PjsipConnectPlatform.kOnMessageIncoming  : _onMessageIncoming(argsMap);  break;
 
-      case SipConnectPlatform.kOnSipNotify        : _onSipNotify(argsMap);        break;
-      case SipConnectPlatform.kOnVuMeterLevel     : _onVuMeterLevel(argsMap);     break;
+      case PjsipConnectPlatform.kOnSipNotify        : _onSipNotify(argsMap);        break;
+      case PjsipConnectPlatform.kOnVuMeterLevel     : _onVuMeterLevel(argsMap);     break;
     }
   }
 
@@ -1181,4 +1181,4 @@ class SipConnectFlutter {
     }
   }
 
-}//SipConnectFlutter
+}//PjsipConnectFlutter

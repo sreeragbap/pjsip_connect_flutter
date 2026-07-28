@@ -11,7 +11,7 @@ and the NDK/Xcode toolchains — they can't run in CI sandboxes).
 export ANDROID_NDK_ROOT="$HOME/Library/Android/sdk/ndk/26.3.11579264"
 ./build-android.sh
 
-# iOS (produces ios/sip_connect_flutter/pjsip.xcframework + pjsip-headers/)
+# iOS (produces ios/pjsip_connect_flutter/pjsip.xcframework + pjsip-headers/)
 ./build-ios.sh
 ```
 

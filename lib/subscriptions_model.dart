@@ -1,15 +1,15 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'src/sip_connect_platform.dart';
+import 'src/pjsip_connect_platform.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 
 import 'dart:convert';
-import 'sip_connect.dart';
+import 'pjsip_connect.dart';
 
 
 /// Holds properties of SIP subscription item
-class SubscriptionModel extends ChangeNotifier implements ISipConnectData {
+class SubscriptionModel extends ChangeNotifier implements IPjsipConnectData {
   SubscriptionModel({required this.toExt, required this.fromAccId,
                     required this.mimeSubType, required this.eventType, this.body});
   ///Unique id assigned by library (valid only during current session)
@@ -101,7 +101,7 @@ class SubscriptionsModel extends ChangeNotifier {
   final ILogsModel? _logs;
 
   SubscriptionsModel(this._accountsModel, this._itemCreateFunc, [this._logs]) {
-    SipConnectFlutter().subscrListener = SubscrStateListener(
+    PjsipConnectFlutter().subscrListener = SubscrStateListener(
       subscrStateChanged : onSubscrStateChanged
     );
   }
@@ -126,12 +126,12 @@ class SubscriptionsModel extends ChangeNotifier {
       else                      { sub.accUri    = _accountsModel.getUri(sub.fromAccId); }
 
       //Add
-      sub.mySubscrId  = await SipConnectFlutter().addSubscription(sub) ?? 0;
+      sub.mySubscrId  = await PjsipConnectFlutter().addSubscription(sub) ?? 0;
 
       _integrateAddedSubscription(sub, saveChanges);
 
     } on PlatformException catch (err) {
-      if(err.code == SipConnectFlutter.eSubscrAlreadyExist.toString()) {
+      if(err.code == PjsipConnectFlutter.eSubscrAlreadyExist.toString()) {
         int existingSubscrId = err.details;
         int idx = _subscriptions.indexWhere((s) => (s.mySubscrId == existingSubscrId));
         if(idx==-1) {
@@ -169,7 +169,7 @@ class SubscriptionsModel extends ChangeNotifier {
   Future<void> deleteSubscription(int index) async {
     try {
       int subscrId = _subscriptions[index].mySubscrId;
-      await SipConnectFlutter().deleteSubscription(subscrId);
+      await PjsipConnectFlutter().deleteSubscription(subscrId);
       _logs?.print('Deleting subscription subscrId:$subscrId');
 
     } on PlatformException catch (err) {

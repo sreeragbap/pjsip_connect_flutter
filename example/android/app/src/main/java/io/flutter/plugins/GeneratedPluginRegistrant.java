@@ -31,14 +31,14 @@ public final class GeneratedPluginRegistrant {
       Log.e(TAG, "Error registering plugin jni_flutter, com.github.dart_lang.jni_flutter.JniFlutterPlugin", e);
     }
     try {
+      flutterEngine.getPlugins().add(new com.sipconnect.voip_sdk.SipConnectFlutterPlugin());
+    } catch (Exception e) {
+      Log.e(TAG, "Error registering plugin pjsip_connect_flutter, com.sipconnect.voip_sdk.SipConnectFlutterPlugin", e);
+    }
+    try {
       flutterEngine.getPlugins().add(new io.flutter.plugins.sharedpreferences.SharedPreferencesPlugin());
     } catch (Exception e) {
       Log.e(TAG, "Error registering plugin shared_preferences_android, io.flutter.plugins.sharedpreferences.SharedPreferencesPlugin", e);
-    }
-    try {
-      flutterEngine.getPlugins().add(new com.sipconnect.voip_sdk.SipConnectFlutterPlugin());
-    } catch (Exception e) {
-      Log.e(TAG, "Error registering plugin sip_connect_flutter, com.sipconnect.voip_sdk.SipConnectFlutterPlugin", e);
     }
   }
 }

@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 /// The plugin's single MethodChannel (must match the native side).
-const MethodChannel kSipConnectChannel = MethodChannel('sip_connect_flutter');
+const MethodChannel kPjsipConnectChannel = MethodChannel('sip_connect_flutter');
 
 /// Fakes the native side of the `sipconnect_voip_sdk` channel.
 ///
@@ -13,10 +13,10 @@ const MethodChannel kSipConnectChannel = MethodChannel('sip_connect_flutter');
 ///   [onCall] for dynamic behavior / throwing PlatformException).
 /// - [emitEvent] simulates a native→Dart event (reverse method call), which is
 ///   how the real plugin delivers `On*` events.
-class MockSipConnectNative {
-  MockSipConnectNative() {
+class MockPjsipConnectNative {
+  MockPjsipConnectNative() {
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-        .setMockMethodCallHandler(kSipConnectChannel, _handler);
+        .setMockMethodCallHandler(kPjsipConnectChannel, _handler);
   }
 
   final List<MethodCall> calls = [];
@@ -65,7 +65,7 @@ class MockSipConnectNative {
   /// Unregisters the mock handler.
   void dispose() {
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-        .setMockMethodCallHandler(kSipConnectChannel, null);
+        .setMockMethodCallHandler(kPjsipConnectChannel, null);
   }
 
   /// Simulates the native side invoking a Dart handler (an `On*` event).
@@ -73,6 +73,6 @@ class MockSipConnectNative {
     final ByteData data =
         const StandardMethodCodec().encodeMethodCall(MethodCall(method, arguments));
     await TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-        .handlePlatformMessage(kSipConnectChannel.name, data, (ByteData? reply) {});
+        .handlePlatformMessage(kPjsipConnectChannel.name, data, (ByteData? reply) {});
   }
 }

@@ -182,7 +182,7 @@ the plugin see identical struct layouts). Verified: two-way audio + mute on
 device.
 
 **2026-07-24 — Swift Package Manager support.** iOS sources restructured to
-`ios/sip_connect_flutter/{Package.swift, Sources/sip_connect_flutter (Swift),
+`ios/pjsip_connect_flutter/{Package.swift, Sources/pjsip_connect_flutter (Swift),
 Sources/SipCoreModule (ObjC++)}` — split targets because SPM forbids
 mixed-language targets; `#if canImport(SipCoreModule)` keeps the same files
 building as one mixed pod under CocoaPods. Both build modes verified.

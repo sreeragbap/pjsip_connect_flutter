@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 //import 'dart:io' show Platform;
 
-import 'package:sip_connect_flutter/network_model.dart';
-import 'package:sip_connect_flutter/logs_model.dart';
+import 'package:pjsip_connect_flutter/network_model.dart';
+import 'package:pjsip_connect_flutter/logs_model.dart';
 
 import 'calls_model_app.dart';
 import 'messages.dart';
@@ -41,8 +41,8 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(backgroundColor: Theme.of(context).primaryColor.withValues(alpha: 0.4), 
           titleSpacing: 0,
           title: ListTile(
-            title:Text('SipConnect VoIP SDK', style: Theme.of(context).textTheme.headlineSmall, overflow: TextOverflow.ellipsis),
-            subtitle: Text('www.sipconnect-voip.com', style: Theme.of(context).textTheme.bodySmall, overflow: TextOverflow.ellipsis),
+            title:Text('PjsipConnect VoIP SDK', style: Theme.of(context).textTheme.headlineSmall, overflow: TextOverflow.ellipsis),
+            subtitle: Text('www.pjsipconnect-voip.com', style: Theme.of(context).textTheme.bodySmall, overflow: TextOverflow.ellipsis),
           ),
           actions: [
             Padding(padding: const EdgeInsets.only(right: 20),

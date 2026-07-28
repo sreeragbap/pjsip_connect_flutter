@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:sip_connect_flutter/subscriptions_model.dart';
+import 'package:pjsip_connect_flutter/subscriptions_model.dart';
 import 'subscr_add.dart';
 import 'subscr_model_app.dart';
 

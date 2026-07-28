@@ -5,11 +5,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sip_connect_flutter/calls_model.dart';
-import 'package:sip_connect_flutter/devices_model.dart';
-import 'package:sip_connect_flutter/logs_model.dart';
-import 'package:sip_connect_flutter/sip_connect.dart';
-import 'package:sip_connect_flutter/video.dart';
+import 'package:pjsip_connect_flutter/calls_model.dart';
+import 'package:pjsip_connect_flutter/devices_model.dart';
+import 'package:pjsip_connect_flutter/logs_model.dart';
+import 'package:pjsip_connect_flutter/pjsip_connect.dart';
+import 'package:pjsip_connect_flutter/video.dart';
 
 import 'call_add.dart';
 import 'calls_model_app.dart';
@@ -131,15 +131,15 @@ class SwitchedCallWidget extends StatefulWidget {
 }
 
 class _SwitchedCallWidgetState extends State<SwitchedCallWidget> {
-  final SipConnectVideoRenderer _localRenderer = SipConnectVideoRenderer();
-  final SipConnectVideoRenderer _remoteRenderer = SipConnectVideoRenderer();
+  final PjsipConnectVideoRenderer _localRenderer = PjsipConnectVideoRenderer();
+  final PjsipConnectVideoRenderer _remoteRenderer = PjsipConnectVideoRenderer();
   static const double eIconSize = 30;
 
   @override
   void initState() {
     super.initState();
     _localRenderer.init(
-        SipConnectFlutter.kLocalVideoCallId, context.read<LogsModel>());
+        PjsipConnectFlutter.kLocalVideoCallId, context.read<LogsModel>());
     _remoteRenderer.init(widget.myCall.myCallId, context.read<LogsModel>());
   }
 
@@ -197,11 +197,11 @@ class _SwitchedCallWidgetState extends State<SwitchedCallWidget> {
     List<Widget> children = [];
     if (widget.myCall.hasVideo) {
       //Received video
-      children.add(Center(child: SipConnectVideoView(_remoteRenderer)));
+      children.add(Center(child: PjsipConnectVideoView(_remoteRenderer)));
 
       //Camera preview
       children.add(SizedBox(
-          width: 130, height: 100, child: SipConnectVideoView(_localRenderer)));
+          width: 130, height: 100, child: PjsipConnectVideoView(_localRenderer)));
 
       //Button 'Mute camera'
       children.add(IconButton(

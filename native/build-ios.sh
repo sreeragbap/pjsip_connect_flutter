@@ -6,8 +6,8 @@
 # Prereqs: Xcode + command line tools; network access. Run on macOS.
 # Usage:   ./build-ios.sh
 #
-# Output:  ../ios/sip_connect_flutter/pjsip.xcframework
-#          (+ ../ios/sip_connect_flutter/pjsip-headers/ umbrella copy)
+# Output:  ../ios/pjsip_connect_flutter/pjsip.xcframework
+#          (+ ../ios/pjsip_connect_flutter/pjsip-headers/ umbrella copy)
 #
 set -euo pipefail
 
@@ -18,7 +18,7 @@ MIN="14.0"
 WORK="$HERE/.work-ios"
 SRC="$WORK/pjproject-$PJ_VERSION"
 SSL_SRC="$WORK/openssl-$SSL_VERSION"
-OUT="$HERE/../ios/sip_connect_flutter/pjsip.xcframework"
+OUT="$HERE/../ios/pjsip_connect_flutter/pjsip.xcframework"
 
 DEV_SDK="$(xcrun --sdk iphoneos --show-sdk-path)"
 SIM_SDK="$(xcrun --sdk iphonesimulator --show-sdk-path)"
@@ -104,8 +104,8 @@ for m in pjlib pjlib-util pjnath pjmedia pjsip; do
   cp -R "$SRC/$m/include/." "$HEADERS/" 2>/dev/null || true
 done
 # Keep a copy next to the framework for the Swift/ObjC++ bridge to import.
-rm -rf "$HERE/../ios/sip_connect_flutter/pjsip-headers"
-cp -R "$HEADERS" "$HERE/../ios/sip_connect_flutter/pjsip-headers"
+rm -rf "$HERE/../ios/pjsip_connect_flutter/pjsip-headers"
+cp -R "$HEADERS" "$HERE/../ios/pjsip_connect_flutter/pjsip-headers"
 
 rm -rf "$OUT"
 xcodebuild -create-xcframework \

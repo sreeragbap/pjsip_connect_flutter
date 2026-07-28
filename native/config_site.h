@@ -1,5 +1,5 @@
 /*
- * PJSIP build configuration for sip_connect_flutter (mobile).
+ * PJSIP build configuration for pjsip_connect_flutter (mobile).
  * Copied into pjproject/pjlib/include/pj/config_site.h by the build scripts.
  *
  * Mobile-tuned: single-threaded-friendly, video enabled, bundled codecs only

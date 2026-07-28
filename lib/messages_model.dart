@@ -1,14 +1,14 @@
 import 'package:intl/intl.dart';
-import 'src/sip_connect_platform.dart';
+import 'src/pjsip_connect_platform.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 
 import 'dart:convert';
-import 'sip_connect.dart';
+import 'pjsip_connect.dart';
 
 
 /// Message destination -  contains lists of parameters for sending message
-class MessageDestination implements ISipConnectData {
+class MessageDestination implements IPjsipConnectData {
   MessageDestination(this.toExt, this.fromAccId, this.body, {this.contentType});
   /// Extension (phone number) where to send message
   final String toExt;
@@ -130,7 +130,7 @@ class MessagesModel extends ChangeNotifier {
   final int maxItems;
 
   MessagesModel(this._accountsModel, [this._logs, this.maxItems=25]) {
-    SipConnectFlutter().messagesListener = MessagesStateListener(
+    PjsipConnectFlutter().messagesListener = MessagesStateListener(
       sentState: onMessageSentState,
       incoming : onMessageIncoming
     );
@@ -155,7 +155,7 @@ class MessagesModel extends ChangeNotifier {
       String accUri = _accountsModel.getUri(msgDest.fromAccId);
 
       //Send and get assigned id
-      int myMessageId = await SipConnectFlutter().sendMessage(msgDest) ?? 0;
+      int myMessageId = await PjsipConnectFlutter().sendMessage(msgDest) ?? 0;
 
       //Add to the list and notify UI
       _messages.add(MessageModel.outgoing(myMessageId, accUri, msgDest));
