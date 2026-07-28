@@ -14,7 +14,7 @@ interface VideoRendererEvents {
 /**
  * Bridges the engine's decoded video to a Flutter texture.
  *
- * Keeps the Flutter-texture plumbing of the original (Siprix/webrtc-based)
+ * Keeps the Flutter-texture plumbing of the original (webrtc-based)
  * renderer, but the frame source is now the PJSIP video window, which renders
  * directly into the SurfaceProducer's Surface (no GL pipeline of our own).
  */

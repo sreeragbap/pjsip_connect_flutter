@@ -1,6 +1,6 @@
 # native/ — building the PJSIP engine
 
-This directory replaces the closed-source Siprix binaries with a cross-compiled
+This directory replaces the previous closed-source engine binaries with a cross-compiled
 **PJSIP** engine. The scripts run on **your machine** (they need network access
 and the NDK/Xcode toolchains — they can't run in CI sandboxes).
 
@@ -11,7 +11,7 @@ and the NDK/Xcode toolchains — they can't run in CI sandboxes).
 export ANDROID_NDK_ROOT="$HOME/Library/Android/sdk/ndk/26.3.11579264"
 ./build-android.sh
 
-# iOS (produces ios/pjsip.xcframework)
+# iOS (produces ios/sip_connect_flutter/pjsip.xcframework + pjsip-headers/)
 ./build-ios.sh
 ```
 
@@ -30,9 +30,9 @@ and three iOS slices). Rebuild only when `VERSIONS.md` or `config_site.h` change
 
 - `native/` and `.work*/` are build-time only — add them to `.gitignore`, and
   commit the produced `jniLibs/` + `pjsip.xcframework` (or host them in your
-  artifact store) the same way the Siprix binaries were vendored.
+  artifact store) the same way the old engine binaries were vendored.
 - The plugin's `build.gradle` / podspec are wired to consume these outputs (see
-  `../ENGINE_REPLACEMENT_PLAN.md` P0). The old Siprix AAR/xcframeworks are
+  `../ENGINE_REPLACEMENT_PLAN.md` P0). The old engine AAR/xcframeworks are
   removed in that step.
 
 ## License reminder

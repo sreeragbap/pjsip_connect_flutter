@@ -12,6 +12,7 @@ example/android/local.properties
 
 # IDE / OS
 .idea/
+.vscode/
 *.iml
 .DS_Store
 

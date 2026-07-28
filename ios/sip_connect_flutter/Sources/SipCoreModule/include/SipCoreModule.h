@@ -3,8 +3,8 @@
 //
 //  PJSIP(pjsua2)-backed engine for sip_connect_flutter.
 //  Mirrors the ObjC API surface the Swift bridge was originally written
-//  against (formerly siprix.framework's Siprix.h) — same selectors, same
-//  enum values (pinned by the Dart wire protocol), SipCore* class prefix.
+//  against — same selectors, same enum values (pinned by the Dart wire
+//  protocol), SipCore* class prefix.
 //
 
 #ifndef SipCoreModule_h
