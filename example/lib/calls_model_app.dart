@@ -108,7 +108,7 @@ class AppCallsModel extends CallsModel {
 
   @override
   void onProceeding(int callId, String response) {
-    log('onProceeding callId:$callId response:$response');
+    log('onProceeding callId:$callId responses:$response');
   }
 
   @override

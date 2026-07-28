@@ -2,6 +2,9 @@ import Flutter
 import UIKit
 import CallKit
 import PushKit
+#if canImport(SipCoreModule)
+import SipCoreModule
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///AudioDevices

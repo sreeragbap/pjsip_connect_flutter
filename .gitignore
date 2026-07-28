@@ -35,3 +35,9 @@ example/ios/**/xcuserdata/
 
 # Kotlin build tooling session caches
 example/android/.kotlin/
+
+# Xcode SPM workspace state for the plugin package
+ios/sip_connect_flutter/.swiftpm/
+
+# SwiftPM build/index artifacts for the plugin package
+ios/sip_connect_flutter/.build/
