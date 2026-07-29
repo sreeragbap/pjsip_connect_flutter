@@ -540,16 +540,16 @@ abstract class PjsipConnectPlatform extends PlatformInterface {
   }
 
   Future<void>? updateCallKitCallDetails(
-    String callkit_CallUUID,
-    int? sip_callId, [
+    String callkitCallUUID,
+    int? sipCallId, [
     String? localizedCallerName,
     String? genericHandle,
     bool? withVideo,
   ]) {
     if (Platform.isIOS) {
       return _methodChannel.invokeMethod<void>(kMethodDvcUpdCallKitDetails, {
-        kArgCallKitUuid: callkit_CallUUID,
-        kArgCallId: sip_callId,
+        kArgCallKitUuid: callkitCallUUID,
+        kArgCallId: sipCallId,
         kArgPushName: localizedCallerName,
         kArgPushHandle: genericHandle,
         kArgWithVideo: withVideo,
@@ -558,19 +558,19 @@ abstract class PjsipConnectPlatform extends PlatformInterface {
     return null;
   }
 
-  Future<String?>? getCallKitCallUUID(int sip_callId) {
+  Future<String?>? getCallKitCallUUID(int sipCallId) {
     if (Platform.isIOS) {
       return _methodChannel.invokeMethod<String>(kMethodDvcGetCallKitUUID, {
-        kArgCallId: sip_callId,
+        kArgCallId: sipCallId,
       });
     }
     return null;
   }
 
-  Future<void>? endCallKitCall(String callkit_CallUUID) {
+  Future<void>? endCallKitCall(String callkitCallUUID) {
     if (Platform.isIOS) {
       return _methodChannel.invokeMethod<String>(kMethodDvcEndCallKitCall, {
-        kArgCallKitUuid: callkit_CallUUID,
+        kArgCallKitUuid: callkitCallUUID,
       });
     }
     return null;

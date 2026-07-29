@@ -158,8 +158,9 @@ class DevicesModel extends ChangeNotifier {
 
   /// Set current speaker as system's default device (Windows only)
   Future<void> setPlayoutDeviceSysDef() async {
-    if (Platform.isWindows)
+    if (Platform.isWindows) {
       return _playout.set(-1, PjsipConnectFlutter().setPlayoutDevice);
+    }
   }
 
   /// Set current microphone device by its index
@@ -169,8 +170,9 @@ class DevicesModel extends ChangeNotifier {
 
   /// Set current microphone device as system's default device (Windows only)
   Future<void> setRecordingDeviceSysDef() async {
-    if (Platform.isWindows)
+    if (Platform.isWindows) {
       return _recording.set(-1, PjsipConnectFlutter().setRecordingDevice);
+    }
   }
 
   /// Set current camera device by its index
