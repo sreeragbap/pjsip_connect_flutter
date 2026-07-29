@@ -1,4 +1,4 @@
-import 'package:sip_connect_flutter/subscriptions_model.dart';
+import 'package:pjsip_connect_flutter/subscriptions_model.dart';
 
 
 enum BLFState {trying, proceeding, early, terminated, confirmed, unknown}

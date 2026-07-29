@@ -2,15 +2,15 @@
 
 import 'dart:collection';
 
-import 'src/sip_connect_platform.dart';
+import 'src/pjsip_connect_platform.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'sip_connect.dart';
+import 'pjsip_connect.dart';
 import 'cdrs_model.dart';
 
 /// Call destination -  contains lists of parameters for making outgoing call
-class CallDestination implements ISipConnectData {
+class CallDestination implements IPjsipConnectData {
   CallDestination(this.toExt, this.fromAccId, this.withVideo, [this.displName]);
   /// Extension (phone number) to dial
   final String toExt;
@@ -84,16 +84,16 @@ enum CallState{
 /// Hold state
 enum HoldState {
   /// No hold, media flows in both directions
-  none(SipConnectFlutter.kHoldStateNone, "None"),
+  none(PjsipConnectFlutter.kHoldStateNone, "None"),
   /// Call put on hold by local side
-  local(SipConnectFlutter.kHoldStateLocal, "Local"),
+  local(PjsipConnectFlutter.kHoldStateLocal, "Local"),
   /// Call put on hold by remote side
-  remote(SipConnectFlutter.kHoldStateRemote, "Remote"),
+  remote(PjsipConnectFlutter.kHoldStateRemote, "Remote"),
   /// Call put on hold by local and remote side
-  localAndRemote(SipConnectFlutter.kHoldStateLocalAndRemote, "LocalAndRemote");
+  localAndRemote(PjsipConnectFlutter.kHoldStateLocalAndRemote, "LocalAndRemote");
 
   const HoldState(this.id, this.name);
-  /// Hold state id (one of the [SipConnectFlutter.kHoldState*])
+  /// Hold state id (one of the [PjsipConnectFlutter.kHoldState*])
   final int id;
   /// Hold state name
   final String name;
@@ -101,9 +101,9 @@ enum HoldState {
   /// Returns hold state which matches specified int value
   static HoldState from(int val) {
     switch(val) {
-      case SipConnectFlutter.kHoldStateLocal: return HoldState.local;
-      case SipConnectFlutter.kHoldStateRemote: return HoldState.remote;
-      case SipConnectFlutter.kHoldStateLocalAndRemote: return HoldState.localAndRemote;
+      case PjsipConnectFlutter.kHoldStateLocal: return HoldState.local;
+      case PjsipConnectFlutter.kHoldStateRemote: return HoldState.remote;
+      case PjsipConnectFlutter.kHoldStateLocalAndRemote: return HoldState.localAndRemote;
       default: return HoldState.none;
     }
   }
@@ -114,14 +114,14 @@ enum HoldState {
 /// File player State
 enum PlayerState {
   /// Player started
-  started(SipConnectFlutter.kPlayerStateStarted, "Started"),
+  started(PjsipConnectFlutter.kPlayerStateStarted, "Started"),
   /// Player stopped
-  stoppped(SipConnectFlutter.kPlayerStateStopped,"Stopped"),
+  stoppped(PjsipConnectFlutter.kPlayerStateStopped,"Stopped"),
   /// Player failed
-  failed(SipConnectFlutter.kPlayerStateFailed,   "Failed");
+  failed(PjsipConnectFlutter.kPlayerStateFailed,   "Failed");
 
   const PlayerState(this.id, this.name);
-  /// Plater state id (one of the [SipConnectFlutter.kPlayerState*])
+  /// Plater state id (one of the [PjsipConnectFlutter.kPlayerState*])
   final int id;
   /// Plater state name
   final String name;
@@ -129,8 +129,8 @@ enum PlayerState {
   /// Returns player state which matches specified int value
   static PlayerState from(int val) {
     switch (val) {
-      case SipConnectFlutter.kPlayerStateStarted: return PlayerState.started;
-      case SipConnectFlutter.kPlayerStateStopped: return PlayerState.stoppped;
+      case PjsipConnectFlutter.kPlayerStateStarted: return PlayerState.started;
+      case PjsipConnectFlutter.kPlayerStateStopped: return PlayerState.stoppped;
       default:  return PlayerState.failed;
     }
   }
@@ -138,7 +138,7 @@ enum PlayerState {
 
 
 /// Call model (contains call attributes, methods for managing them, handles library events)
-class CallModel extends ChangeNotifier implements ISipConnectData {
+class CallModel extends ChangeNotifier implements IPjsipConnectData {
   CallModel(this.myCallId, this.accUri, this.remoteExt, this.isIncoming, this.hasSecureMedia, this._hasVideo, [this._logs]) {
     _state = isIncoming ? CallState.ringing : CallState.dialing;
   }
@@ -312,7 +312,7 @@ class CallModel extends ChangeNotifier implements ISipConnectData {
   Future<void> bye() async{
     _logs?.print('Ending callId:$myCallId');
     try{
-      await SipConnectFlutter().bye(myCallId);
+      await PjsipConnectFlutter().bye(myCallId);
       _state = CallState.disconnecting;
       notifyListeners();
     } on PlatformException catch (err) {
@@ -325,7 +325,7 @@ class CallModel extends ChangeNotifier implements ISipConnectData {
   Future<void> accept([bool withVideo=true]) async{
     _logs?.print('Accepting callId:$myCallId withVideo:$withVideo');
     try{
-      await SipConnectFlutter().accept(myCallId, withVideo);
+      await PjsipConnectFlutter().accept(myCallId, withVideo);
       _state = CallState.accepting;
       notifyListeners();
     } on PlatformException catch (err) {
@@ -338,7 +338,7 @@ class CallModel extends ChangeNotifier implements ISipConnectData {
   Future<void> reject() async{
     _logs?.print('Rejecting callId:$myCallId');
     try {
-      await SipConnectFlutter().reject(myCallId, 486);//Send '486 Busy now'
+      await PjsipConnectFlutter().reject(myCallId, 486);//Send '486 Busy now'
       _state = CallState.rejecting;
       notifyListeners();
     } on PlatformException catch (err) {
@@ -352,7 +352,7 @@ class CallModel extends ChangeNotifier implements ISipConnectData {
     _logs?.print('Mute mic of call $myCallId = $mute');
 
     try {
-      await SipConnectFlutter().muteMic(myCallId, mute);
+      await PjsipConnectFlutter().muteMic(myCallId, mute);
       _isMicMuted = mute;
       notifyListeners();
     } on PlatformException catch (err) {
@@ -366,7 +366,7 @@ class CallModel extends ChangeNotifier implements ISipConnectData {
     _logs?.print('Mute camera of call $myCallId = $mute');
 
     try {
-      await SipConnectFlutter().muteCam(myCallId, mute);
+      await PjsipConnectFlutter().muteCam(myCallId, mute);
       _isCamMuted = mute;
       notifyListeners();
     } on PlatformException catch (err) {
@@ -376,10 +376,10 @@ class CallModel extends ChangeNotifier implements ISipConnectData {
   }
 
   /// Send DTMF (single tone or sequence of tones) to remote side of this call
-  Future<void> sendDtmf(String tones, [int durationMs=200, int intertoneGapMs=50, int method = SipConnectFlutter.kDtmfMethodRtp]) async {
+  Future<void> sendDtmf(String tones, [int durationMs=200, int intertoneGapMs=50, int method = PjsipConnectFlutter.kDtmfMethodRtp]) async {
     _logs?.print('Sending dtmf callId:$myCallId tone:$tones');
     try{
-      await SipConnectFlutter().sendDtmf(myCallId, tones, durationMs, intertoneGapMs, method);
+      await PjsipConnectFlutter().sendDtmf(myCallId, tones, durationMs, intertoneGapMs, method);
     } on PlatformException catch (err) {
       _logs?.print('Can\'t send dtmf callId:$myCallId Err: ${err.code} ${err.message}');
       return Future.error((err.message==null) ? err.code : err.message!);
@@ -390,7 +390,7 @@ class CallModel extends ChangeNotifier implements ISipConnectData {
   Future<void> playFile(String pathToMp3File, {bool loop=false}) async {
     _logs?.print('Starting play file callId:$myCallId $pathToMp3File loop:$loop');
     try {
-      _playerId = await SipConnectFlutter().playFile(myCallId, pathToMp3File, loop) ?? 0;
+      _playerId = await PjsipConnectFlutter().playFile(myCallId, pathToMp3File, loop) ?? 0;
     } on PlatformException catch (err) {
       _logs?.print('Can\'t start playing file callId:$myCallId Err: ${err.code} ${err.message}');
       return Future.error((err.message==null) ? err.code : err.message!);
@@ -402,7 +402,7 @@ class CallModel extends ChangeNotifier implements ISipConnectData {
     if(_playerId==0) return;
     _logs?.print('Stop play file callId:$myCallId playerId:$_playerId');
     try {
-      await SipConnectFlutter().stopPlayFile(_playerId);
+      await PjsipConnectFlutter().stopPlayFile(_playerId);
     } on PlatformException catch (err) {
       _logs?.print('Can\'t stop playing file playerId:$_playerId Err: ${err.code} ${err.message}');
       return Future.error((err.message==null) ? err.code : err.message!);
@@ -413,7 +413,7 @@ class CallModel extends ChangeNotifier implements ISipConnectData {
   Future<void> recordFile(String pathToMp3File) async {
     _logs?.print('Starting record file callId:$myCallId $pathToMp3File');
     try {
-      await SipConnectFlutter().recordFile(myCallId, pathToMp3File);
+      await PjsipConnectFlutter().recordFile(myCallId, pathToMp3File);
       _isRecStarted = true;
     } on PlatformException catch (err) {
       _logs?.print('Can\'t start recording file callId:$myCallId Err: ${err.code} ${err.message}');
@@ -426,7 +426,7 @@ class CallModel extends ChangeNotifier implements ISipConnectData {
     if(!_isRecStarted) return;
     _logs?.print('Stop record file callId:$myCallId');
     try {
-      await SipConnectFlutter().stopRecordFile(myCallId);
+      await PjsipConnectFlutter().stopRecordFile(myCallId);
       _isRecStarted = false;
     } on PlatformException catch (err) {
       _logs?.print('Can\'t stop recording file callId:$myCallId Err: ${err.code} ${err.message}');
@@ -438,7 +438,7 @@ class CallModel extends ChangeNotifier implements ISipConnectData {
   Future<void> hold() async {
     _logs?.print('Hold callId:$myCallId');
     try{
-      await SipConnectFlutter().hold(myCallId);
+      await PjsipConnectFlutter().hold(myCallId);
       _state = CallState.holding;
       notifyListeners();
     } on PlatformException catch (err) {
@@ -452,7 +452,7 @@ class CallModel extends ChangeNotifier implements ISipConnectData {
     _logs?.print('Transfer blind callId:$myCallId to:"$toExt"');
     if(toExt.isEmpty) return;
     try{
-      await SipConnectFlutter().transferBlind(myCallId, toExt);
+      await PjsipConnectFlutter().transferBlind(myCallId, toExt);
 
       _state = CallState.transferring;
       notifyListeners();
@@ -467,7 +467,7 @@ class CallModel extends ChangeNotifier implements ISipConnectData {
     _logs?.print('Transfer attended callId:$myCallId to callId $toCallId');
 
     try{
-      await SipConnectFlutter().transferAttended(myCallId, toCallId);
+      await PjsipConnectFlutter().transferAttended(myCallId, toCallId);
 
       _state = CallState.transferring;
       notifyListeners();
@@ -482,7 +482,7 @@ class CallModel extends ChangeNotifier implements ISipConnectData {
     _logs?.print('Upgrade callId:$myCallId to audio+video');
 
     try{
-      await SipConnectFlutter().upgradeToVideo(myCallId);
+      await PjsipConnectFlutter().upgradeToVideo(myCallId);
       _isUpgradingToVideo = true;
       notifyListeners();
     } on PlatformException catch (err) {
@@ -494,7 +494,7 @@ class CallModel extends ChangeNotifier implements ISipConnectData {
   /// Get value of the SIP header from last received response (when input param empty returns whole SIP response)
   Future<String?> getSipHeader(String headerName) async {
     try{
-      String? hdrVal = await SipConnectFlutter().getSipHeader(myCallId, headerName);
+      String? hdrVal = await PjsipConnectFlutter().getSipHeader(myCallId, headerName);
       _logs?.print('GetSipHeader of callId:$myCallId "$headerName" = "$hdrVal"');
       return hdrVal;
     } on PlatformException catch (err) {
@@ -506,7 +506,7 @@ class CallModel extends ChangeNotifier implements ISipConnectData {
   /// Get statistics of this call
   Future<String?> getStats() async {
     try{
-      String? statsVal = await SipConnectFlutter().getStats(myCallId);
+      String? statsVal = await PjsipConnectFlutter().getStats(myCallId);
       return statsVal;
     } on PlatformException catch (err) {
       _logs?.print('Can\'t getStats callId:$myCallId Err: ${err.code} ${err.message}');
@@ -518,7 +518,7 @@ class CallModel extends ChangeNotifier implements ISipConnectData {
   Future<void> acceptVideoUpgrade([bool withVideo=true]) async{
     _logs?.print('AcceptVideoUpgrade callId:$myCallId withVideo:$withVideo');
     try{
-      await SipConnectFlutter().acceptVideoUpgrade(myCallId, withVideo);
+      await PjsipConnectFlutter().acceptVideoUpgrade(myCallId, withVideo);
       _hasVideoUpgradeRequest = false;
       notifyListeners();
     } on PlatformException catch (err) {
@@ -547,7 +547,7 @@ class CallModel extends ChangeNotifier implements ISipConnectData {
 
   /// Handle response of the upgrade to video request
   void onVideoUpgraded(bool withVideo, bool isUpgradeModeRecvOnly) {
-    //SipConnect mutes camera when upgrade video request received from remote side AND mode set as recvOnly
+    //PjsipConnect mutes camera when upgrade video request received from remote side AND mode set as recvOnly
     if(withVideo && isUpgradeModeRecvOnly && !_isUpgradingToVideo) _isCamMuted = true;
 
     _hasVideo = withVideo;
@@ -622,7 +622,7 @@ typedef NewIncomingCallCallback = void Function();
 //--------------------------------------------------------------------------
 
 /// Calls list model (contains list of calls, methods for managing them, handlers of library events)
-class CallsModel extends ChangeNotifier with IterableMixin<CallModel> implements ISipConnectData {
+class CallsModel extends ChangeNotifier with IterableMixin<CallModel> implements IPjsipConnectData {
   final List<CallModel> _callItems = [];
   final IAccountsModel _accountsModel;
   final CdrsModel? _cdrs;
@@ -634,7 +634,7 @@ class CallsModel extends ChangeNotifier with IterableMixin<CallModel> implements
 
   /// Constructor (set event handler)
   CallsModel(this._accountsModel, [this._logs, this._cdrs]) {
-    SipConnectFlutter().callListener = CallStateListener(
+    PjsipConnectFlutter().callListener = CallStateListener(
       syncState : onSyncCallsState,
       playerStateChanged: onPlayerStateChanged,
       proceeding : onProceeding,
@@ -706,7 +706,7 @@ class CallsModel extends ChangeNotifier with IterableMixin<CallModel> implements
   Future<void> invite(CallDestination dest) async {
     _logs?.print('Trying to invite ${dest.toExt} from account:${dest.fromAccId}');
     try {
-      int callId = await SipConnectFlutter().invite(dest) ?? 0;
+      int callId = await PjsipConnectFlutter().invite(dest) ?? 0;
 
       String accUri       = _accountsModel.getUri(dest.fromAccId);
       bool hasSecureMedia = _accountsModel.hasSecureMedia(dest.fromAccId);
@@ -731,7 +731,7 @@ class CallsModel extends ChangeNotifier with IterableMixin<CallModel> implements
     _logs?.print('Switching mixer to call $callId');
 
     try {
-      await SipConnectFlutter().switchToCall(callId);
+      await PjsipConnectFlutter().switchToCall(callId);
       _confModeStarted = false;
       //Value '_switchedCallId' will set in the callback 'onSwitched'
 
@@ -746,12 +746,12 @@ class CallsModel extends ChangeNotifier with IterableMixin<CallModel> implements
     try {
       if(_confModeStarted){
         _logs?.print('Ending conference, switch mixer to call $_switchedCallId');
-        await SipConnectFlutter().switchToCall(_switchedCallId);
+        await PjsipConnectFlutter().switchToCall(_switchedCallId);
         _confModeStarted = false;
       }
       else {
         _logs?.print('Joining all calls to conference');
-        await SipConnectFlutter().makeConference();
+        await PjsipConnectFlutter().makeConference();
         _confModeStarted = true;
       }
 
@@ -822,7 +822,7 @@ class CallsModel extends ChangeNotifier with IterableMixin<CallModel> implements
     CallModel? call = _findCall(callId);
     if(call == null) return;
 
-    String reason = await SipConnectFlutter().getSipHeader(callId, "Reason") ?? "";
+    String reason = await PjsipConnectFlutter().getSipHeader(callId, "Reason") ?? "";
     _cdrs?.setTerminated(callId, statusCode, reason, call.displName, call.durationStr);
     call.onTerminated(statusCode, reason);
 

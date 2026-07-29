@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:sip_connect_flutter/accounts_model.dart';
-import 'package:sip_connect_flutter/network_model.dart';
+import 'package:pjsip_connect_flutter/accounts_model.dart';
+import 'package:pjsip_connect_flutter/network_model.dart';
 
 import 'accouns_model_app.dart';
 import 'main.dart';

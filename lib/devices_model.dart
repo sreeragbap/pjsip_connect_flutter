@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'sip_connect.dart';
+import 'pjsip_connect.dart';
 
 
 class _DevicesList {
@@ -71,7 +71,7 @@ class DevicesModel extends ChangeNotifier {
     : _playout = _DevicesList("playout", _logs),
       _recording = _DevicesList("recording", _logs),
       _video = _DevicesList("video", _logs) {
-    SipConnectFlutter().dvcListener = DevicesStateListener(
+    PjsipConnectFlutter().dvcListener = DevicesStateListener(
       devicesChanged : onAudioDevicesChanged
     );
   }
@@ -107,15 +107,15 @@ class DevicesModel extends ChangeNotifier {
   }
 
   void _loadPlayoutDevices() async {
-    _playout._load(SipConnectFlutter().getPlayoutDevices, SipConnectFlutter().getPlayoutDevice);
+    _playout._load(PjsipConnectFlutter().getPlayoutDevices, PjsipConnectFlutter().getPlayoutDevice);
   }
 
   void _loadRecordingDevices() async {
-    _recording._load(SipConnectFlutter().getRecordingDevices, SipConnectFlutter().getRecordingDevice);
+    _recording._load(PjsipConnectFlutter().getRecordingDevices, PjsipConnectFlutter().getRecordingDevice);
   }
 
   void _loadVideoDevices() async {
-    _video._load(SipConnectFlutter().getVideoDevices, SipConnectFlutter().getVideoDevice);
+    _video._load(PjsipConnectFlutter().getVideoDevices, PjsipConnectFlutter().getVideoDevice);
   }
 
   /// Handle event raised by library (notifies that list of audio devices has changed)
@@ -129,29 +129,29 @@ class DevicesModel extends ChangeNotifier {
 
   /// Set current speaker device by its index
   Future<void> setPlayoutDevice(int? index) async{
-    return _playout.set(index, SipConnectFlutter().setPlayoutDevice);
+    return _playout.set(index, PjsipConnectFlutter().setPlayoutDevice);
   }
 
   /// Set current speaker as system's default device (Windows only)
   Future<void> setPlayoutDeviceSysDef() async{
     if(Platform.isWindows)
-      return _playout.set(-1, SipConnectFlutter().setPlayoutDevice);
+      return _playout.set(-1, PjsipConnectFlutter().setPlayoutDevice);
   }
 
   /// Set current microphone device by its index
   Future<void> setRecordingDevice(int? index) async{
-    return _recording.set(index, SipConnectFlutter().setRecordingDevice);
+    return _recording.set(index, PjsipConnectFlutter().setRecordingDevice);
   }
 
 /// Set current microphone device as system's default device (Windows only)
   Future<void> setRecordingDeviceSysDef() async{
     if(Platform.isWindows)
-      return _recording.set(-1, SipConnectFlutter().setRecordingDevice);
+      return _recording.set(-1, PjsipConnectFlutter().setRecordingDevice);
   }
 
   /// Set current camera device by its index
   Future<void> setVideoDevice(int? index) async{
-    return _video.set(index, SipConnectFlutter().setVideoDevice);
+    return _video.set(index, PjsipConnectFlutter().setVideoDevice);
   }
 
   /// Set foreground mode of the CallNotifService service (Android only)
@@ -161,7 +161,7 @@ class DevicesModel extends ChangeNotifier {
       _logs?.print('set foreground mode - $enabled');
 
       try {
-        await SipConnectFlutter().setForegroundMode(enabled);
+        await PjsipConnectFlutter().setForegroundMode(enabled);
 
         _foregroundModeEnabled = enabled;
 
@@ -178,7 +178,7 @@ class DevicesModel extends ChangeNotifier {
   void _loadForegroundMode() async {
     if(Platform.isAndroid) {
       try {
-        bool? mode = await SipConnectFlutter().isForegroundMode();
+        bool? mode = await PjsipConnectFlutter().isForegroundMode();
         if(mode != null) {
           _foregroundModeEnabled = mode;
         }
@@ -202,7 +202,7 @@ class VuMeterModel extends ChangeNotifier {
 
   /// Constructor (set event handler)
   VuMeterModel() {
-    SipConnectFlutter().vuMeterListener = VuMeterListener(vu : onVuMeterLevel);
+    PjsipConnectFlutter().vuMeterListener = VuMeterListener(vu : onVuMeterLevel);
   }
 
   /// Handle event, update UI

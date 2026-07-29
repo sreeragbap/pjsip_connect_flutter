@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:sip_connect_flutter/devices_model.dart';
-import 'package:sip_connect_flutter/sip_connect.dart';
+import 'package:pjsip_connect_flutter/devices_model.dart';
+import 'package:pjsip_connect_flutter/pjsip_connect.dart';
 
 ////////////////////////////////////////////////////////////////////////////////////////
 //SettingsPage - represents platfrom specific settings

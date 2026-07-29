@@ -1,18 +1,18 @@
 // ignore_for_file: constant_identifier_names
 
-import 'src/sip_connect_platform.dart';
+import 'src/pjsip_connect_platform.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 
 import 'dart:math';
 import 'dart:convert';
 import 'logs_model.dart';
-import 'sip_connect.dart';
+import 'pjsip_connect.dart';
 import 'network_model.dart';
 
 
 /// Holds lists of parameters using for initialization sipconnect module
-class InitData implements ISipConnectData {
+class InitData implements IPjsipConnectData {
   /// License credentials. When missed - library works in trial mode
   String? license;
 
@@ -127,7 +127,7 @@ class InitData implements ISipConnectData {
 
 
 ///Holds video capturer params
-class VideoData implements ISipConnectData {
+class VideoData implements IPjsipConnectData {
   /// Path to jpg file path to the jpg file with image, which library will send when video device not available.
   String? noCameraImgPath;
 
@@ -159,7 +159,7 @@ class VideoData implements ISipConnectData {
 ///Helper class for manipulating account' scodec settings
 class Codec {
   Codec(this.id, {this.selected=true});
-  /// Codec id (one of the [SipConnectFlutter.kAudioCodec*])
+  /// Codec id (one of the [PjsipConnectFlutter.kAudioCodec*])
   int  id;
   /// Is this codec selected
   bool selected;
@@ -167,20 +167,20 @@ class Codec {
   /// Returns codec name which matches specified codec id
   static String name(int codecId) {
     switch(codecId) {
-      case SipConnectFlutter.kAudioCodecOpus: return "OPUS/48000";
-      case SipConnectFlutter.kAudioCodecISAC16: return "ISAC/16000";
-      case SipConnectFlutter.kAudioCodecISAC32: return "ISAC/32000";
-      case SipConnectFlutter.kAudioCodecG722: return "G722/8000";
-      case SipConnectFlutter.kAudioCodecG729: return "G729/8000";
-      case SipConnectFlutter.kAudioCodecILBC: return "ILBC/8000";
-      case SipConnectFlutter.kAudioCodecPCMU: return "PCMU/8000";
-      case SipConnectFlutter.kAudioCodecPCMA: return "PCMA/8000";
-      case SipConnectFlutter.kAudioCodecDTMF: return "DTMF/8000";
-      case SipConnectFlutter.kAudioCodecCN:   return "CN/8000";
-      case SipConnectFlutter.kVideoCodecH264: return "H264";
-      case SipConnectFlutter.kVideoCodecVP8:  return "VP8";
-      case SipConnectFlutter.kVideoCodecVP9:  return "VP9";
-      case SipConnectFlutter.kVideoCodecAV1:  return "AV1";
+      case PjsipConnectFlutter.kAudioCodecOpus: return "OPUS/48000";
+      case PjsipConnectFlutter.kAudioCodecISAC16: return "ISAC/16000";
+      case PjsipConnectFlutter.kAudioCodecISAC32: return "ISAC/32000";
+      case PjsipConnectFlutter.kAudioCodecG722: return "G722/8000";
+      case PjsipConnectFlutter.kAudioCodecG729: return "G729/8000";
+      case PjsipConnectFlutter.kAudioCodecILBC: return "ILBC/8000";
+      case PjsipConnectFlutter.kAudioCodecPCMU: return "PCMU/8000";
+      case PjsipConnectFlutter.kAudioCodecPCMA: return "PCMA/8000";
+      case PjsipConnectFlutter.kAudioCodecDTMF: return "DTMF/8000";
+      case PjsipConnectFlutter.kAudioCodecCN:   return "CN/8000";
+      case PjsipConnectFlutter.kVideoCodecH264: return "H264";
+      case PjsipConnectFlutter.kVideoCodecVP8:  return "VP8";
+      case PjsipConnectFlutter.kVideoCodecVP9:  return "VP9";
+      case PjsipConnectFlutter.kVideoCodecAV1:  return "AV1";
       default: return "Undefined";
     }
   }
@@ -189,23 +189,23 @@ class Codec {
   static List<int> availableCodecs(bool audio) {
     if(audio) {
       return [
-        SipConnectFlutter.kAudioCodecOpus,
-        SipConnectFlutter.kAudioCodecISAC16,
-        SipConnectFlutter.kAudioCodecISAC32,
-        SipConnectFlutter.kAudioCodecG722,
-        SipConnectFlutter.kAudioCodecG729,
-        SipConnectFlutter.kAudioCodecILBC,
-        SipConnectFlutter.kAudioCodecPCMU,
-        SipConnectFlutter.kAudioCodecPCMA,
-        SipConnectFlutter.kAudioCodecCN,
-        SipConnectFlutter.kAudioCodecDTMF
+        PjsipConnectFlutter.kAudioCodecOpus,
+        PjsipConnectFlutter.kAudioCodecISAC16,
+        PjsipConnectFlutter.kAudioCodecISAC32,
+        PjsipConnectFlutter.kAudioCodecG722,
+        PjsipConnectFlutter.kAudioCodecG729,
+        PjsipConnectFlutter.kAudioCodecILBC,
+        PjsipConnectFlutter.kAudioCodecPCMU,
+        PjsipConnectFlutter.kAudioCodecPCMA,
+        PjsipConnectFlutter.kAudioCodecCN,
+        PjsipConnectFlutter.kAudioCodecDTMF
       ];
     }else {
       return [
-        SipConnectFlutter.kVideoCodecH264,
-        SipConnectFlutter.kVideoCodecVP8,
-        SipConnectFlutter.kVideoCodecVP9,
-        SipConnectFlutter.kVideoCodecAV1,
+        PjsipConnectFlutter.kVideoCodecH264,
+        PjsipConnectFlutter.kVideoCodecVP8,
+        PjsipConnectFlutter.kVideoCodecVP9,
+        PjsipConnectFlutter.kVideoCodecAV1,
       ];
     }
   }
@@ -227,8 +227,8 @@ class Codec {
     else {
       //Build codecs selected by default
       for(var c in Codec.availableCodecs(audio)) {
-        bool sel = audio ? ((c==SipConnectFlutter.kAudioCodecDTMF)||(c==SipConnectFlutter.kAudioCodecOpus)||(c==SipConnectFlutter.kAudioCodecPCMA))
-                         : ((c==SipConnectFlutter.kVideoCodecVP8)||(c==SipConnectFlutter.kVideoCodecH264));
+        bool sel = audio ? ((c==PjsipConnectFlutter.kAudioCodecDTMF)||(c==PjsipConnectFlutter.kAudioCodecOpus)||(c==PjsipConnectFlutter.kAudioCodecPCMA))
+                         : ((c==PjsipConnectFlutter.kVideoCodecVP8)||(c==PjsipConnectFlutter.kVideoCodecH264));
         ret.add(Codec(c, selected:sel));
       }
     }
@@ -258,11 +258,11 @@ class Codec {
 /// SecureMedia options (audio/video encryption setting)
 enum SecureMedia {
   /// Secure media disabled
-  Disabled(SipConnectFlutter.kSecureMediaDisabled, "Disabled"),
+  Disabled(PjsipConnectFlutter.kSecureMediaDisabled, "Disabled"),
   /// Encryption audio/video using SDES SRTP
-  SdesSrtp(SipConnectFlutter.kSecureMediaSdesSrtp, "SDES SRTP"),
+  SdesSrtp(PjsipConnectFlutter.kSecureMediaSdesSrtp, "SDES SRTP"),
   /// Encryption audio/video using DTLS SRTP
-  DtlsSrtp(SipConnectFlutter.kSecureMediaDtlsSrtp, "DTLS SRTP");
+  DtlsSrtp(PjsipConnectFlutter.kSecureMediaDtlsSrtp, "DTLS SRTP");
 
   const SecureMedia(this.id, this.name);
   /// Value
@@ -273,8 +273,8 @@ enum SecureMedia {
   /// Returns enum item which matches int constant
   static SecureMedia from(int val) {
     switch(val) {
-      case SipConnectFlutter.kSecureMediaSdesSrtp: return SecureMedia.SdesSrtp;
-      case SipConnectFlutter.kSecureMediaDtlsSrtp: return SecureMedia.DtlsSrtp;
+      case PjsipConnectFlutter.kSecureMediaSdesSrtp: return SecureMedia.SdesSrtp;
+      case PjsipConnectFlutter.kSecureMediaDtlsSrtp: return SecureMedia.DtlsSrtp;
       default:                                 return SecureMedia.Disabled;
     }
   }
@@ -284,13 +284,13 @@ enum SecureMedia {
 /// UpgradeToVideo modes (behavior when rceived INVITE with video SDP)
 enum UpgradeToVideoMode {
   /// Accept video from remote side and start sending local
-  SendRecv(SipConnectFlutter.kUpgradeToVideoSendRecv, "SendRecv"),
+  SendRecv(PjsipConnectFlutter.kUpgradeToVideoSendRecv, "SendRecv"),
   /// Accept video from remote side, don't send (mute) local
-  RecvOnly(SipConnectFlutter.kUpgradeToVideoRecvOnly, "RecvOnly"),
+  RecvOnly(PjsipConnectFlutter.kUpgradeToVideoRecvOnly, "RecvOnly"),
   /// Don't accept video from remote side (continue audio only call)
-  Inactive(SipConnectFlutter.kUpgradeToVideoInactive, "Inactive"),
+  Inactive(PjsipConnectFlutter.kUpgradeToVideoInactive, "Inactive"),
   /// Trigger event 'OnCallVideoUpgradeRequested', ask user confirmation and invoke 'AcceptVideoUpgrade(true/false)'
-  Manual(SipConnectFlutter.kUpgradeToVideoManual, "Manual");
+  Manual(PjsipConnectFlutter.kUpgradeToVideoManual, "Manual");
 
   const UpgradeToVideoMode(this.id, this.name);
   /// Value
@@ -301,9 +301,9 @@ enum UpgradeToVideoMode {
   /// Returns enum item which matches int constant
   static UpgradeToVideoMode from(int val) {
     switch(val) {
-      case SipConnectFlutter.kUpgradeToVideoSendRecv: return UpgradeToVideoMode.SendRecv;
-      case SipConnectFlutter.kUpgradeToVideoInactive: return UpgradeToVideoMode.Inactive;
-      case SipConnectFlutter.kUpgradeToVideoManual  : return UpgradeToVideoMode.Manual;
+      case PjsipConnectFlutter.kUpgradeToVideoSendRecv: return UpgradeToVideoMode.SendRecv;
+      case PjsipConnectFlutter.kUpgradeToVideoInactive: return UpgradeToVideoMode.Inactive;
+      case PjsipConnectFlutter.kUpgradeToVideoManual  : return UpgradeToVideoMode.Manual;
       default:                                    return UpgradeToVideoMode.RecvOnly;
     }
   }
@@ -323,7 +323,7 @@ enum RegState {
 
 
 /// Holds properties of SIP Account model
-class AccountModel implements ISipConnectData {
+class AccountModel implements IPjsipConnectData {
   AccountModel({this.sipServer="", this.sipExtension="", this.sipPassword="", this.expireTime});
   /// Unique account id assigned by library (valid only during current session)
   int      myAccId=0;
@@ -507,7 +507,7 @@ class AccountsModel extends ChangeNotifier implements IAccountsModel {
   int? _selAccountIndex;
 
   AccountsModel([this._logs]) {
-    SipConnectFlutter().accListener = AccStateListener(
+    PjsipConnectFlutter().accListener = AccStateListener(
       regStateChanged : onRegStateChanged
     );
   }
@@ -582,14 +582,14 @@ class AccountsModel extends ChangeNotifier implements IAccountsModel {
     try {
       _generateRandomLocalPort(acc);
 
-      acc.myAccId  = await SipConnectFlutter().addAccount(acc) ?? 0;
+      acc.myAccId  = await PjsipConnectFlutter().addAccount(acc) ?? 0;
       acc.regState = (acc.expireTime==0) ? RegState.removed : RegState.inProgress;
       acc.regText = (acc.expireTime==0) ? "Removed" : "In progress...";
 
       _integrateAddedAccount(acc, saveChanges);
 
     } on PlatformException catch (err) {
-      if(err.code == SipConnectFlutter.eDuplicateAccount.toString()) {
+      if(err.code == PjsipConnectFlutter.eDuplicateAccount.toString()) {
         int existingAccId = err.details;
         int idx = _accounts.indexWhere((account) => (account.myAccId == existingAccId));
         if(idx==-1) {
@@ -636,7 +636,7 @@ class AccountsModel extends ChangeNotifier implements IAccountsModel {
       for(AccountModel acc in _accounts) {
         final int expireSec = (acc.expireTime==null) ? 300 : acc.expireTime!;
         if(expireSec != 0) {
-          SipConnectFlutter().registerAccount(acc.myAccId, expireSec);
+          PjsipConnectFlutter().registerAccount(acc.myAccId, expireSec);
         }
       }
     } on PlatformException catch (err) {
@@ -651,7 +651,7 @@ class AccountsModel extends ChangeNotifier implements IAccountsModel {
       int index = _accounts.indexWhere((a) => a.myAccId==acc.myAccId);
       if(index == -1) return Future.error("Account with specified id not found");
 
-      await SipConnectFlutter().updateAccount(acc);
+      await PjsipConnectFlutter().updateAccount(acc);
 
       _accounts[index] = acc;
 
@@ -669,7 +669,7 @@ class AccountsModel extends ChangeNotifier implements IAccountsModel {
   Future<void> deleteAccount(int index) async {
     try {
       int accId = _accounts[index].myAccId;
-      await SipConnectFlutter().deleteAccount(accId);
+      await PjsipConnectFlutter().deleteAccount(accId);
 
       _accounts.removeAt(index);
 
@@ -692,7 +692,7 @@ class AccountsModel extends ChangeNotifier implements IAccountsModel {
     try {
       //Send register request
       int accId = _accounts[index].myAccId;
-      await SipConnectFlutter().unRegisterAccount(accId);
+      await PjsipConnectFlutter().unRegisterAccount(accId);
 
       //Update UI
       _accounts[index].expireTime = 0;
@@ -715,7 +715,7 @@ class AccountsModel extends ChangeNotifier implements IAccountsModel {
       int accId      = _accounts[index].myAccId;
       int? expireSec = _accounts[index].expireTime;
       if((expireSec == null)||(expireSec == 0)) { expireSec = 300; }
-      await SipConnectFlutter().registerAccount(accId, expireSec);
+      await PjsipConnectFlutter().registerAccount(accId, expireSec);
 
       //Update UI
       _accounts[index].expireTime = expireSec;
@@ -734,7 +734,7 @@ class AccountsModel extends ChangeNotifier implements IAccountsModel {
 
   /// Generates unique instance id. Used as value of AccountModel.instanceId
   Future<String?> genAccInstId() {
-    return SipConnectFlutter().genAccInstId();
+    return PjsipConnectFlutter().genAccInstId();
   }
 
   void _raiseSaveChanges() {
@@ -800,7 +800,7 @@ class VoiceMailModel extends ChangeNotifier {
   String get messages => _messages;
 
   VoiceMailModel([this._logs]) {
-    SipConnectFlutter().sipNotifyListener = SipNotifyListener(
+    PjsipConnectFlutter().sipNotifyListener = SipNotifyListener(
       notifyReceived : onSipNotifyReceived
     );
   }

@@ -1,19 +1,24 @@
-# Replacing the Siprix engine with an open-source SIP stack
+# Replacing the previous closed-source engine with an open-source SIP stack
 
-> **Status (2026-07-14):** Engine chosen: **PJSIP 2.15.1** (GPLv2 — see §2 for
-> the licensing obligation). P0 is DONE on both platforms (jniLibs for 4 ABIs +
-> pjsip.xcframework, Siprix binaries removed). P1–P3 code paths are implemented:
-> Android `com.sipconnect.core.SipCore` (Kotlin on the pjsua2 Java binding) and
-> iOS `SipCoreModule.mm` (ObjC++ on the pjsua2 C++ API). All 26 wire-protocol
-> tests pass; the example app builds on Android and iOS. Still pending:
-> on-device call verification (P1/P2 gates), P4 video frames→Flutter texture,
-> P5 OpenSSL (TLS/DTLS-SRTP) + CallKit/PushKit re-verification, P6 BLF
-> (dialog-event SUBSCRIBE needs a pjsua2 extension; presence works), P3 Opus.
+> **Status (2026-07-28):** Engine: **PJSIP 2.15.1** (GPLv2 — see §2 for the
+> licensing obligation). P0–P3 audio path, P5 TLS, and iOS CallKit are DONE
+> and **verified on real devices** — registration over TLS 1.3, two-way audio
+> calls with no duration limit, mute, CallKit-driven outgoing calls. SPM +
+> CocoaPods dual build support added; the old engine's code and binaries are
+> fully removed.
+> Dated details in §7 Progress log.
+>
+> Still pending: P4 video frames→Flutter texture, P6 BLF (dialog-event
+> SUBSCRIBE needs a pjsua2 extension; presence works), P3 Opus codec build,
+> PushKit end-to-end re-verification, and — **before any release** — the §2
+> licensing decision (buy the PJSIP commercial license or GPL the app) plus
+> publishing prep (LICENSE, README, CHANGELOG, pubspec `repository:`, drop
+> `publish_to: none`).
 
-Goal: remove the closed-source `sip_connect_core.aar` (Android) and
-`siprix.xcframework` / `siprixMedia.xcframework` (iOS) — and with them the trial
-60-second cap — while keeping the **exact same Dart API, channel protocol,
-models, widgets, and example app** we already have. Only the native bridge
+Goal: remove the closed-source engine binaries (`sip_connect_core.aar` on
+Android, the vendored engine/media xcframeworks on iOS) — and with them the
+trial 60-second cap — while keeping the **exact same Dart API, channel
+protocol, models, widgets, and example app** we already have. Only the native bridge
 behind the `sip_connect_flutter` MethodChannel gets rewritten.
 
 ---
@@ -72,11 +77,11 @@ The rest of this plan is written to be engine-agnostic; the per-method mapping i
 - Android: `android/libs/sip_connect_core.aar` → cross-compiled `libengine.so`
   per ABI, plus rewritten bodies of the handler methods in
   `SipConnectFlutterPlugin.kt` / `EventListener.kt` (the class structure and
-  method names stay; only the calls into `SiprixCore` change).
+  method names stay; only the calls into the old engine's core class change).
 - iOS: the two `.xcframework`s → cross-compiled static libs, plus rewritten
   bodies in `SipConnectFlutterPlugin.swift` + helper classes.
 - `SurfaceTextureRenderer` / `FlutterVideoRenderer` keep their Flutter-texture
-  plumbing; only the frame *source* changes from Siprix's renderer to the new
+  plumbing; only the frame *source* changes from the old renderer to the new
   engine's video callback.
 
 ---
@@ -149,3 +154,46 @@ The exhaustive per-method payload shapes are already pinned in
   xcframework).
 - Pin exact engine + OpenSSL + Opus versions; document them in
   `native/VERSIONS.md` so the binaries are reproducible.
+
+---
+
+## 7. Progress log
+
+**2026-07-14 — P0–P3 landed, P5 TLS verified.** Engine builds on both
+platforms; all 26 wire-protocol tests pass. Static OpenSSL 3.3.2 per
+slice/ABI; TLS 1.3 REGISTER → 200 OK verified on a physical Android device,
+including NAT IP-change auto re-register.
+
+**2026-07-15/16 — on-device call hardening (Android).** Example account-add
+screen gained transport/media-encryption controls. Fixes from real-device
+testing: default to SDES-SRTP for TLS accounts (outgoing calls), keep PJSIP
+JNI classes from R8 stripping in release builds, incoming-call SIGSEGV +
+missed-call rejection, enable ICE for secure accounts (no audio after
+answering).
+
+**2026-07-17/20 — call events.** Corrected event ordering/mapping
+(`onConnected`, `onProceeding` firing almost immediately).
+
+**2026-07-24 — iOS audio fixed, P2 gate passed on iOS.** `configure-iphone`
+doesn't define `PJ_CONFIG_IPHONE`, so the CoreAudio device driver compiled
+out → zero audio devices, silent calls, unmute errors. `config_site.h` now
+defines it under `__APPLE__` (in the header, not CFLAGS, so static libs and
+the plugin see identical struct layouts). Verified: two-way audio + mute on
+device.
+
+**2026-07-24 — Swift Package Manager support.** iOS sources restructured to
+`ios/pjsip_connect_flutter/{Package.swift, Sources/pjsip_connect_flutter (Swift),
+Sources/SipCoreModule (ObjC++)}` — split targets because SPM forbids
+mixed-language targets; `#if canImport(SipCoreModule)` keeps the same files
+building as one mixed pod under CocoaPods. Both build modes verified.
+
+**2026-07-24 — CallKit crash fixed (P5).** With CallKit enabled, pjlib
+aborted ("calling pjlib from unknown/external thread") when
+`CXCallController.request` completions logged via the engine from CallKit's
+private queue. `ensurePjThreadRegistered()` (thread-local `pj_thread_desc`)
+now registers foreign threads on entry. Verified: outgoing calls with
+CallKit enabled.
+
+**Next:** P4 video texture bridge, P6 BLF, P3 Opus, PushKit end-to-end
+re-check, §2 licensing decision + publishing prep (LICENSE, README,
+CHANGELOG, pubspec `repository:`, remove `publish_to: none`).

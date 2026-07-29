@@ -9,7 +9,7 @@ re-run the full build so the produced binaries stay reproducible.
 | OpenSSL | **3.3.2** | TLS transport + DTLS-SRTP (static, per ABI/slice) |
 | Android NDK | **26.3.11579264** (r26d) | Stable LTS; PJSIP builds clean |
 | Android min API | **21** | Matches the plugin's `minSdkVersion` |
-| Android ABIs | armeabi-v7a, arm64-v8a, x86, x86_64 | Same 4 the Siprix AAR shipped |
+| Android ABIs | armeabi-v7a, arm64-v8a, x86, x86_64 | Same 4 the old engine AAR shipped |
 | iOS min | **14.0** | Matches the podspec floor |
 | iOS slices | device arm64, simulator arm64+x86_64 | Same as the removed xcframeworks |
 | Opus | 1.5.2 | Added in P3 (not in the P0 build) |

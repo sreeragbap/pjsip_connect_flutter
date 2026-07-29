@@ -2,18 +2,18 @@
 // event dispatch, using a mocked platform channel (no native code involved).
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sip_connect_flutter/sip_connect_flutter.dart';
+import 'package:pjsip_connect_flutter/pjsip_connect_flutter.dart';
 
 import 'helpers/mock_native.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  late MockSipConnectNative native;
-  final sdk = SipConnectFlutter();
+  late MockPjsipConnectNative native;
+  final sdk = PjsipConnectFlutter();
 
   setUp(() async {
-    native = MockSipConnectNative();
+    native = MockPjsipConnectNative();
     // initialize() registers the events handler and calls
     // Module_Initialize + Module_Version on the (mocked) native side.
     await sdk.initialize(InitData());
@@ -79,7 +79,7 @@ void main() {
       await sdk.accept(42, true);
       await sdk.hold(42);
       await sdk.muteMic(42, true);
-      await sdk.sendDtmf(42, '1#', 200, 50, SipConnectFlutter.kDtmfMethodRtp);
+      await sdk.sendDtmf(42, '1#', 200, 50, PjsipConnectFlutter.kDtmfMethodRtp);
       await sdk.bye(42);
       await sdk.reject(7, 486);
       await sdk.transferBlind(42, '300');
@@ -95,7 +95,7 @@ void main() {
         'dtmfs': '1#',
         'durationMs': 200,
         'intertoneGapMs': 50,
-        'method': SipConnectFlutter.kDtmfMethodRtp,
+        'method': PjsipConnectFlutter.kDtmfMethodRtp,
       });
       expect(native.single('Call_Bye').arguments, {'callId': 42});
       expect(native.single('Call_Reject').arguments,
@@ -128,7 +128,7 @@ void main() {
               received.add((accId, state, response)));
 
       await native.emitEvent('OnAccountRegState',
-          {'accId': 5, 'regState': SipConnectFlutter.kRegStateFailed, 'response': '403 Forbidden'});
+          {'accId': 5, 'regState': PjsipConnectFlutter.kRegStateFailed, 'response': '403 Forbidden'});
 
       expect(received, [(5, RegState.failed, '403 Forbidden')]);
     });
@@ -162,7 +162,7 @@ void main() {
 
       await native.emitEvent('OnCallTerminated', {'callId': 42, 'statusCode': 200});
       await native.emitEvent('OnNetworkState',
-          {'name': 'wlan0', 'netState': SipConnectFlutter.kNetStateRestored});
+          {'name': 'wlan0', 'netState': PjsipConnectFlutter.kNetStateRestored});
 
       expect(terminatedCallId, 42);
       expect(netState, NetState.restored);

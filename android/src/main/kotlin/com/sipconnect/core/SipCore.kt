@@ -74,7 +74,7 @@ interface IVideoRenderer {
 
 /**
  * PJSIP(pjsua2)-backed engine with the same API surface the plugin classes
- * were originally written against (formerly com.siprix.SiprixCore).
+ * were originally written against.
  *
  * Threading: every public method runs synchronously on a dedicated worker
  * thread that owns the pjsua2 Endpoint (pjsua2 requires registered threads).

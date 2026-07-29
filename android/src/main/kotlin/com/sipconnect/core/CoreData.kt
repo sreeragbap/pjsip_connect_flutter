@@ -5,7 +5,7 @@ package com.sipconnect.core
  * Data holders + enums for the PJSIP-backed engine.
  *
  * These classes mirror the API surface the plugin classes were written
- * against (formerly com.siprix.*). All integer values are pinned by the Dart
+ * against. All integer values are pinned by the Dart
  * wire protocol (lib/sip_connect.dart constants) — do not renumber.
  */
 

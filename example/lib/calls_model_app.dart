@@ -4,9 +4,9 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:sip_connect_flutter/calls_model.dart';
-import 'package:sip_connect_flutter/cdrs_model.dart';
-import 'package:sip_connect_flutter/sip_connect.dart';
+import 'package:pjsip_connect_flutter/calls_model.dart';
+import 'package:pjsip_connect_flutter/cdrs_model.dart';
+import 'package:pjsip_connect_flutter/pjsip_connect.dart';
 
 /// Helper class used to keep different ids of the same call
 class CallMatcher {
@@ -69,7 +69,7 @@ class AppCallsModel extends CallsModel {
     }
 
     //Update CallKit
-    SipConnectFlutter().updateCallKitCallDetails(callkit_CallUUID, sipCallId,
+    PjsipConnectFlutter().updateCallKitCallDetails(callkit_CallUUID, sipCallId,
         localizedCallerName, genericHandle, withVideo);
 
     //Start timer which cleanups CallKit calls when SIP not received
@@ -85,7 +85,7 @@ class AppCallsModel extends CallsModel {
       //TODO Match push and sip calls using just received SIP INVITE and data from push (put to '_callMatchers')
       //Get some hint from just received SIP INVITE (added by remote server) or math this SIP-call with CallKit-call
       String pushHint =
-          await SipConnectFlutter().getSipHeader(callId, "X-PushHint") ??
+          await PjsipConnectFlutter().getSipHeader(callId, "X-PushHint") ??
               CallMatcher.kStubPushHint;
       _logs?.print('onIncomingSip callId:$callId pushHint:$pushHint');
 
@@ -97,7 +97,7 @@ class AppCallsModel extends CallsModel {
 
         //Update CallKit with 'callId'
         _callMatchers[index].sip_CallId = callId;
-        SipConnectFlutter().updateCallKitCallDetails(
+        PjsipConnectFlutter().updateCallKitCallDetails(
             _callMatchers[index].callkit_CallUUID, callId, null, null, null);
       } else {
         //Case - there is no CallKit call (push notif hasn't received yet)
@@ -145,7 +145,7 @@ class AppCallsModel extends CallsModel {
         CallMatcher cm = _callMatchers[i];
         if ((cm.sip_CallId == 0) &&
             now.difference(cm.timestamp) > kEndCallDelay) {
-          SipConnectFlutter().endCallKitCall(cm.callkit_CallUUID);
+          PjsipConnectFlutter().endCallKitCall(cm.callkit_CallUUID);
           _callMatchers.removeAt(i);
         }
       }

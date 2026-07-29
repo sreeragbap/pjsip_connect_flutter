@@ -1,8 +1,8 @@
 import 'dart:io';
 
 //import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:sip_connect_flutter/accounts_model.dart';
-import 'package:sip_connect_flutter/sip_connect.dart';
+import 'package:pjsip_connect_flutter/accounts_model.dart';
+import 'package:pjsip_connect_flutter/pjsip_connect.dart';
 
 /// Accounts list model (contains app level code of managing accіounts)
 class AppAccountsModel extends AccountsModel {
@@ -13,7 +13,7 @@ class AppAccountsModel extends AccountsModel {
   Future<void> addAccount(AccountModel acc, {bool saveChanges=true}) async {
     String? token;
     if(Platform.isIOS) {
-      token = await SipConnectFlutter().getPushKitToken();//iOS - get PushKit VoIP token
+      token = await PjsipConnectFlutter().getPushKitToken();//iOS - get PushKit VoIP token
     }else if(Platform.isAndroid) {
      // token = await FirebaseMessaging.instance.getToken();//Android - get Firebase token
     }

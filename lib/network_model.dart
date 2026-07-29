@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-import 'sip_connect.dart';
+import 'pjsip_connect.dart';
 
 
 /// SipTransport enum. Using as argument of 'AccountModel.transport'
 enum SipTransport {
   ///Send SIP over UDP transport
-  udp(SipConnectFlutter.kSipTransportUdp, "UDP"),
+  udp(PjsipConnectFlutter.kSipTransportUdp, "UDP"),
   ///Send SIP over TCP transport
-  tcp(SipConnectFlutter.kSipTransportTcp, "TCP"),
+  tcp(PjsipConnectFlutter.kSipTransportTcp, "TCP"),
   ///Send SIP over TLS transport
-  tls(SipConnectFlutter.kSipTransportTls, "TLS");
+  tls(PjsipConnectFlutter.kSipTransportTls, "TLS");
 
   const SipTransport(this.id, this.name);
   /// Value
@@ -21,8 +21,8 @@ enum SipTransport {
   ///Create enum item from int value
   static SipTransport from(int val) {
     switch(val) {
-      case SipConnectFlutter.kSipTransportTcp: return SipTransport.tcp;
-      case SipConnectFlutter.kSipTransportTls: return SipTransport.tls;
+      case PjsipConnectFlutter.kSipTransportTcp: return SipTransport.tcp;
+      case PjsipConnectFlutter.kSipTransportTls: return SipTransport.tls;
       default:  return SipTransport.udp;
     }
   }
@@ -32,11 +32,11 @@ enum SipTransport {
 /// Network state enum. Using as argument of event 'onNetworkStateChanged'
 enum NetState {
   /// Network connection lost
-  lost(SipConnectFlutter.kNetStateLost, "Lost"),
+  lost(PjsipConnectFlutter.kNetStateLost, "Lost"),
   /// Network connection restored
-  restored(SipConnectFlutter.kNetStateRestored, "Restored"),
+  restored(PjsipConnectFlutter.kNetStateRestored, "Restored"),
   /// Network connection switched (from Wifi to Wifi or from Wifi to LTE)
-  switched(SipConnectFlutter.kNetStateSwitched, "Switched");
+  switched(PjsipConnectFlutter.kNetStateSwitched, "Switched");
 
   const NetState(this.id, this.name);
   /// Value
@@ -47,8 +47,8 @@ enum NetState {
   ///Create enum item from int value
   static NetState from(int val) {
     switch(val) {
-      case SipConnectFlutter.kNetStateRestored:  return NetState.restored;
-      case SipConnectFlutter.kNetStateSwitched:  return NetState.switched;
+      case PjsipConnectFlutter.kNetStateRestored:  return NetState.restored;
+      case PjsipConnectFlutter.kNetStateSwitched:  return NetState.switched;
       default: return  NetState.lost;
     }
   }
@@ -65,7 +65,7 @@ class NetworkModel extends ChangeNotifier {
 
   /// Constructor (set event handler)
   NetworkModel([this._logs]) {
-    SipConnectFlutter().netListener = NetStateListener(
+    PjsipConnectFlutter().netListener = NetStateListener(
       networkStateChanged : onNetworkStateChanged
     );
   }

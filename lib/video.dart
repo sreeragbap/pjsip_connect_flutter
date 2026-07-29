@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'sip_connect.dart';
+import 'pjsip_connect.dart';
 
 
 /// Contains video frame attributes provided by native plugins
@@ -47,9 +47,9 @@ class RTCVideoValue {
 }
 
 
-/// SipConnectVideoRenderer - holds texture, created by native plugins, and listening video frame events raised by native plugins
-class SipConnectVideoRenderer extends ValueNotifier<RTCVideoValue> {
-  SipConnectVideoRenderer() : super(RTCVideoValue.empty);
+/// PjsipConnectVideoRenderer - holds texture, created by native plugins, and listening video frame events raised by native plugins
+class PjsipConnectVideoRenderer extends ValueNotifier<RTCVideoValue> {
+  PjsipConnectVideoRenderer() : super(RTCVideoValue.empty);
   StreamSubscription<dynamic>? _eventSubscription;
   /// Invalid texture id constant
   static const int kInvalidTextureId = -1;
@@ -83,7 +83,7 @@ class SipConnectVideoRenderer extends ValueNotifier<RTCVideoValue> {
     _logs = logs;
 
     try{
-      _textureId = await SipConnectFlutter().videoRendererCreate() ?? 0;
+      _textureId = await PjsipConnectFlutter().videoRendererCreate() ?? 0;
     } on PlatformException catch (err) {
       _logs?.print('Cant create renderer Err: ${err.code} ${err.message}');
     }
@@ -104,7 +104,7 @@ class SipConnectVideoRenderer extends ValueNotifier<RTCVideoValue> {
     _srcCallId = callId;
 
     try{
-      await SipConnectFlutter().videoRendererSetSourceCall(_textureId, callId);
+      await PjsipConnectFlutter().videoRendererSetSourceCall(_textureId, callId);
       _logs?.print('Assign textureId: $textureId with callId:$_srcCallId');
     } on PlatformException catch (err) {
       _logs?.print('Cant set src call for renderer Err: ${err.code} ${err.message}');
@@ -116,7 +116,7 @@ class SipConnectVideoRenderer extends ValueNotifier<RTCVideoValue> {
     await _eventSubscription?.cancel();
     _eventSubscription = null;
     if (_textureId != kInvalidTextureId) {
-      await SipConnectFlutter().videoRendererDispose(_textureId);
+      await PjsipConnectFlutter().videoRendererDispose(_textureId);
       _logs?.print('Disposed texture: $_textureId');
       _textureId = 0;
     }
@@ -146,13 +146,13 @@ class SipConnectVideoRenderer extends ValueNotifier<RTCVideoValue> {
     }
   }
 
-}//SipConnectVideoRenderer
+}//PjsipConnectVideoRenderer
 
 
-/// SipConnectVideoView - widget which displays specified renderer
-class SipConnectVideoView extends StatelessWidget {
-  SipConnectVideoView(this._renderer, {Key? key,}) : super(key: key);
-  final SipConnectVideoRenderer _renderer;
+/// PjsipConnectVideoView - widget which displays specified renderer
+class PjsipConnectVideoView extends StatelessWidget {
+  PjsipConnectVideoView(this._renderer, {Key? key,}) : super(key: key);
+  final PjsipConnectVideoRenderer _renderer;
 
   @override
   Widget build(BuildContext context) {
