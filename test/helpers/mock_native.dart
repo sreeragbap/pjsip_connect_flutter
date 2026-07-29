@@ -70,9 +70,14 @@ class MockPjsipConnectNative {
 
   /// Simulates the native side invoking a Dart handler (an `On*` event).
   Future<void> emitEvent(String method, Object? arguments) async {
-    final ByteData data =
-        const StandardMethodCodec().encodeMethodCall(MethodCall(method, arguments));
+    final ByteData data = const StandardMethodCodec().encodeMethodCall(
+      MethodCall(method, arguments),
+    );
     await TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-        .handlePlatformMessage(kPjsipConnectChannel.name, data, (ByteData? reply) {});
+        .handlePlatformMessage(
+          kPjsipConnectChannel.name,
+          data,
+          (ByteData? reply) {},
+        );
   }
 }

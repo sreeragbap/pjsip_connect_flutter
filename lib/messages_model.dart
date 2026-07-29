@@ -6,16 +6,19 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'pjsip_connect.dart';
 
-
 /// Message destination -  contains lists of parameters for sending message
 class MessageDestination implements IPjsipConnectData {
   MessageDestination(this.toExt, this.fromAccId, this.body, {this.contentType});
+
   /// Extension (phone number) where to send message
   final String toExt;
+
   /// Id of the account which should send INVITE request
-  final int    fromAccId;
+  final int fromAccId;
+
   /// Set display name in the SIP header From (overrides value set in the account specified by 'fromAccId')
   final String body;
+
   /// Put this value into header ContentType
   final String? contentType;
 
@@ -23,40 +26,52 @@ class MessageDestination implements IPjsipConnectData {
   Map<String, dynamic> toJson() {
     Map<String, dynamic> ret = {
       'extension': toExt,
-      'accId'    : fromAccId,
-      'body'     : body,
+      'accId': fromAccId,
+      'body': body,
     };
-    if(contentType!=null) ret['contentType'] = contentType;
+    if (contentType != null) ret['contentType'] = contentType;
     return ret;
   }
 }
 
-
 /// Holds properties of sent/received SIP message item
 class MessageModel extends ChangeNotifier {
   MessageModel.outgoing(int id, String accUri, MessageDestination dest)
-    : _myMessageId=id, _isIncoming=false, _ext=dest.toExt, _accUri=accUri, _body=dest.body;
+    : _myMessageId = id,
+      _isIncoming = false,
+      _ext = dest.toExt,
+      _accUri = accUri,
+      _body = dest.body;
 
   MessageModel.incoming(String accUri, String fromExt, String body)
-    : _myMessageId=0, _isIncoming = true, _ext=fromExt, _accUri=accUri, _body=body;
+    : _myMessageId = 0,
+      _isIncoming = true,
+      _ext = fromExt,
+      _accUri = accUri,
+      _body = body;
 
   static final _fmt = DateFormat('MMM dd, HH:mm a');
 
   ///Unique id assigned by library (allows get message sent status)
-  int _myMessageId=0;
+  int _myMessageId = 0;
+
   ///Is this message received from remote side or sent by local side
-  bool _isIncoming=false;
+  bool _isIncoming = false;
+
   ///Extension from which received (to which sent) this message
-  String _ext="";
+  String _ext = "";
+
   ///Account URI using to send/receive this message
-  String _accUri="";
+  String _accUri = "";
+
   ///Message body
-  String _body="";
+  String _body = "";
 
   ///State of the subscription dialog
   bool _sentSuccess = true;
+
   ///Response received from remote side in the body of SIP NOTIFY request
-  String _response="";
+  String _response = "";
 
   ///Timestamp when this message sent/received
   DateTime _timestamp = DateTime.now();
@@ -78,10 +93,12 @@ class MessageModel extends ChangeNotifier {
   String getReplyExt() {
     String replyExt = _ext;
     final int startIndex = replyExt.indexOf(':');
-    if(startIndex == -1) return replyExt;
+    if (startIndex == -1) return replyExt;
 
     final int endIndex = replyExt.indexOf('>', startIndex + 1);
-    return (endIndex == -1) ? replyExt : replyExt.substring(startIndex+1, endIndex);
+    return (endIndex == -1)
+        ? replyExt
+        : replyExt.substring(startIndex + 1, endIndex);
   }
 
   /// Converts instance to json
@@ -89,9 +106,9 @@ class MessageModel extends ChangeNotifier {
     Map<String, dynamic> ret = {
       'isIncoming': _isIncoming,
       'extension': _ext,
-      'accUri'   : _accUri,
-      'body'     : _body,
-      'ts'       : _timestamp.millisecondsSinceEpoch,
+      'accUri': _accUri,
+      'body': _body,
+      'ts': _timestamp.millisecondsSinceEpoch,
     };
     return ret;
   }
@@ -99,12 +116,16 @@ class MessageModel extends ChangeNotifier {
   /// Creates instance of SubscriptionModel with values read from json
   MessageModel.fromJson(Map<String, dynamic> jsonMap) {
     jsonMap.forEach((key, value) {
-      if((key == 'isIncoming')&&(value is bool))  { _isIncoming = value; } else
-      if((key == 'extension')&&(value is String)) { _ext = value;    } else
-      if((key == 'accUri')&&(value is String))    { _accUri = value; } else
-      if((key == 'body')&&(value is String))      { _body = value;   } else
-      if((key == 'ts')&&(value is int))  {
-         _timestamp = DateTime.fromMillisecondsSinceEpoch(value);
+      if ((key == 'isIncoming') && (value is bool)) {
+        _isIncoming = value;
+      } else if ((key == 'extension') && (value is String)) {
+        _ext = value;
+      } else if ((key == 'accUri') && (value is String)) {
+        _accUri = value;
+      } else if ((key == 'body') && (value is String)) {
+        _body = value;
+      } else if ((key == 'ts') && (value is int)) {
+        _timestamp = DateTime.fromMillisecondsSinceEpoch(value);
       }
     });
   }
@@ -117,10 +138,8 @@ class MessageModel extends ChangeNotifier {
   }
 }
 
-
 /// Model invokes this callback when has changes which should be saved by the app
 typedef SaveChangesCallback = void Function(String jsonStr);
-
 
 /// Subscriptions list model (contains list of subscriptions, methods for managing them, handlers of library event)
 class MessagesModel extends ChangeNotifier {
@@ -129,17 +148,19 @@ class MessagesModel extends ChangeNotifier {
   final ILogsModel? _logs;
   final int maxItems;
 
-  MessagesModel(this._accountsModel, [this._logs, this.maxItems=25]) {
+  MessagesModel(this._accountsModel, [this._logs, this.maxItems = 25]) {
     PjsipConnectFlutter().messagesListener = MessagesStateListener(
       sentState: onMessageSentState,
-      incoming : onMessageIncoming
+      incoming: onMessageIncoming,
     );
   }
 
   /// Returns true when list of messages is empty
   bool get isEmpty => _messages.isEmpty;
+
   /// Returns number of messages in list
   int get length => _messages.length;
+
   /// Returns subscription by its index in list
   MessageModel operator [](int i) => _messages[i];
 
@@ -147,8 +168,13 @@ class MessagesModel extends ChangeNotifier {
   SaveChangesCallback? onSaveChanges;
 
   ///Send message
-  Future<void> send(MessageDestination msgDest, {bool saveChanges=true}) async {
-    _logs?.print('Sending new message ext:${msgDest.toExt} accId:${msgDest.fromAccId}');
+  Future<void> send(
+    MessageDestination msgDest, {
+    bool saveChanges = true,
+  }) async {
+    _logs?.print(
+      'Sending new message ext:${msgDest.toExt} accId:${msgDest.fromAccId}',
+    );
 
     try {
       //When accUri present - model loaded from json, search accId as it might be changed
@@ -159,42 +185,42 @@ class MessagesModel extends ChangeNotifier {
 
       //Add to the list and notify UI
       _messages.add(MessageModel.outgoing(myMessageId, accUri, msgDest));
-      if(_messages.length > maxItems)  _messages.removeAt(0);
+      if (_messages.length > maxItems) _messages.removeAt(0);
       notifyListeners();
 
       //Log and save changes
       _logs?.print('Message post successfully with id: $myMessageId');
-      if(saveChanges) _raiseSaveChanges();
-
+      if (saveChanges) _raiseSaveChanges();
     } on PlatformException catch (err) {
-        _logs?.print('Can\'t send message: ${err.code} ${err.message} ');
-        return Future.error((err.message==null) ? err.code : err.message!);
+      _logs?.print('Can\'t send message: ${err.code} ${err.message} ');
+      return Future.error((err.message == null) ? err.code : err.message!);
     }
   }
 
-
   ///Delete message by index
   Future<void> remove(int index) async {
-      _messages.removeAt(index);
-      notifyListeners();
-      _raiseSaveChanges();
+    _messages.removeAt(index);
+    notifyListeners();
+    _raiseSaveChanges();
   }
 
   ///Handle library event raised when received confirmation on sent message
   void onMessageSentState(int messageId, bool success, String resp) {
     _logs?.print('onMessageSentState $success messageId:$messageId resp:$resp');
     int idx = _messages.indexWhere((msg) => (msg.myMessageId == messageId));
-    if(idx != -1) {
+    if (idx != -1) {
       _messages[idx].onMessageSentStateChanged(success, resp);
     }
   }
 
   ///Handle library event raised when received new message from remote side
   void onMessageIncoming(int messageId, int accId, String from, String body) {
-    _logs?.print('onMessageIncoming messageId:$messageId accId:$accId from:$from');
+    _logs?.print(
+      'onMessageIncoming messageId:$messageId accId:$accId from:$from',
+    );
 
     int idx = _messages.indexWhere((msg) => (msg.myMessageId == messageId));
-    if(idx != -1) {
+    if (idx != -1) {
       _logs?.print('message with id:$messageId already exist');
       return;
     }
@@ -205,12 +231,12 @@ class MessagesModel extends ChangeNotifier {
 
     notifyListeners();
 
-    if(_messages.length > maxItems)  _messages.removeAt(0);
+    if (_messages.length > maxItems) _messages.removeAt(0);
     _raiseSaveChanges();
   }
 
   void _raiseSaveChanges() {
-    if(onSaveChanges != null) {
+    if (onSaveChanges != null) {
       Future.delayed(Duration.zero, () {
         onSaveChanges?.call(storeToJson());
       });
@@ -225,18 +251,16 @@ class MessagesModel extends ChangeNotifier {
   /// Load list of subscriptions from json string (app should invoke it after loading accounts)
   bool loadFromJson(String jsonStr) {
     try {
-      if(jsonStr.isEmpty) return false;
+      if (jsonStr.isEmpty) return false;
 
       final List<dynamic> parsedList = jsonDecode(jsonStr);
       for (var parsedMsg in parsedList) {
         _messages.add(MessageModel.fromJson(parsedMsg));
       }
       return parsedList.isNotEmpty;
-    }catch (e) {
+    } catch (e) {
       _logs?.print('Can\'t load messages from json. Err: $e');
       return false;
     }
   }
-
-}//MessagesModel
-
+} //MessagesModel

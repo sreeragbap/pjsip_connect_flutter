@@ -201,7 +201,9 @@ class _SwitchedCallWidgetState extends State<SwitchedCallWidget> {
 
       //Camera preview
       children.add(SizedBox(
-          width: 130, height: 100, child: PjsipConnectVideoView(_localRenderer)));
+          width: 130,
+          height: 100,
+          child: PjsipConnectVideoView(_localRenderer)));
 
       //Button 'Mute camera'
       children.add(IconButton(

@@ -10,21 +10,21 @@ class AppAccountsModel extends AccountsModel {
   final ILogsModel? _logs;
 
   @override
-  Future<void> addAccount(AccountModel acc, {bool saveChanges=true}) async {
+  Future<void> addAccount(AccountModel acc, {bool saveChanges = true}) async {
     String? token;
-    if(Platform.isIOS) {
-      token = await PjsipConnectFlutter().getPushKitToken();//iOS - get PushKit VoIP token
-    }else if(Platform.isAndroid) {
-     // token = await FirebaseMessaging.instance.getToken();//Android - get Firebase token
+    if (Platform.isIOS) {
+      token = await PjsipConnectFlutter()
+          .getPushKitToken(); //iOS - get PushKit VoIP token
+    } else if (Platform.isAndroid) {
+      // token = await FirebaseMessaging.instance.getToken();//Android - get Firebase token
     }
 
     //When resolved - put token into SIP REGISTER request
-    if(token != null) {
+    if (token != null) {
       _logs?.print('AddAccount with push token: $token');
-      acc.xheaders = {"X-Token" : token};//Put token into separate header
+      acc.xheaders = {"X-Token": token}; //Put token into separate header
       //acc.xContactUriParams = {"X-Token" : token};//put token into ContactUriParams
     }
-    return super.addAccount(acc, saveChanges:saveChanges);
+    return super.addAccount(acc, saveChanges: saveChanges);
   }
-
 }

@@ -7,75 +7,106 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'pjsip_connect.dart';
 
-
 /// Holds properties of SIP subscription item
 class SubscriptionModel extends ChangeNotifier implements IPjsipConnectData {
-  SubscriptionModel({required this.toExt, required this.fromAccId,
-                    required this.mimeSubType, required this.eventType, this.body});
+  SubscriptionModel({
+    required this.toExt,
+    required this.fromAccId,
+    required this.mimeSubType,
+    required this.eventType,
+    this.body,
+  });
+
   ///Unique id assigned by library (valid only during current session)
-  int mySubscrId=0;
+  int mySubscrId = 0;
+
   ///Remote extension, which will notify us when its state changed
-  String toExt="";
+  String toExt = "";
+
   ///Account id using for sending subscribe request
-  int    fromAccId=0;
+  int fromAccId = 0;
+
   ///Account URI used serialize as the 'fromAccId' valid only during current session and may got new value
-  String accUri="";
+  String accUri = "";
+
   ///MimeSubType which library will put in the SIP header 'Accept'
-  String mimeSubType="";
+  String mimeSubType = "";
+
   ///Event type which library will put in the SIP header 'Event'
-  String eventType="";
+  String eventType = "";
+
   ///String which library will put into the SIP request
   String? body;
+
   ///Label using for display this subscription on UI
-  String label="";
+  String label = "";
+
   ///Expire time in seconds (how often library will update this subscription)
   int? expireTime;
 
   ///State of the subscription dialog
   SubscriptionState state = SubscriptionState.created;
+
   ///Response received from remote side in the body of SIP NOTIFY request
-  String response="";
+  String response = "";
 
   @override
   Map<String, dynamic> toJson() {
     Map<String, dynamic> ret = {
       'extension': toExt,
-      'label'    : label,
-      'accId'    : fromAccId,
-      'accUri'   : accUri,
+      'label': label,
+      'accId': fromAccId,
+      'accUri': accUri,
       'mimeSubType': mimeSubType,
       'eventType': eventType,
-      'runtimeType':runtimeType.toString()
+      'runtimeType': runtimeType.toString(),
     };
-    if(expireTime !=null)  ret['expireTime']  = expireTime;
-    if(body       !=null)  ret['body'] = body;
+    if (expireTime != null) ret['expireTime'] = expireTime;
+    if (body != null) ret['body'] = body;
     return ret;
   }
 
   /// Creates instance of SubscriptionModel with values read from json
   SubscriptionModel.fromJson(Map<String, dynamic> jsonMap) {
     jsonMap.forEach((key, value) {
-      if((key == 'extension')&&(value is String))   { toExt = value;       } else
-      if((key == 'label')&&(value is String))       { label = value;       } else
-      if((key == 'accId')&&(value is int))          { fromAccId = value;   } else
-      if((key == 'accUri')&&(value is String))      { accUri = value;      } else
-      if((key == 'mimeSubType')&&(value is String)) { mimeSubType = value; } else
-      if((key == 'body')&&(value is String))        { body = value;        } else
-      if((key == 'eventType')&&(value is String))   { eventType = value;   } else
-      if((key == 'expireTime')&&(value is int))     { expireTime = value;  }
+      if ((key == 'extension') && (value is String)) {
+        toExt = value;
+      } else if ((key == 'label') && (value is String)) {
+        label = value;
+      } else if ((key == 'accId') && (value is int)) {
+        fromAccId = value;
+      } else if ((key == 'accUri') && (value is String)) {
+        accUri = value;
+      } else if ((key == 'mimeSubType') && (value is String)) {
+        mimeSubType = value;
+      } else if ((key == 'body') && (value is String)) {
+        body = value;
+      } else if ((key == 'eventType') && (value is String)) {
+        eventType = value;
+      } else if ((key == 'expireTime') && (value is int)) {
+        expireTime = value;
+      }
     });
   }
 
   ///Create BLF subscription
   factory SubscriptionModel.BLF(String ext, int accId) {
-    return SubscriptionModel(toExt:ext, fromAccId:accId,
-                            mimeSubType:"dialog-info+xml", eventType:"dialog");
+    return SubscriptionModel(
+      toExt: ext,
+      fromAccId: accId,
+      mimeSubType: "dialog-info+xml",
+      eventType: "dialog",
+    );
   }
 
   ///Create Presence subscription
   factory SubscriptionModel.Presence(String ext, int accId) {
-    return SubscriptionModel(toExt:ext, fromAccId:accId,
-                            mimeSubType:"pidf+xml", eventType:"presence");
+    return SubscriptionModel(
+      toExt: ext,
+      fromAccId: accId,
+      mimeSubType: "pidf+xml",
+      eventType: "presence",
+    );
   }
 
   ///Handle event raised by library (override on app level)
@@ -85,13 +116,11 @@ class SubscriptionModel extends ChangeNotifier implements IPjsipConnectData {
   }
 }
 
-
 ///Subscription state - using as member of SubscriptionModel
-enum SubscriptionState { created, updated, destroyed}
+enum SubscriptionState { created, updated, destroyed }
 
 /// Model invokes this callback when has changes which should be saved by the app
 typedef SaveChangesCallback = void Function(String jsonStr);
-
 
 /// Subscriptions list model ((contains list of subscriptions, methods for managing them, handlers of library event)
 class SubscriptionsModel extends ChangeNotifier {
@@ -102,14 +131,16 @@ class SubscriptionsModel extends ChangeNotifier {
 
   SubscriptionsModel(this._accountsModel, this._itemCreateFunc, [this._logs]) {
     PjsipConnectFlutter().subscrListener = SubscrStateListener(
-      subscrStateChanged : onSubscrStateChanged
+      subscrStateChanged: onSubscrStateChanged,
     );
   }
 
   /// Returns true when list of subscriptions is empty
   bool get isEmpty => _subscriptions.isEmpty;
+
   /// Returns number of subscriptions in list
   int get length => _subscriptions.length;
+
   /// Returns subscription by its index in list
   SubscriptionModel operator [](int i) => _subscriptions[i];
 
@@ -117,42 +148,49 @@ class SubscriptionsModel extends ChangeNotifier {
   SaveChangesCallback? onSaveChanges;
 
   ///Add new subscription
-  Future<void> addSubscription(SubscriptionModel sub, {bool saveChanges=true}) async {
-    _logs?.print('Adding new subscription ext:${sub.toExt} accId:${sub.fromAccId}');
+  Future<void> addSubscription(
+    SubscriptionModel sub, {
+    bool saveChanges = true,
+  }) async {
+    _logs?.print(
+      'Adding new subscription ext:${sub.toExt} accId:${sub.fromAccId}',
+    );
 
     try {
       //When accUri present - model loaded from json, search accId as it might be changed
-      if(sub.accUri.isNotEmpty) { sub.fromAccId = _accountsModel.getAccId(sub.accUri);  }
-      else                      { sub.accUri    = _accountsModel.getUri(sub.fromAccId); }
+      if (sub.accUri.isNotEmpty) {
+        sub.fromAccId = _accountsModel.getAccId(sub.accUri);
+      } else {
+        sub.accUri = _accountsModel.getUri(sub.fromAccId);
+      }
 
       //Add
-      sub.mySubscrId  = await PjsipConnectFlutter().addSubscription(sub) ?? 0;
+      sub.mySubscrId = await PjsipConnectFlutter().addSubscription(sub) ?? 0;
 
       _integrateAddedSubscription(sub, saveChanges);
-
     } on PlatformException catch (err) {
-      if(err.code == PjsipConnectFlutter.eSubscrAlreadyExist.toString()) {
+      if (err.code == PjsipConnectFlutter.eSubscrAlreadyExist.toString()) {
         int existingSubscrId = err.details;
-        int idx = _subscriptions.indexWhere((s) => (s.mySubscrId == existingSubscrId));
-        if(idx==-1) {
+        int idx = _subscriptions.indexWhere(
+          (s) => (s.mySubscrId == existingSubscrId),
+        );
+        if (idx == -1) {
           //This case is possible in Android when:
           // - activity started as usual and initialized SDK Core
           // - activity destroyed, but SDK Core is still running (as Service)
           // - activity started again, loaded saved state and has to sync it
           sub.mySubscrId = existingSubscrId;
           _integrateAddedSubscription(sub, saveChanges);
-        }
-        else {
+        } else {
           return Future.error(err.toString());
         }
-      }
-      else {
+      } else {
         _logs?.print('Can\'t add subscription: ${err.code} ${err.message} ');
-        return Future.error((err.message==null) ? err.code : err.message!);
+        return Future.error((err.message == null) ? err.code : err.message!);
       }
     } on Exception catch (err) {
-         _logs?.print('Can\'t add subscription: ${err.toString()}');
-        return Future.error(err.toString());
+      _logs?.print('Can\'t add subscription: ${err.toString()}');
+      return Future.error(err.toString());
     }
   }
 
@@ -162,7 +200,7 @@ class SubscriptionsModel extends ChangeNotifier {
     notifyListeners();
 
     _logs?.print('Added successfully with id: ${sub.mySubscrId}');
-    if(saveChanges) _raiseSaveChanges();
+    if (saveChanges) _raiseSaveChanges();
   }
 
   ///Delete subscription by index (sends SUBSCRIBE request with expire=0)
@@ -171,35 +209,36 @@ class SubscriptionsModel extends ChangeNotifier {
       int subscrId = _subscriptions[index].mySubscrId;
       await PjsipConnectFlutter().deleteSubscription(subscrId);
       _logs?.print('Deleting subscription subscrId:$subscrId');
-
     } on PlatformException catch (err) {
       _logs?.print('Can\'t delete subscription: ${err.code} ${err.message}');
-      return Future.error((err.message==null) ? err.code : err.message!);
+      return Future.error((err.message == null) ? err.code : err.message!);
     }
   }
 
   ///Handle library event raised when received NOTIFY request
   void onSubscrStateChanged(int subscrId, SubscriptionState s, String resp) {
-    _logs?.print('onSubscrStateChanged subscrId:$subscrId resp:$resp ${s.toString()}');
+    _logs?.print(
+      'onSubscrStateChanged subscrId:$subscrId resp:$resp ${s.toString()}',
+    );
 
     //Find subscription by id
     int idx = _subscriptions.indexWhere((sub) => (sub.mySubscrId == subscrId));
-    if(idx == -1) return;
+    if (idx == -1) return;
 
-    if(s == SubscriptionState.destroyed) {
+    if (s == SubscriptionState.destroyed) {
       //Remove destroyed subscription from list
       _logs?.print('Deleted subscription subscrId:$subscrId');
       _subscriptions.removeAt(idx);
       notifyListeners();
       _raiseSaveChanges();
-    }else{
+    } else {
       //Update state of the found subscription
       _subscriptions[idx].onSubscrStateChanged(s, resp);
     }
   }
 
   void _raiseSaveChanges() {
-    if(onSaveChanges != null) {
+    if (onSaveChanges != null) {
       Future.delayed(Duration.zero, () {
         onSaveChanges?.call(storeToJson());
       });
@@ -214,18 +253,16 @@ class SubscriptionsModel extends ChangeNotifier {
   /// Load list of subscriptions from json string (app should invoke it after loading accounts)
   bool loadFromJson(String jsonStr) {
     try {
-      if(jsonStr.isEmpty) return false;
+      if (jsonStr.isEmpty) return false;
 
       final List<dynamic> parsedList = jsonDecode(jsonStr);
       for (var parsedSubscr in parsedList) {
-        addSubscription(_itemCreateFunc(parsedSubscr), saveChanges:false);
+        addSubscription(_itemCreateFunc(parsedSubscr), saveChanges: false);
       }
       return parsedList.isNotEmpty;
-    }catch (e) {
+    } catch (e) {
       _logs?.print('Can\'t load subscriptions from json. Err: $e');
       return false;
     }
   }
-
-}//SubscriptionsModel
-
+} //SubscriptionsModel

@@ -4,19 +4,16 @@ import 'package:flutter/services.dart';
 
 import 'pjsip_connect.dart';
 
-
 /// Contains video frame attributes provided by native plugins
 class RTCVideoValue {
-  const RTCVideoValue({
-    this.width = 0.0,
-    this.height = 0.0,
-    this.rotation = 0,
-  });
+  const RTCVideoValue({this.width = 0.0, this.height = 0.0, this.rotation = 0});
 
   ///Width of the video frame (pixels)
   final double width;
+
   ///Height of the video frame (pixels)
   final double height;
+
   ///Rotation of the video frame (degrees: 0/90/180/270)
   final int rotation;
 
@@ -31,9 +28,7 @@ class RTCVideoValue {
         : width / height;
   }
 
-  RTCVideoValue copyWith({
-    double? width, double? height, int? rotation
-  }) {
+  RTCVideoValue copyWith({double? width, double? height, int? rotation}) {
     return RTCVideoValue(
       width: width ?? this.width,
       height: height ?? this.height,
@@ -46,13 +41,14 @@ class RTCVideoValue {
       '$runtimeType(width: $width, height: $height, rotation: $rotation)';
 }
 
-
 /// PjsipConnectVideoRenderer - holds texture, created by native plugins, and listening video frame events raised by native plugins
 class PjsipConnectVideoRenderer extends ValueNotifier<RTCVideoValue> {
   PjsipConnectVideoRenderer() : super(RTCVideoValue.empty);
   StreamSubscription<dynamic>? _eventSubscription;
+
   /// Invalid texture id constant
   static const int kInvalidTextureId = -1;
+
   /// Invalid call id constant
   static const int kInvalidCallId = -1;
   int _textureId = kInvalidTextureId;
@@ -61,17 +57,21 @@ class PjsipConnectVideoRenderer extends ValueNotifier<RTCVideoValue> {
 
   /// Width of the received video frame
   int get videoWidth => value.width.toInt();
+
   /// Height of the received video frame
   int get videoHeight => value.height.toInt();
+
   /// AspectRatio of the received video frame
   double get aspectRatio => value.aspectRatio;
 
   /// TextureId created for rendering
-  int  get textureId => _textureId;
+  int get textureId => _textureId;
+
   /// Is created texture
-  bool get hasTexture=> _textureId != kInvalidTextureId;
+  bool get hasTexture => _textureId != kInvalidTextureId;
+
   /// Call id which displays video on this texture
-  int  get srcCallId => _srcCallId;
+  int get srcCallId => _srcCallId;
 
   /// Frame resize handler
   Function(RTCVideoValue v, int callId)? onResize;
@@ -82,32 +82,37 @@ class PjsipConnectVideoRenderer extends ValueNotifier<RTCVideoValue> {
     _srcCallId = srcCallId;
     _logs = logs;
 
-    try{
+    try {
       _textureId = await PjsipConnectFlutter().videoRendererCreate() ?? 0;
     } on PlatformException catch (err) {
       _logs?.print('Cant create renderer Err: ${err.code} ${err.message}');
     }
 
-    if(_textureId != kInvalidTextureId) {
+    if (_textureId != kInvalidTextureId) {
       _logs?.print('Created textureId: $textureId for callId:$_srcCallId');
-      _eventSubscription = EventChannel('SipConnect/Texture$textureId')
-        .receiveBroadcastStream()
-        .listen(eventListener, onError: errorListener);
+      _eventSubscription = EventChannel(
+        'SipConnect/Texture$textureId',
+      ).receiveBroadcastStream().listen(eventListener, onError: errorListener);
 
-        setSourceCall(srcCallId);
+      setSourceCall(srcCallId);
     }
   }
 
   /// Use created texture for rendering video of specified call
   void setSourceCall(int callId) async {
-    if(callId==kInvalidCallId) return;
+    if (callId == kInvalidCallId) return;
     _srcCallId = callId;
 
-    try{
-      await PjsipConnectFlutter().videoRendererSetSourceCall(_textureId, callId);
+    try {
+      await PjsipConnectFlutter().videoRendererSetSourceCall(
+        _textureId,
+        callId,
+      );
       _logs?.print('Assign textureId: $textureId with callId:$_srcCallId');
     } on PlatformException catch (err) {
-      _logs?.print('Cant set src call for renderer Err: ${err.code} ${err.message}');
+      _logs?.print(
+        'Cant set src call for renderer Err: ${err.code} ${err.message}',
+      );
     }
   }
 
@@ -132,8 +137,9 @@ class PjsipConnectVideoRenderer extends ValueNotifier<RTCVideoValue> {
         break;
       case 'didTextureChangeVideoSize':
         value = value.copyWith(
-            width: 0.0 + map['width'],
-            height: 0.0 + map['height']);
+          width: 0.0 + map['width'],
+          height: 0.0 + map['height'],
+        );
         break;
     }
     onResize?.call(value, _srcCallId);
@@ -145,21 +151,23 @@ class PjsipConnectVideoRenderer extends ValueNotifier<RTCVideoValue> {
       throw obj;
     }
   }
-
-}//PjsipConnectVideoRenderer
-
+} //PjsipConnectVideoRenderer
 
 /// PjsipConnectVideoView - widget which displays specified renderer
 class PjsipConnectVideoView extends StatelessWidget {
-  PjsipConnectVideoView(this._renderer, {Key? key,}) : super(key: key);
+  PjsipConnectVideoView(this._renderer, {Key? key}) : super(key: key);
   final PjsipConnectVideoRenderer _renderer;
 
   @override
   Widget build(BuildContext context) {
-    return
-      _renderer.hasTexture && (_renderer.videoWidth > 0)
-        ? AspectRatio(aspectRatio: _renderer.aspectRatio,
-          child: Texture(textureId: _renderer.textureId, filterQuality: FilterQuality.low))
+    return _renderer.hasTexture && (_renderer.videoWidth > 0)
+        ? AspectRatio(
+            aspectRatio: _renderer.aspectRatio,
+            child: Texture(
+              textureId: _renderer.textureId,
+              filterQuality: FilterQuality.low,
+            ),
+          )
         : const SizedBox.shrink();
   }
 }

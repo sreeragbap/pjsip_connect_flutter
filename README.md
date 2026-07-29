@@ -267,14 +267,17 @@ await devicesModel.setForegroundMode(true);
 
 ## License
 
-This plugin bundles PJSIP, which is licensed under the
-**GNU General Public License v2** (or a commercial license available from
-Teluu). Consequently this package is distributed under **GPL-2.0** — see
-[LICENSE](LICENSE).
+The plugin's own code (Dart, Kotlin, Swift/ObjC++ bridge) is licensed under
+the **MIT License** — see [LICENSE](LICENSE).
 
-In practice this means apps that distribute this plugin must either comply
-with the GPL (make their source available under a GPL-compatible license) or
-obtain a [commercial PJSIP license](https://www.pjsip.org/licensing.htm).
+**Important:** the package bundles prebuilt binaries of
+[PJSIP](https://www.pjsip.org), which is licensed under the **GNU General
+Public License v2** or a
+[commercial license from Teluu](https://www.pjsip.org/licensing.htm).
+The MIT license above covers only this plugin's code — it does not and cannot
+relicense PJSIP. Apps that distribute this plugin must therefore either comply
+with the GPL for the bundled PJSIP engine or obtain a commercial PJSIP
+license.
 
 ## Contact
 

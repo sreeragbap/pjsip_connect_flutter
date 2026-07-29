@@ -10,7 +10,6 @@ import 'logs_model.dart';
 import 'pjsip_connect.dart';
 import 'network_model.dart';
 
-
 /// Holds lists of parameters using for initialization sipconnect module
 class InitData implements IPjsipConnectData {
   /// License credentials. When missed - library works in trial mode
@@ -26,7 +25,7 @@ class InitData implements IPjsipConnectData {
   LogLevel? logLevelIde;
 
   /// RTP start port number (not implemented yet, library uses random port numbers)
-  int?  rtpStartPort;
+  int? rtpStartPort;
 
   /// Enable verify server's certificate (common option for all accounts, by default disabled)
   bool? tlsVerifyServer;
@@ -94,37 +93,39 @@ class InitData implements IPjsipConnectData {
   @override
   Map<String, dynamic> toJson() {
     Map<String, dynamic> ret = {};
-    if(license!=null)           ret['license'] = license;
-    if(brandName!=null)         ret['brandName'] = brandName;
-    if(logLevelFile!=null)      ret['logLevelFile'] = logLevelFile!.id;
-    if(logLevelIde!=null)       ret['logLevelIde']  = logLevelIde!.id;
-    if(rtpStartPort!=null)      ret['rtpStartPort'] = rtpStartPort;
-    if(tlsVerifyServer!=null)   ret['tlsVerifyServer'] = tlsVerifyServer;
-    if(singleCallMode!=null)    ret['singleCallMode'] = singleCallMode;
-    if(shareUdpTransport!=null) ret['shareUdpTransport'] = shareUdpTransport;
-    if(listenTelState!=null)    ret['listenTelState'] = listenTelState;
-    if(listenVolChange!=null)   ret['listenVolChange'] = listenVolChange;
-    if(enablePushKit!=null)     ret['enablePushKit'] = enablePushKit;
-    if(enableCallKit!=null)     ret['enableCallKit'] = enableCallKit;
-    if(enableCallKitMute!=null) ret['enableCallKitMute'] = enableCallKitMute;
-    if(enableCallKitReportCallAsVideo!=null) ret['enableCallKitReportCallAsVideo'] = enableCallKitReportCallAsVideo;
-    if(triggerOnIncomingCallByNotifOnly!=null) ret['triggerOnIncomingCallByNotifOnly'] = triggerOnIncomingCallByNotifOnly;
-    if(enableCallKitRecents!=null) ret['enableCallKitRecents'] = enableCallKitRecents;
-    if(serviceClassName!=null)  ret['serviceClassName'] = serviceClassName;
-    if(unregOnDestroy!=null)    ret['unregOnDestroy'] = unregOnDestroy;
-    if(useDnsSrv!=null)         ret['useDnsSrv'] = useDnsSrv;
-    if(recordStereo!=null)      ret['recordStereo'] = recordStereo;
-    if(enableVideoCall!=null)   ret['enableVideoCall'] = enableVideoCall;
-    if(transpForceIPv4!=null)   ret['transpForceIPv4'] = transpForceIPv4;
-    if(enableAes128Sha32!=null) ret['enableAes128Sha32'] = enableAes128Sha32;
-    if(use16kHzAudio!=null)     ret['use16kHzAudio'] = use16kHzAudio;
-    if(enableVUmeter!=null)     ret['enableVUmeter'] = enableVUmeter;
-    if(homeFolder!=null)        ret['homeFolder'] = homeFolder;
+    if (license != null) ret['license'] = license;
+    if (brandName != null) ret['brandName'] = brandName;
+    if (logLevelFile != null) ret['logLevelFile'] = logLevelFile!.id;
+    if (logLevelIde != null) ret['logLevelIde'] = logLevelIde!.id;
+    if (rtpStartPort != null) ret['rtpStartPort'] = rtpStartPort;
+    if (tlsVerifyServer != null) ret['tlsVerifyServer'] = tlsVerifyServer;
+    if (singleCallMode != null) ret['singleCallMode'] = singleCallMode;
+    if (shareUdpTransport != null) ret['shareUdpTransport'] = shareUdpTransport;
+    if (listenTelState != null) ret['listenTelState'] = listenTelState;
+    if (listenVolChange != null) ret['listenVolChange'] = listenVolChange;
+    if (enablePushKit != null) ret['enablePushKit'] = enablePushKit;
+    if (enableCallKit != null) ret['enableCallKit'] = enableCallKit;
+    if (enableCallKitMute != null) ret['enableCallKitMute'] = enableCallKitMute;
+    if (enableCallKitReportCallAsVideo != null)
+      ret['enableCallKitReportCallAsVideo'] = enableCallKitReportCallAsVideo;
+    if (triggerOnIncomingCallByNotifOnly != null)
+      ret['triggerOnIncomingCallByNotifOnly'] =
+          triggerOnIncomingCallByNotifOnly;
+    if (enableCallKitRecents != null)
+      ret['enableCallKitRecents'] = enableCallKitRecents;
+    if (serviceClassName != null) ret['serviceClassName'] = serviceClassName;
+    if (unregOnDestroy != null) ret['unregOnDestroy'] = unregOnDestroy;
+    if (useDnsSrv != null) ret['useDnsSrv'] = useDnsSrv;
+    if (recordStereo != null) ret['recordStereo'] = recordStereo;
+    if (enableVideoCall != null) ret['enableVideoCall'] = enableVideoCall;
+    if (transpForceIPv4 != null) ret['transpForceIPv4'] = transpForceIPv4;
+    if (enableAes128Sha32 != null) ret['enableAes128Sha32'] = enableAes128Sha32;
+    if (use16kHzAudio != null) ret['use16kHzAudio'] = use16kHzAudio;
+    if (enableVUmeter != null) ret['enableVUmeter'] = enableVUmeter;
+    if (homeFolder != null) ret['homeFolder'] = homeFolder;
     return ret;
   }
-}//InitData
-
-
+} //InitData
 
 ///Holds video capturer params
 class VideoData implements IPjsipConnectData {
@@ -132,62 +133,78 @@ class VideoData implements IPjsipConnectData {
   String? noCameraImgPath;
 
   /// Capturer framerate (by default 15)
-  int?  framerateFps;
+  int? framerateFps;
 
   /// Encoder bitrate, allows specify video bandwith (by default 600)
-  int?  bitrateKbps;
+  int? bitrateKbps;
 
   /// Capturer video frame height (by default 480)
-  int?  height;
+  int? height;
 
   /// Capturer video frame width (by default 600)
-  int?  width;
+  int? width;
 
   @override
   Map<String, dynamic> toJson() {
     Map<String, dynamic> ret = {};
-    if(noCameraImgPath!=null) ret['noCameraImgPath'] = noCameraImgPath;
-    if(framerateFps!=null)    ret['framerateFps'] = framerateFps;
-    if(bitrateKbps!=null)     ret['bitrateKbps']  = bitrateKbps;
-    if(height!=null)          ret['height'] = height;
-    if(width!=null)           ret['width'] = width;
+    if (noCameraImgPath != null) ret['noCameraImgPath'] = noCameraImgPath;
+    if (framerateFps != null) ret['framerateFps'] = framerateFps;
+    if (bitrateKbps != null) ret['bitrateKbps'] = bitrateKbps;
+    if (height != null) ret['height'] = height;
+    if (width != null) ret['width'] = width;
     return ret;
   }
-}//VideoData
-
+} //VideoData
 
 ///Helper class for manipulating account' scodec settings
 class Codec {
-  Codec(this.id, {this.selected=true});
+  Codec(this.id, {this.selected = true});
+
   /// Codec id (one of the [PjsipConnectFlutter.kAudioCodec*])
-  int  id;
+  int id;
+
   /// Is this codec selected
   bool selected;
 
   /// Returns codec name which matches specified codec id
   static String name(int codecId) {
-    switch(codecId) {
-      case PjsipConnectFlutter.kAudioCodecOpus: return "OPUS/48000";
-      case PjsipConnectFlutter.kAudioCodecISAC16: return "ISAC/16000";
-      case PjsipConnectFlutter.kAudioCodecISAC32: return "ISAC/32000";
-      case PjsipConnectFlutter.kAudioCodecG722: return "G722/8000";
-      case PjsipConnectFlutter.kAudioCodecG729: return "G729/8000";
-      case PjsipConnectFlutter.kAudioCodecILBC: return "ILBC/8000";
-      case PjsipConnectFlutter.kAudioCodecPCMU: return "PCMU/8000";
-      case PjsipConnectFlutter.kAudioCodecPCMA: return "PCMA/8000";
-      case PjsipConnectFlutter.kAudioCodecDTMF: return "DTMF/8000";
-      case PjsipConnectFlutter.kAudioCodecCN:   return "CN/8000";
-      case PjsipConnectFlutter.kVideoCodecH264: return "H264";
-      case PjsipConnectFlutter.kVideoCodecVP8:  return "VP8";
-      case PjsipConnectFlutter.kVideoCodecVP9:  return "VP9";
-      case PjsipConnectFlutter.kVideoCodecAV1:  return "AV1";
-      default: return "Undefined";
+    switch (codecId) {
+      case PjsipConnectFlutter.kAudioCodecOpus:
+        return "OPUS/48000";
+      case PjsipConnectFlutter.kAudioCodecISAC16:
+        return "ISAC/16000";
+      case PjsipConnectFlutter.kAudioCodecISAC32:
+        return "ISAC/32000";
+      case PjsipConnectFlutter.kAudioCodecG722:
+        return "G722/8000";
+      case PjsipConnectFlutter.kAudioCodecG729:
+        return "G729/8000";
+      case PjsipConnectFlutter.kAudioCodecILBC:
+        return "ILBC/8000";
+      case PjsipConnectFlutter.kAudioCodecPCMU:
+        return "PCMU/8000";
+      case PjsipConnectFlutter.kAudioCodecPCMA:
+        return "PCMA/8000";
+      case PjsipConnectFlutter.kAudioCodecDTMF:
+        return "DTMF/8000";
+      case PjsipConnectFlutter.kAudioCodecCN:
+        return "CN/8000";
+      case PjsipConnectFlutter.kVideoCodecH264:
+        return "H264";
+      case PjsipConnectFlutter.kVideoCodecVP8:
+        return "VP8";
+      case PjsipConnectFlutter.kVideoCodecVP9:
+        return "VP9";
+      case PjsipConnectFlutter.kVideoCodecAV1:
+        return "AV1";
+      default:
+        return "Undefined";
     }
   }
 
   /// Returns list of all available audio/video codecs
   static List<int> availableCodecs(bool audio) {
-    if(audio) {
+    if (audio) {
       return [
         PjsipConnectFlutter.kAudioCodecOpus,
         PjsipConnectFlutter.kAudioCodecISAC16,
@@ -198,9 +215,9 @@ class Codec {
         PjsipConnectFlutter.kAudioCodecPCMU,
         PjsipConnectFlutter.kAudioCodecPCMA,
         PjsipConnectFlutter.kAudioCodecCN,
-        PjsipConnectFlutter.kAudioCodecDTMF
+        PjsipConnectFlutter.kAudioCodecDTMF,
       ];
-    }else {
+    } else {
       return [
         PjsipConnectFlutter.kVideoCodecH264,
         PjsipConnectFlutter.kVideoCodecVP8,
@@ -211,25 +228,31 @@ class Codec {
   }
 
   /// Converts list of int id's to list of Codecs. When input list not specified - returns default codecs settings
-  static List<Codec> getCodecsList(List<int>? selectedCodecsIds, {bool audio=true}) {
+  static List<Codec> getCodecsList(
+    List<int>? selectedCodecsIds, {
+    bool audio = true,
+  }) {
     List<Codec> ret = <Codec>[];
-    if(selectedCodecsIds != null) {
-      for(var c in selectedCodecsIds) {
-        ret.add(Codec(c, selected:true));
+    if (selectedCodecsIds != null) {
+      for (var c in selectedCodecsIds) {
+        ret.add(Codec(c, selected: true));
       }
 
-      for(var c in Codec.availableCodecs(audio)) {
-        if(ret.indexWhere((codec) => (codec.id == c))==-1) {
-          ret.add(Codec(c, selected:false));
+      for (var c in Codec.availableCodecs(audio)) {
+        if (ret.indexWhere((codec) => (codec.id == c)) == -1) {
+          ret.add(Codec(c, selected: false));
         }
       }
-    }
-    else {
+    } else {
       //Build codecs selected by default
-      for(var c in Codec.availableCodecs(audio)) {
-        bool sel = audio ? ((c==PjsipConnectFlutter.kAudioCodecDTMF)||(c==PjsipConnectFlutter.kAudioCodecOpus)||(c==PjsipConnectFlutter.kAudioCodecPCMA))
-                         : ((c==PjsipConnectFlutter.kVideoCodecVP8)||(c==PjsipConnectFlutter.kVideoCodecH264));
-        ret.add(Codec(c, selected:sel));
+      for (var c in Codec.availableCodecs(audio)) {
+        bool sel = audio
+            ? ((c == PjsipConnectFlutter.kAudioCodecDTMF) ||
+                  (c == PjsipConnectFlutter.kAudioCodecOpus) ||
+                  (c == PjsipConnectFlutter.kAudioCodecPCMA))
+            : ((c == PjsipConnectFlutter.kVideoCodecVP8) ||
+                  (c == PjsipConnectFlutter.kVideoCodecH264));
+        ret.add(Codec(c, selected: sel));
       }
     }
 
@@ -239,72 +262,86 @@ class Codec {
   /// Returns list of int values which matches selected codecs id's
   static List<int> getSelectedCodecsIds(List<Codec> codecsList) {
     List<int> ret = <int>[];
-    for(var c in codecsList) {
-      if(c.selected) ret.add(c.id);
+    for (var c in codecsList) {
+      if (c.selected) ret.add(c.id);
     }
     return ret;
   }
 
   /// Returns true when selected at least one codec in the input list
   static bool validateSel(List<Codec> items) {
-    for(Codec c in items) {
-      if(c.selected) return true;
+    for (Codec c in items) {
+      if (c.selected) return true;
     }
     return false;
   }
 }
 
-
 /// SecureMedia options (audio/video encryption setting)
 enum SecureMedia {
   /// Secure media disabled
   Disabled(PjsipConnectFlutter.kSecureMediaDisabled, "Disabled"),
+
   /// Encryption audio/video using SDES SRTP
   SdesSrtp(PjsipConnectFlutter.kSecureMediaSdesSrtp, "SDES SRTP"),
+
   /// Encryption audio/video using DTLS SRTP
   DtlsSrtp(PjsipConnectFlutter.kSecureMediaDtlsSrtp, "DTLS SRTP");
 
   const SecureMedia(this.id, this.name);
+
   /// Value
   final int id;
+
   /// User friendly name of the selected option
   final String name;
 
   /// Returns enum item which matches int constant
   static SecureMedia from(int val) {
-    switch(val) {
-      case PjsipConnectFlutter.kSecureMediaSdesSrtp: return SecureMedia.SdesSrtp;
-      case PjsipConnectFlutter.kSecureMediaDtlsSrtp: return SecureMedia.DtlsSrtp;
-      default:                                 return SecureMedia.Disabled;
+    switch (val) {
+      case PjsipConnectFlutter.kSecureMediaSdesSrtp:
+        return SecureMedia.SdesSrtp;
+      case PjsipConnectFlutter.kSecureMediaDtlsSrtp:
+        return SecureMedia.DtlsSrtp;
+      default:
+        return SecureMedia.Disabled;
     }
   }
 }
-
 
 /// UpgradeToVideo modes (behavior when rceived INVITE with video SDP)
 enum UpgradeToVideoMode {
   /// Accept video from remote side and start sending local
   SendRecv(PjsipConnectFlutter.kUpgradeToVideoSendRecv, "SendRecv"),
+
   /// Accept video from remote side, don't send (mute) local
   RecvOnly(PjsipConnectFlutter.kUpgradeToVideoRecvOnly, "RecvOnly"),
+
   /// Don't accept video from remote side (continue audio only call)
   Inactive(PjsipConnectFlutter.kUpgradeToVideoInactive, "Inactive"),
+
   /// Trigger event 'OnCallVideoUpgradeRequested', ask user confirmation and invoke 'AcceptVideoUpgrade(true/false)'
   Manual(PjsipConnectFlutter.kUpgradeToVideoManual, "Manual");
 
   const UpgradeToVideoMode(this.id, this.name);
+
   /// Value
   final int id;
+
   /// User friendly name of the selected option
   final String name;
 
   /// Returns enum item which matches int constant
   static UpgradeToVideoMode from(int val) {
-    switch(val) {
-      case PjsipConnectFlutter.kUpgradeToVideoSendRecv: return UpgradeToVideoMode.SendRecv;
-      case PjsipConnectFlutter.kUpgradeToVideoInactive: return UpgradeToVideoMode.Inactive;
-      case PjsipConnectFlutter.kUpgradeToVideoManual  : return UpgradeToVideoMode.Manual;
-      default:                                    return UpgradeToVideoMode.RecvOnly;
+    switch (val) {
+      case PjsipConnectFlutter.kUpgradeToVideoSendRecv:
+        return UpgradeToVideoMode.SendRecv;
+      case PjsipConnectFlutter.kUpgradeToVideoInactive:
+        return UpgradeToVideoMode.Inactive;
+      case PjsipConnectFlutter.kUpgradeToVideoManual:
+        return UpgradeToVideoMode.Manual;
+      default:
+        return UpgradeToVideoMode.RecvOnly;
     }
   }
 }
@@ -313,85 +350,119 @@ enum UpgradeToVideoMode {
 enum RegState {
   /// Registration success
   success,
+
   /// Registration failed
   failed,
+
   /// Registration removed
   removed,
-  /// Registration in progress (request sent, waiting on response)
-  inProgress
-}
 
+  /// Registration in progress (request sent, waiting on response)
+  inProgress,
+}
 
 /// Holds properties of SIP Account model
 class AccountModel implements IPjsipConnectData {
-  AccountModel({this.sipServer="", this.sipExtension="", this.sipPassword="", this.expireTime});
+  AccountModel({
+    this.sipServer = "",
+    this.sipExtension = "",
+    this.sipPassword = "",
+    this.expireTime,
+  });
+
   /// Unique account id assigned by library (valid only during current session)
-  int      myAccId=0;
+  int myAccId = 0;
+
   /// Registration state
-  RegState regState=RegState.inProgress;
+  RegState regState = RegState.inProgress;
+
   /// Registration text, got from SIP response, received fro, remote server
-  String   regText="";
+  String regText = "";
 
   /// SIP Server (domain)
-  String  sipServer="";
+  String sipServer = "";
+
   /// SIP Extension (phone number, user)
-  String  sipExtension="";
+  String sipExtension = "";
+
   /// SIP Password (used for registration on server)
-  String  sipPassword="";
+  String sipPassword = "";
 
   ///AuthId (used for authentification, in case when server requires specific user name which doesn't match 'sipExtension')
   String? sipAuthId;
+
   /// Proxy server (used when 'sipServer' can't be resolved by DNS or need to override destination, where to send SIP requests)
   String? sipProxy;
+
   ///Display name (caller Id) which library sends in the To/From headers. Example: "displayName"<sip:extension@server>
   String? displName;
+
   /// UserAgent string which library sends in the 'User-Agent' header of SIP requests. Default value 'sipconnect'.
   String? userAgent;
+
   /// Registration expire time in seconds (how long server has to remember registration of this account). When app set 0 - registration disabled.
-  int?    expireTime;
+  int? expireTime;
+
   /// SIP transport for this account
   SipTransport? transport = SipTransport.udp;
+
   /// Local SIP port number for this account (by default 0 which means using random port)
-  int?    port;
+  int? port;
+
   /// Path to the CA certificate file which library will use for verify server's certificate when establishes TLS connection
   String? tlsCaCertPath;
+
   /// Use 'sip' scheme when TLS transport selected (By default 'false', library uses 'sips' scheme)
-  bool?   tlsUseSipScheme;
+  bool? tlsUseSipScheme;
+
   /// Use RtcpMux (sending RTP and RTCP packets trough the same port, by default disabled).
-  bool?   rtcpMuxEnabled;
+  bool? rtcpMuxEnabled;
+
   /// Use ICE (establish connection by collect and exchange transport candidates, webrtc compatible mode, by default disabled).
-  bool?   iceEnabled;
+  bool? iceEnabled;
+
   /// Unique instance ID of this account and device (set value using method 'genAccInstId', see more RFC 5626)
   String? instanceId;
+
   /// Path to the ringtone file which library will play when incoming call received
   String? ringTonePath;
 
   /// Timeout in seconds which library uses for sending short packets (prevents closing ports between device and server, by default 30)
-  int?    keepAliveTime;
+  int? keepAliveTime;
+
   /// Enable rewrite IP address of Contact header with address got from received SIP response's 'Via/received=...'
-  bool?   rewriteContactIp;
+  bool? rewriteContactIp;
+
   /// Enables verify SDP of the incoming call. When enabled and received call with SDP which can't be answered library silently rejects this call
-  bool?   verifyIncomingCall;
+  bool? verifyIncomingCall;
+
   /// Use specified proxy for all requests (by default disabled)
-  bool?   forceSipProxy;
+  bool? forceSipProxy;
+
   /// Audio/video encryption setting (by default disabled)
-  SecureMedia?  secureMedia;
+  SecureMedia? secureMedia;
 
   /// STUN Server
   String? stunServer;
+
   /// TURN Server
   String? turnServer;
+
   /// TURN User
   String? turnUser;
+
   /// TURN Password
   String? turnPassword;
 
   /// List of custom headers/values which should be added to REGISTER request
   Map<String, String>? xheaders;
+
   /// List of custom params which should be added to Contact's URI
   Map<String, String>? xContactUriParams;
+
   /// Selected audio codecs (use Codec.getCodecsList/Codec.getSelectedCodecsIds to retrive and set values)
   List<int>? aCodecs;
+
   /// Selected video codecs (use Codec.getCodecsList/Codec.getSelectedCodecsIds to retrive and set values)
   List<int>? vCodecs;
 
@@ -402,17 +473,18 @@ class AccountModel implements IPjsipConnectData {
   String get uri => '$sipExtension@$sipServer';
 
   ///Returns true when enabled audio/video encryption
-  bool get hasSecureMedia => (secureMedia!=null)&&(secureMedia!=SecureMedia.Disabled);
+  bool get hasSecureMedia =>
+      (secureMedia != null) && (secureMedia != SecureMedia.Disabled);
 
   ///Returns copy of the input account or new account when input is null
   factory AccountModel.cloneOrCreateNew(AccountModel? inAcc) {
-    if(inAcc != null) {
+    if (inAcc != null) {
       AccountModel acc = AccountModel.fromJson(inAcc.toJson());
       acc.myAccId = inAcc.myAccId;
       acc.regState = inAcc.regState;
       acc.regText = inAcc.regText;
       return acc;
-    } else{
+    } else {
       return AccountModel();
     }
   }
@@ -420,38 +492,39 @@ class AccountModel implements IPjsipConnectData {
   @override
   Map<String, dynamic> toJson() {
     Map<String, dynamic> ret = {
-      'accId' : myAccId,
+      'accId': myAccId,
       'sipServer': sipServer,
-      'sipExtension' : sipExtension,
-      'sipPassword' : sipPassword
+      'sipExtension': sipExtension,
+      'sipPassword': sipPassword,
     };
-    if(sipAuthId       !=null) ret['sipAuthId']       = sipAuthId;
-    if(sipProxy        !=null) ret['sipProxy']        = sipProxy;
-    if(displName       !=null) ret['displName']       = displName;
-    if(userAgent       !=null) ret['userAgent']       = userAgent;
-    if(expireTime      !=null) ret['expireTime']      = expireTime;
-    if(transport       !=null) ret['transport']       = transport?.id;
-    if(port            !=null) ret['port']            = port;
-    if(tlsCaCertPath   !=null) ret['tlsCaCertPath']   = tlsCaCertPath;
-    if(tlsUseSipScheme !=null) ret['tlsUseSipScheme'] = tlsUseSipScheme;
-    if(rtcpMuxEnabled  !=null) ret['rtcpMuxEnabled']  = rtcpMuxEnabled;
-    if(iceEnabled      !=null) ret['iceEnabled']      = iceEnabled;
-    if(instanceId      !=null) ret['instanceId']      = instanceId;
-    if(ringTonePath    !=null) ret['ringTonePath']    = ringTonePath;
-    if(keepAliveTime   !=null) ret['keepAliveTime']   = keepAliveTime;
-    if(rewriteContactIp!=null) ret['rewriteContactIp']= rewriteContactIp;
-    if(forceSipProxy   !=null) ret['forceSipProxy']   = forceSipProxy;
-    if(verifyIncomingCall!=null) ret['verifyIncomingCall']= verifyIncomingCall;
-    if(secureMedia     !=null) ret['secureMedia']     = secureMedia?.id;
-    if(stunServer      !=null) ret['stunServer']      = stunServer;
-    if(turnServer      !=null) ret['turnServer']      = turnServer;
-    if(turnUser        !=null) ret['turnUser']        = turnUser;
-    if(turnPassword    !=null) ret['turnPassword']    = turnPassword;
-    if(xContactUriParams !=null) ret['xContactUriParams'] = xContactUriParams;
-    if(upgradeToVideo  !=null) ret['upgradeToVideo']  = upgradeToVideo?.id;
-    if(xheaders        !=null) ret['xheaders']        = xheaders;
-    if(aCodecs         !=null) ret['aCodecs']         = aCodecs;
-    if(vCodecs         !=null) ret['vCodecs']         = vCodecs;
+    if (sipAuthId != null) ret['sipAuthId'] = sipAuthId;
+    if (sipProxy != null) ret['sipProxy'] = sipProxy;
+    if (displName != null) ret['displName'] = displName;
+    if (userAgent != null) ret['userAgent'] = userAgent;
+    if (expireTime != null) ret['expireTime'] = expireTime;
+    if (transport != null) ret['transport'] = transport?.id;
+    if (port != null) ret['port'] = port;
+    if (tlsCaCertPath != null) ret['tlsCaCertPath'] = tlsCaCertPath;
+    if (tlsUseSipScheme != null) ret['tlsUseSipScheme'] = tlsUseSipScheme;
+    if (rtcpMuxEnabled != null) ret['rtcpMuxEnabled'] = rtcpMuxEnabled;
+    if (iceEnabled != null) ret['iceEnabled'] = iceEnabled;
+    if (instanceId != null) ret['instanceId'] = instanceId;
+    if (ringTonePath != null) ret['ringTonePath'] = ringTonePath;
+    if (keepAliveTime != null) ret['keepAliveTime'] = keepAliveTime;
+    if (rewriteContactIp != null) ret['rewriteContactIp'] = rewriteContactIp;
+    if (forceSipProxy != null) ret['forceSipProxy'] = forceSipProxy;
+    if (verifyIncomingCall != null)
+      ret['verifyIncomingCall'] = verifyIncomingCall;
+    if (secureMedia != null) ret['secureMedia'] = secureMedia?.id;
+    if (stunServer != null) ret['stunServer'] = stunServer;
+    if (turnServer != null) ret['turnServer'] = turnServer;
+    if (turnUser != null) ret['turnUser'] = turnUser;
+    if (turnPassword != null) ret['turnPassword'] = turnPassword;
+    if (xContactUriParams != null) ret['xContactUriParams'] = xContactUriParams;
+    if (upgradeToVideo != null) ret['upgradeToVideo'] = upgradeToVideo?.id;
+    if (xheaders != null) ret['xheaders'] = xheaders;
+    if (aCodecs != null) ret['aCodecs'] = aCodecs;
+    if (vCodecs != null) ret['vCodecs'] = vCodecs;
     return ret;
   }
 
@@ -459,46 +532,74 @@ class AccountModel implements IPjsipConnectData {
   factory AccountModel.fromJson(Map<String, dynamic> jsonMap) {
     AccountModel acc = AccountModel();
     jsonMap.forEach((key, value) {
-      if((key == 'sipServer')&&(value is String))     { acc.sipServer = value;    } else
-      if((key == 'sipExtension')&&(value is String))  { acc.sipExtension = value; } else
-      if((key == 'sipPassword')&&(value is String))   { acc.sipPassword = value;  } else
-      if((key == 'sipAuthId')&&(value is String))     { acc.sipAuthId = value;    } else
-      if((key == 'sipProxy')&&(value is String))      { acc.sipProxy = value;     } else
-      if((key == 'displName')&&(value is String))     { acc.displName = value;    } else
-      if((key == 'userAgent')&&(value is String))     { acc.userAgent = value;    } else
-      if((key == 'expireTime')&&(value is int))       { acc.expireTime = value;   } else
-      if((key == 'transport')&&(value is int))        { acc.transport = SipTransport.from(value);  } else
-      if((key == 'port')&&(value is int))             { acc.port = value;           } else
-      if((key == 'tlsCaCertPath')&&(value is String)) { acc.tlsCaCertPath = value;  } else
-      if((key == 'tlsUseSipScheme')&&(value is bool)) { acc.tlsUseSipScheme = value;} else
-      if((key == 'rtcpMuxEnabled')&&(value is bool))  { acc.rtcpMuxEnabled = value; } else
-      if((key == 'iceEnabled')&&(value is bool))      { acc.iceEnabled = value;     } else
-      if((key == 'instanceId')&&(value is String))    { acc.instanceId = value;     } else
-      if((key == 'ringTonePath')&&(value is String))  { acc.ringTonePath = value;   } else
-      if((key == 'keepAliveTime')&&(value is int))    { acc.keepAliveTime = value;  } else
-      if((key == 'rewriteContactIp')&&(value is bool)) { acc.rewriteContactIp = value; } else
-      if((key == 'verifyIncomingCall')&&(value is bool)) { acc.verifyIncomingCall = value; } else
-      if((key == 'forceSipProxy')&&(value is bool))   { acc.forceSipProxy = value; } else
-      if((key == 'secureMedia')&&(value is int))      { acc.secureMedia = SecureMedia.from(value);  } else
-      if((key == 'stunServer')&&(value is String))    { acc.stunServer = value;   } else
-      if((key == 'turnServer')&&(value is String))    { acc.turnServer = value;   } else
-      if((key == 'turnUser')&&(value is String))      { acc.turnUser = value;     } else
-      if((key == 'turnPassword')&&(value is String))  { acc.turnPassword = value; } else
-      if((key == 'xContactUriParams')&&(value is Map)) { acc.xContactUriParams = Map<String, String>.from(value); } else
-      if((key == 'upgradeToVideo')&&(value is int))   { acc.upgradeToVideo = UpgradeToVideoMode.from(value);  } else
-      if((key == 'xheaders')&&(value is Map))         { acc.xheaders = Map<String, String>.from(value); } else
-      if((key == 'aCodecs')&&(value is List))         { acc.aCodecs = List<int>.from(value); } else
-      if((key == 'vCodecs')&&(value is List))         { acc.vCodecs = List<int>.from(value); }
+      if ((key == 'sipServer') && (value is String)) {
+        acc.sipServer = value;
+      } else if ((key == 'sipExtension') && (value is String)) {
+        acc.sipExtension = value;
+      } else if ((key == 'sipPassword') && (value is String)) {
+        acc.sipPassword = value;
+      } else if ((key == 'sipAuthId') && (value is String)) {
+        acc.sipAuthId = value;
+      } else if ((key == 'sipProxy') && (value is String)) {
+        acc.sipProxy = value;
+      } else if ((key == 'displName') && (value is String)) {
+        acc.displName = value;
+      } else if ((key == 'userAgent') && (value is String)) {
+        acc.userAgent = value;
+      } else if ((key == 'expireTime') && (value is int)) {
+        acc.expireTime = value;
+      } else if ((key == 'transport') && (value is int)) {
+        acc.transport = SipTransport.from(value);
+      } else if ((key == 'port') && (value is int)) {
+        acc.port = value;
+      } else if ((key == 'tlsCaCertPath') && (value is String)) {
+        acc.tlsCaCertPath = value;
+      } else if ((key == 'tlsUseSipScheme') && (value is bool)) {
+        acc.tlsUseSipScheme = value;
+      } else if ((key == 'rtcpMuxEnabled') && (value is bool)) {
+        acc.rtcpMuxEnabled = value;
+      } else if ((key == 'iceEnabled') && (value is bool)) {
+        acc.iceEnabled = value;
+      } else if ((key == 'instanceId') && (value is String)) {
+        acc.instanceId = value;
+      } else if ((key == 'ringTonePath') && (value is String)) {
+        acc.ringTonePath = value;
+      } else if ((key == 'keepAliveTime') && (value is int)) {
+        acc.keepAliveTime = value;
+      } else if ((key == 'rewriteContactIp') && (value is bool)) {
+        acc.rewriteContactIp = value;
+      } else if ((key == 'verifyIncomingCall') && (value is bool)) {
+        acc.verifyIncomingCall = value;
+      } else if ((key == 'forceSipProxy') && (value is bool)) {
+        acc.forceSipProxy = value;
+      } else if ((key == 'secureMedia') && (value is int)) {
+        acc.secureMedia = SecureMedia.from(value);
+      } else if ((key == 'stunServer') && (value is String)) {
+        acc.stunServer = value;
+      } else if ((key == 'turnServer') && (value is String)) {
+        acc.turnServer = value;
+      } else if ((key == 'turnUser') && (value is String)) {
+        acc.turnUser = value;
+      } else if ((key == 'turnPassword') && (value is String)) {
+        acc.turnPassword = value;
+      } else if ((key == 'xContactUriParams') && (value is Map)) {
+        acc.xContactUriParams = Map<String, String>.from(value);
+      } else if ((key == 'upgradeToVideo') && (value is int)) {
+        acc.upgradeToVideo = UpgradeToVideoMode.from(value);
+      } else if ((key == 'xheaders') && (value is Map)) {
+        acc.xheaders = Map<String, String>.from(value);
+      } else if ((key == 'aCodecs') && (value is List)) {
+        acc.aCodecs = List<int>.from(value);
+      } else if ((key == 'vCodecs') && (value is List)) {
+        acc.vCodecs = List<int>.from(value);
+      }
     });
     return acc;
   }
-
-}//AccountModel
-
+} //AccountModel
 
 /// Model invokes this callback when has changes which should be saved by the app
 typedef SaveChangesCallback = void Function(String jsonStr);
-
 
 /// Accounts list model (contains list of accounts, methods for managing them, handlers of library events)
 class AccountsModel extends ChangeNotifier implements IAccountsModel {
@@ -508,26 +609,34 @@ class AccountsModel extends ChangeNotifier implements IAccountsModel {
 
   AccountsModel([this._logs]) {
     PjsipConnectFlutter().accListener = AccStateListener(
-      regStateChanged : onRegStateChanged
+      regStateChanged: onRegStateChanged,
     );
   }
 
   /// Returns true when list of accounts is empty
   bool get isEmpty => _accounts.isEmpty;
+
   /// Returns number of accounts in list
   int get length => _accounts.length;
+
   /// Returns id of the selected account
-  int? get selAccountId => (_selAccountIndex==null) ? null : _accounts[_selAccountIndex!].myAccId;
+  int? get selAccountId =>
+      (_selAccountIndex == null) ? null : _accounts[_selAccountIndex!].myAccId;
+
   /// Returns account by its index in list
   AccountModel operator [](int i) => _accounts[i];
 
-  @protected List<AccountModel> get accounts => _accounts;
+  @protected
+  List<AccountModel> get accounts => _accounts;
 
   /// Callback which model invokes when accounts changes should be saved
   SaveChangesCallback? onSaveChanges;
 
   void _selectAccount(int? index) {
-    if((index != null)&&(index >=0)&&(index < length)&&(_selAccountIndex != index)){
+    if ((index != null) &&
+        (index >= 0) &&
+        (index < length) &&
+        (_selAccountIndex != index)) {
       _logs?.print('Account id: ${_accounts[index].myAccId} set as default');
       _selAccountIndex = index;
       _raiseSaveChanges();
@@ -537,19 +646,19 @@ class AccountsModel extends ChangeNotifier implements IAccountsModel {
 
   ///Set account as selected by its id
   void setSelectedAccountById(int accId) {
-    int index = _accounts.indexWhere((a) => a.myAccId==accId);
-    if(index != -1) _selectAccount(index);
+    int index = _accounts.indexWhere((a) => a.myAccId == accId);
+    if (index != -1) _selectAccount(index);
   }
 
   ///Set account as selected by its uri
   void setSelectedAccountByUri(String uri) {
-    int index = _accounts.indexWhere((a) => a.uri==uri);
-    if(index != -1) _selectAccount(index);
+    int index = _accounts.indexWhere((a) => a.uri == uri);
+    if (index != -1) _selectAccount(index);
   }
 
   @override
   int getAccId(String uri) {
-    int index = _accounts.indexWhere((a) => a.uri==uri);
+    int index = _accounts.indexWhere((a) => a.uri == uri);
     return (index != -1) ? _accounts[index].myAccId : 0;
   }
 
@@ -564,59 +673,64 @@ class AccountsModel extends ChangeNotifier implements IAccountsModel {
   }
 
   AccountModel? _findAccount(int accId) {
-    int index = _accounts.indexWhere((a) => a.myAccId==accId);
+    int index = _accounts.indexWhere((a) => a.myAccId == accId);
     return (index == -1) ? null : _accounts[index];
   }
 
   @override
   bool isUpgradeToVideoModeRecvOnly(String uri) {
-    int index = _accounts.indexWhere((a) => a.uri==uri);
-    return (index == -1) || (_accounts[index].upgradeToVideo==null)||
-           (_accounts[index].upgradeToVideo==UpgradeToVideoMode.RecvOnly);
+    int index = _accounts.indexWhere((a) => a.uri == uri);
+    return (index == -1) ||
+        (_accounts[index].upgradeToVideo == null) ||
+        (_accounts[index].upgradeToVideo == UpgradeToVideoMode.RecvOnly);
   }
 
   ///Add new account
-  Future<void> addAccount(AccountModel acc, {bool saveChanges=true}) async {
+  Future<void> addAccount(AccountModel acc, {bool saveChanges = true}) async {
     _logs?.print('Adding new account: ${acc.uri}');
 
     try {
       _generateRandomLocalPort(acc);
 
-      acc.myAccId  = await PjsipConnectFlutter().addAccount(acc) ?? 0;
-      acc.regState = (acc.expireTime==0) ? RegState.removed : RegState.inProgress;
-      acc.regText = (acc.expireTime==0) ? "Removed" : "In progress...";
+      acc.myAccId = await PjsipConnectFlutter().addAccount(acc) ?? 0;
+      acc.regState = (acc.expireTime == 0)
+          ? RegState.removed
+          : RegState.inProgress;
+      acc.regText = (acc.expireTime == 0) ? "Removed" : "In progress...";
 
       _integrateAddedAccount(acc, saveChanges);
-
     } on PlatformException catch (err) {
-      if(err.code == PjsipConnectFlutter.eDuplicateAccount.toString()) {
+      if (err.code == PjsipConnectFlutter.eDuplicateAccount.toString()) {
         int existingAccId = err.details;
-        int idx = _accounts.indexWhere((account) => (account.myAccId == existingAccId));
-        if(idx==-1) {
+        int idx = _accounts.indexWhere(
+          (account) => (account.myAccId == existingAccId),
+        );
+        if (idx == -1) {
           //This case is possible in Android when:
           // - activity started as usual and initialized SDK Core
           // - activity destroyed, but SDK Core is still running (as Service)
           // - activity started again, loaded saved state and has to sync it
           acc.myAccId = existingAccId;
-          acc.regState = (acc.expireTime==0) ? RegState.removed : RegState.success;
-          acc.regText = (acc.expireTime==0) ? "Removed" : "200 OK";
+          acc.regState = (acc.expireTime == 0)
+              ? RegState.removed
+              : RegState.success;
+          acc.regText = (acc.expireTime == 0) ? "Removed" : "200 OK";
           _integrateAddedAccount(acc, saveChanges);
         }
-      }
-      else {
+      } else {
         _logs?.print('Can\'t add account: ${err.code} ${err.message} ');
-        return Future.error((err.message==null) ? err.code : err.message!);
+        return Future.error((err.message == null) ? err.code : err.message!);
       }
     } on Exception catch (err) {
-         _logs?.print('Can\'t add account: ${err.toString()}');
-        return Future.error(err.toString());
+      _logs?.print('Can\'t add account: ${err.toString()}');
+      return Future.error(err.toString());
     }
   }
 
   void _integrateAddedAccount(AccountModel acc, bool saveChanges) {
     _accounts.add(acc);
     _logs?.print('Added successfully with id: ${acc.myAccId}');
-    if(saveChanges) {
+    if (saveChanges) {
       _selAccountIndex ??= 0;
       _raiseSaveChanges();
     }
@@ -624,8 +738,8 @@ class AccountsModel extends ChangeNotifier implements IAccountsModel {
   }
 
   void _generateRandomLocalPort(AccountModel acc) {
-    if((acc.port==null)||(acc.port==0)) {
-      acc.port = Random().nextInt(65535-1024) + 1024;
+    if ((acc.port == null) || (acc.port == 0)) {
+      acc.port = Random().nextInt(65535 - 1024) + 1024;
     }
   }
 
@@ -633,23 +747,26 @@ class AccountsModel extends ChangeNotifier implements IAccountsModel {
   @override
   Future<void> refreshRegistration() async {
     try {
-      for(AccountModel acc in _accounts) {
-        final int expireSec = (acc.expireTime==null) ? 300 : acc.expireTime!;
-        if(expireSec != 0) {
+      for (AccountModel acc in _accounts) {
+        final int expireSec = (acc.expireTime == null) ? 300 : acc.expireTime!;
+        if (expireSec != 0) {
           PjsipConnectFlutter().registerAccount(acc.myAccId, expireSec);
         }
       }
     } on PlatformException catch (err) {
-      _logs?.print('Can\'t refresh accounts registration: ${err.code} ${err.message}');
-      return Future.error((err.message==null) ? err.code : err.message!);
+      _logs?.print(
+        'Can\'t refresh accounts registration: ${err.code} ${err.message}',
+      );
+      return Future.error((err.message == null) ? err.code : err.message!);
     }
   }
 
   ///Update existing account with new params values
   Future<void> updateAccount(AccountModel acc) async {
-     try {
-      int index = _accounts.indexWhere((a) => a.myAccId==acc.myAccId);
-      if(index == -1) return Future.error("Account with specified id not found");
+    try {
+      int index = _accounts.indexWhere((a) => a.myAccId == acc.myAccId);
+      if (index == -1)
+        return Future.error("Account with specified id not found");
 
       await PjsipConnectFlutter().updateAccount(acc);
 
@@ -658,10 +775,9 @@ class AccountsModel extends ChangeNotifier implements IAccountsModel {
       notifyListeners();
       _raiseSaveChanges();
       _logs?.print('Updated account accId:${acc.myAccId}');
-
     } on PlatformException catch (err) {
       _logs?.print('Can\'t update account: ${err.code} ${err.message}');
-      return Future.error((err.message==null) ? err.code : err.message!);
+      return Future.error((err.message == null) ? err.code : err.message!);
     }
   }
 
@@ -673,17 +789,16 @@ class AccountsModel extends ChangeNotifier implements IAccountsModel {
 
       _accounts.removeAt(index);
 
-      if(_selAccountIndex! >= length) {
-        _selAccountIndex = _accounts.isEmpty ? null : length-1;
+      if (_selAccountIndex! >= length) {
+        _selAccountIndex = _accounts.isEmpty ? null : length - 1;
       }
 
       notifyListeners();
       _raiseSaveChanges();
       _logs?.print('Deleted account accId:$accId');
-
     } on PlatformException catch (err) {
       _logs?.print('Can\'t delete account: ${err.code} ${err.message}');
-      return Future.error((err.message==null) ? err.code : err.message!);
+      return Future.error((err.message == null) ? err.code : err.message!);
     }
   }
 
@@ -701,10 +816,9 @@ class AccountsModel extends ChangeNotifier implements IAccountsModel {
       notifyListeners();
       _raiseSaveChanges();
       _logs?.print('Unregistering accId:$accId');
-
     } on PlatformException catch (err) {
       _logs?.print('Can\'t unregister account: ${err.code} ${err.message}');
-      return Future.error((err.message==null) ? err.code : err.message!);
+      return Future.error((err.message == null) ? err.code : err.message!);
     }
   }
 
@@ -712,9 +826,11 @@ class AccountsModel extends ChangeNotifier implements IAccountsModel {
   Future<void> registerAccount(int index) async {
     try {
       //Send register request (use 300sec as expire time when account not registered)
-      int accId      = _accounts[index].myAccId;
+      int accId = _accounts[index].myAccId;
       int? expireSec = _accounts[index].expireTime;
-      if((expireSec == null)||(expireSec == 0)) { expireSec = 300; }
+      if ((expireSec == null) || (expireSec == 0)) {
+        expireSec = 300;
+      }
       await PjsipConnectFlutter().registerAccount(accId, expireSec);
 
       //Update UI
@@ -725,10 +841,9 @@ class AccountsModel extends ChangeNotifier implements IAccountsModel {
       //Save changes
       _raiseSaveChanges();
       _logs?.print('Refreshing registration accId:$accId');
-
     } on PlatformException catch (err) {
       _logs?.print('Can\'t register account: ${err.code} ${err.message}');
-      return Future.error((err.message==null) ? err.code : err.message!);
+      return Future.error((err.message == null) ? err.code : err.message!);
     }
   }
 
@@ -738,19 +853,21 @@ class AccountsModel extends ChangeNotifier implements IAccountsModel {
   }
 
   void _raiseSaveChanges() {
-    if(onSaveChanges != null) {
+    if (onSaveChanges != null) {
       Future.delayed(Duration.zero, () {
-          onSaveChanges?.call(storeToJson());
+        onSaveChanges?.call(storeToJson());
       });
     }
   }
 
   ///Handles registtation state changes when received response from server
   void onRegStateChanged(int accId, RegState state, String response) {
-    _logs?.print('onRegStateChanged accId:$accId resp:\'$response\' ${state.toString()}');
+    _logs?.print(
+      'onRegStateChanged accId:$accId resp:\'$response\' ${state.toString()}',
+    );
 
     AccountModel? acc = _findAccount(accId);
-    if(acc == null) return;
+    if (acc == null) return;
 
     acc.regText = response;
     acc.regState = state;
@@ -761,19 +878,19 @@ class AccountsModel extends ChangeNotifier implements IAccountsModel {
   /// Load list of accounts from json string
   Future<bool> loadFromJson(String accJsonStr) async {
     try {
-      if(accJsonStr.isEmpty) return false;
+      if (accJsonStr.isEmpty) return false;
 
       Map<String, dynamic> map = jsonDecode(accJsonStr);
-      if(!map.containsKey('accList')) return false;
+      if (!map.containsKey('accList')) return false;
 
       final parsedList = map['accList'];
       for (var parsedAcc in parsedList) {
-        await addAccount(AccountModel.fromJson(parsedAcc), saveChanges:false);
+        await addAccount(AccountModel.fromJson(parsedAcc), saveChanges: false);
       }
 
-      _selAccountIndex = map['selAccIndex']?? 0;
+      _selAccountIndex = map['selAccIndex'] ?? 0;
       return parsedList.isNotEmpty;
-    }catch (e) {
+    } catch (e) {
       _logs?.print('Can\'t load accounts from json. Err: $e');
       return false;
     }
@@ -783,37 +900,36 @@ class AccountsModel extends ChangeNotifier implements IAccountsModel {
   String storeToJson() {
     Map<String, dynamic> ret = {
       'selAccIndex': _selAccountIndex,
-      'accList': _accounts};
+      'accList': _accounts,
+    };
 
     return jsonEncode(ret);
   }
-
-}//AccountsModel
-
+} //AccountsModel
 
 /// VoiceMailModel
 class VoiceMailModel extends ChangeNotifier {
   final ILogsModel? _logs;
-  String _messages="";
+  String _messages = "";
 
   ///Is network connection lost (using for displaying some indicator on UI)
   String get messages => _messages;
 
   VoiceMailModel([this._logs]) {
     PjsipConnectFlutter().sipNotifyListener = SipNotifyListener(
-      notifyReceived : onSipNotifyReceived
+      notifyReceived: onSipNotifyReceived,
     );
   }
 
   /// Handle received NOTIFY message
   void onSipNotifyReceived(int accId, String hdrEvent, String body) {
     _logs?.print("onSipNotifyReceived accId:$accId event:'$hdrEvent' $body");
-    if(hdrEvent != "message-summary") return;
+    if (hdrEvent != "message-summary") return;
 
     const String msgTag = "Voice-Message:";
     int idx = body.indexOf(msgTag);
-    if(idx != -1) {
-      _messages = body.substring(idx+msgTag.length);
+    if (idx != -1) {
+      _messages = body.substring(idx + msgTag.length);
       notifyListeners();
     }
   }

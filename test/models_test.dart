@@ -24,14 +24,16 @@ void main() {
 
   group('AccountModel JSON', () {
     test('toJson/fromJson round-trip preserves fields', () {
-      final acc = AccountModel(
-          sipServer: 'sip.example.com',
-          sipExtension: '100',
-          sipPassword: 'secret',
-          expireTime: 300)
-        ..port = 5566
-        ..transport = SipTransport.tls
-        ..displName = 'Alice';
+      final acc =
+          AccountModel(
+              sipServer: 'sip.example.com',
+              sipExtension: '100',
+              sipPassword: 'secret',
+              expireTime: 300,
+            )
+            ..port = 5566
+            ..transport = SipTransport.tls
+            ..displName = 'Alice';
 
       final restored = AccountModel.fromJson(acc.toJson());
 
@@ -53,7 +55,10 @@ void main() {
       model.addListener(() => notified++);
 
       final acc = AccountModel(
-          sipServer: 'sip.example.com', sipExtension: '100', sipPassword: 'pw');
+        sipServer: 'sip.example.com',
+        sipExtension: '100',
+        sipPassword: 'pw',
+      );
       await model.addAccount(acc);
 
       expect(model.length, 1);
@@ -70,20 +75,27 @@ void main() {
       native.onCall = (call) {
         if (call.method == 'Account_Add') {
           throw PlatformException(
-              code: PjsipConnectFlutter.eDuplicateAccount.toString(),
-              message: 'Duplicate account',
-              details: 77); // id of the already-registered account
+            code: PjsipConnectFlutter.eDuplicateAccount.toString(),
+            message: 'Duplicate account',
+            details: 77,
+          ); // id of the already-registered account
         }
         return null;
       };
 
       final acc = AccountModel(
-          sipServer: 'sip.example.com', sipExtension: '100', sipPassword: 'pw');
+        sipServer: 'sip.example.com',
+        sipExtension: '100',
+        sipPassword: 'pw',
+      );
       await model.addAccount(acc);
 
       expect(model.length, 1);
-      expect(model[0].myAccId, 77,
-          reason: 'service-restart reconciliation must adopt the existing id');
+      expect(
+        model[0].myAccId,
+        77,
+        reason: 'service-restart reconciliation must adopt the existing id',
+      );
     });
 
     test('other PlatformException surfaces as Future.error', () async {
@@ -95,14 +107,21 @@ void main() {
         return null;
       };
 
-      expect(model.addAccount(AccountModel(sipServer: 's', sipExtension: 'e')),
-          throwsA('boom'));
+      expect(
+        model.addAccount(AccountModel(sipServer: 's', sipExtension: 'e')),
+        throwsA('boom'),
+      );
     });
 
     test('onRegStateChanged updates matching account and notifies', () async {
       final model = AccountsModel();
-      await model.addAccount(AccountModel(
-          sipServer: 'sip.example.com', sipExtension: '100', sipPassword: 'pw'));
+      await model.addAccount(
+        AccountModel(
+          sipServer: 'sip.example.com',
+          sipExtension: '100',
+          sipPassword: 'pw',
+        ),
+      );
       var notified = 0;
       model.addListener(() => notified++);
 
@@ -120,8 +139,13 @@ void main() {
 
     setUp(() async {
       accounts = AccountsModel();
-      await accounts.addAccount(AccountModel(
-          sipServer: 'sip.example.com', sipExtension: '100', sipPassword: 'pw'));
+      await accounts.addAccount(
+        AccountModel(
+          sipServer: 'sip.example.com',
+          sipExtension: '100',
+          sipPassword: 'pw',
+        ),
+      );
       calls = CallsModel(accounts);
     });
 
@@ -129,7 +153,13 @@ void main() {
       var newCallCallbackFired = false;
       calls.onNewIncomingCall = () => newCallCallbackFired = true;
 
-      calls.onIncomingSip(42, 5, false, '"Bob" <sip:200@peer.com>', 'sip:100@sip.example.com');
+      calls.onIncomingSip(
+        42,
+        5,
+        false,
+        '"Bob" <sip:200@peer.com>',
+        'sip:100@sip.example.com',
+      );
 
       expect(calls.length, 1);
       expect(calls[0].myCallId, 42);
@@ -170,12 +200,23 @@ void main() {
   group('CdrsModel persistence', () {
     test('store/load JSON round-trip', () async {
       final accounts = AccountsModel();
-      await accounts.addAccount(AccountModel(
-          sipServer: 'sip.example.com', sipExtension: '100', sipPassword: 'pw'));
+      await accounts.addAccount(
+        AccountModel(
+          sipServer: 'sip.example.com',
+          sipExtension: '100',
+          sipPassword: 'pw',
+        ),
+      );
       final cdrs = CdrsModel();
       final calls = CallsModel(accounts, null, cdrs);
 
-      calls.onIncomingSip(42, 5, false, '"Bob" <sip:200@peer.com>', 'sip:100@x.com');
+      calls.onIncomingSip(
+        42,
+        5,
+        false,
+        '"Bob" <sip:200@peer.com>',
+        'sip:100@x.com',
+      );
       calls.onTerminated(42, 486);
       await pumpEventQueue();
       expect(cdrs.length, 1);

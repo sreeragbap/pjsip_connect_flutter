@@ -77,7 +77,8 @@ void main() {
 
     final actual = <String, String>{
       'kMethodModuleInitialize': PjsipConnectPlatform.kMethodModuleInitialize,
-      'kMethodModuleUnInitialize': PjsipConnectPlatform.kMethodModuleUnInitialize,
+      'kMethodModuleUnInitialize':
+          PjsipConnectPlatform.kMethodModuleUnInitialize,
       'kMethodModuleHomeFolder': PjsipConnectPlatform.kMethodModuleHomeFolder,
       'kMethodModuleVersionCode': PjsipConnectPlatform.kMethodModuleVersionCode,
       'kMethodModuleVersion': PjsipConnectPlatform.kMethodModuleVersion,
@@ -101,27 +102,39 @@ void main() {
       'kMethodCallPlayTone': PjsipConnectPlatform.kMethodCallPlayTone,
       'kMethodCallStopPlayFile': PjsipConnectPlatform.kMethodCallStopPlayFile,
       'kMethodCallRecordFile': PjsipConnectPlatform.kMethodCallRecordFile,
-      'kMethodCallStopRecordFile': PjsipConnectPlatform.kMethodCallStopRecordFile,
+      'kMethodCallStopRecordFile':
+          PjsipConnectPlatform.kMethodCallStopRecordFile,
       'kMethodCallTransferBlind': PjsipConnectPlatform.kMethodCallTransferBlind,
-      'kMethodCallTransferAttended': PjsipConnectPlatform.kMethodCallTransferAttended,
+      'kMethodCallTransferAttended':
+          PjsipConnectPlatform.kMethodCallTransferAttended,
       'kMethodCallStopRingtone': PjsipConnectPlatform.kMethodCallStopRingtone,
-      'kMethodCallUpgradeToVideo': PjsipConnectPlatform.kMethodCallUpgradeToVideo,
-      'kMethodCallAcceptVideoUpgrade': PjsipConnectPlatform.kMethodCallAcceptVideoUpgrade,
+      'kMethodCallUpgradeToVideo':
+          PjsipConnectPlatform.kMethodCallUpgradeToVideo,
+      'kMethodCallAcceptVideoUpgrade':
+          PjsipConnectPlatform.kMethodCallAcceptVideoUpgrade,
       'kMethodCallBye': PjsipConnectPlatform.kMethodCallBye,
       'kMethodMixerSwitchToCall': PjsipConnectPlatform.kMethodMixerSwitchToCall,
-      'kMethodMixerMakeConference': PjsipConnectPlatform.kMethodMixerMakeConference,
+      'kMethodMixerMakeConference':
+          PjsipConnectPlatform.kMethodMixerMakeConference,
       'kMethodMessageSend': PjsipConnectPlatform.kMethodMessageSend,
       'kMethodSubscriptionAdd': PjsipConnectPlatform.kMethodSubscriptionAdd,
-      'kMethodSubscriptionDelete': PjsipConnectPlatform.kMethodSubscriptionDelete,
-      'kMethodDvcGetPushKitToken': PjsipConnectPlatform.kMethodDvcGetPushKitToken,
-      'kMethodDvcUpdCallKitDetails': PjsipConnectPlatform.kMethodDvcUpdCallKitDetails,
+      'kMethodSubscriptionDelete':
+          PjsipConnectPlatform.kMethodSubscriptionDelete,
+      'kMethodDvcGetPushKitToken':
+          PjsipConnectPlatform.kMethodDvcGetPushKitToken,
+      'kMethodDvcUpdCallKitDetails':
+          PjsipConnectPlatform.kMethodDvcUpdCallKitDetails,
       'kMethodDvcGetCallKitUUID': PjsipConnectPlatform.kMethodDvcGetCallKitUUID,
       'kMethodDvcEndCallKitCall': PjsipConnectPlatform.kMethodDvcEndCallKitCall,
-      'kMethodDvcSetForegroundMode': PjsipConnectPlatform.kMethodDvcSetForegroundMode,
-      'kMethodDvcIsForegroundMode': PjsipConnectPlatform.kMethodDvcIsForegroundMode,
+      'kMethodDvcSetForegroundMode':
+          PjsipConnectPlatform.kMethodDvcSetForegroundMode,
+      'kMethodDvcIsForegroundMode':
+          PjsipConnectPlatform.kMethodDvcIsForegroundMode,
       'kMethodDvcSyncCallsState': PjsipConnectPlatform.kMethodDvcSyncCallsState,
-      'kMethodDvcGetPlayoutNumber': PjsipConnectPlatform.kMethodDvcGetPlayoutNumber,
-      'kMethodDvcGetRecordNumber': PjsipConnectPlatform.kMethodDvcGetRecordNumber,
+      'kMethodDvcGetPlayoutNumber':
+          PjsipConnectPlatform.kMethodDvcGetPlayoutNumber,
+      'kMethodDvcGetRecordNumber':
+          PjsipConnectPlatform.kMethodDvcGetRecordNumber,
       'kMethodDvcGetVideoNumber': PjsipConnectPlatform.kMethodDvcGetVideoNumber,
       'kMethodDvcGetPlayout': PjsipConnectPlatform.kMethodDvcGetPlayout,
       'kMethodDvcGetRecording': PjsipConnectPlatform.kMethodDvcGetRecording,
@@ -131,9 +144,12 @@ void main() {
       'kMethodDvcSetVideo': PjsipConnectPlatform.kMethodDvcSetVideo,
       'kMethodDvcSetVideoParams': PjsipConnectPlatform.kMethodDvcSetVideoParams,
       'kMethodDvcSwitchCamera': PjsipConnectPlatform.kMethodDvcSwitchCamera,
-      'kMethodVideoRendererCreate': PjsipConnectPlatform.kMethodVideoRendererCreate,
-      'kMethodVideoRendererSetSrc': PjsipConnectPlatform.kMethodVideoRendererSetSrc,
-      'kMethodVideoRendererDispose': PjsipConnectPlatform.kMethodVideoRendererDispose,
+      'kMethodVideoRendererCreate':
+          PjsipConnectPlatform.kMethodVideoRendererCreate,
+      'kMethodVideoRendererSetSrc':
+          PjsipConnectPlatform.kMethodVideoRendererSetSrc,
+      'kMethodVideoRendererDispose':
+          PjsipConnectPlatform.kMethodVideoRendererDispose,
     };
     expect(actual, expected);
   });
@@ -183,7 +199,8 @@ void main() {
       'kOnCallTransferred': PjsipConnectPlatform.kOnCallTransferred,
       'kOnCallRedirected': PjsipConnectPlatform.kOnCallRedirected,
       'kOnCallVideoUpgraded': PjsipConnectPlatform.kOnCallVideoUpgraded,
-      'kOnCallVideoUpgradeRequested': PjsipConnectPlatform.kOnCallVideoUpgradeRequested,
+      'kOnCallVideoUpgradeRequested':
+          PjsipConnectPlatform.kOnCallVideoUpgradeRequested,
       'kOnCallSwitched': PjsipConnectPlatform.kOnCallSwitched,
       'kOnCallHeld': PjsipConnectPlatform.kOnCallHeld,
       'kOnCallKitMuted': PjsipConnectPlatform.kOnCallKitMuted,
