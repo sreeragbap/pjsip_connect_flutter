@@ -66,6 +66,10 @@ At this point **outgoing calls and foreground incoming calls already work**.
 
 ## Step 3 — VoIP push certificate (server side)
 
+> 🛠 Server-side details (APNs request format, push payload, `X-PushHint`
+> header, retry timing) are covered in the
+> [iOS Backend Configuration Guide](ios_backend_setup.md).
+
 1. In the Apple Developer portal create a **VoIP Services Certificate** for
    your bundle id and install it on your SIP server / push gateway.
 2. The server must send a **VoIP push through APNs** (not a regular alert
