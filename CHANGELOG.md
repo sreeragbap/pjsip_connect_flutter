@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.0.1
+
+- iOS: fixed PushKit wake-up — a VoIP push now restarts SIP transports and
+  refreshes registrations (`handleIpChange`), so the INVITE reaches a
+  suspended/killed app
+- Added [iOS Call Setup Guide](doc/ios_call_setup.md) and
+  [iOS Backend Configuration Guide](doc/ios_backend_setup.md)
+- Replaced the license file with the plugin's MIT license (bundled PJSIP
+  binaries remain GPLv2/commercial — see README)
+- Fixed static-analysis lints (dangling doc comments, non-constant
+  identifier names)
+
 ## 1.0.0
 
 Initial release.
