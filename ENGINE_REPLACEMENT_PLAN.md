@@ -194,6 +194,16 @@ private queue. `ensurePjThreadRegistered()` (thread-local `pj_thread_desc`)
 now registers foreign threads on entry. Verified: outgoing calls with
 CallKit enabled.
 
+**2026-07-31 — PushKit engine wake-up implemented (P5).** Code-trace of the
+full PushKit chain found `handleIncomingPush` was still a stub: a push waking
+a *suspended* app never refreshed registration, so the INVITE could miss the
+device (dead TLS socket). Now calls pjsua2 `handleIpChange()` (restarts
+transports + re-registers all accounts, per PJSIP's iOS guidance) with a
+per-account `setRegistration(true)` fallback. Everything else in the chain
+verified correct: immediate CallKit report on push, deferred answer/decline
+until INVITE matching, duplicate-call suppression, audio-session handling.
+Compile-verified via example iOS build; end-to-end device test with a real
+VoIP push still pending.
+
 **Next:** P4 video texture bridge, P6 BLF, P3 Opus, PushKit end-to-end
-re-check, §2 licensing decision + publishing prep (LICENSE, README,
-CHANGELOG, pubspec `repository:`, remove `publish_to: none`).
+device re-check, §2 licensing decision.

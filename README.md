@@ -176,6 +176,12 @@ transfer, DTMF, messaging, and presence subscriptions.
 CallKit gives calls the native iOS call UI; PushKit (VoIP push) wakes the app
 for incoming calls when it's killed or in the background.
 
+> 📖 For the complete step-by-step walkthrough (certificates, push payload
+> format, call matching, test checklist, troubleshooting) see the
+> [iOS Call Setup Guide](doc/ios_call_setup.md). For the server side (APNs
+> request, push payload, `X-PushHint` correlation) see the
+> [iOS Backend Configuration Guide](doc/ios_backend_setup.md).
+
 **1. Xcode setup** — in your Runner target enable the capabilities
 *Push Notifications* and *Background Modes → Voice over IP*, and upload a VoIP
 Services certificate to your push gateway.

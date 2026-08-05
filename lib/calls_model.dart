@@ -317,8 +317,9 @@ class CallModel extends ChangeNotifier implements IPjsipConnectData {
         (_remoteExt == null) ||
         (_isIncoming == null) ||
         (_hasSecureMedia == null) ||
-        (_hasVideo == null))
+        (_hasVideo == null)) {
       return null;
+    }
 
     //Create new inst
     CallModel call = CallModel(
@@ -682,8 +683,9 @@ class CallModel extends ChangeNotifier implements IPjsipConnectData {
   /// Handle response of the upgrade to video request
   void onVideoUpgraded(bool withVideo, bool isUpgradeModeRecvOnly) {
     //PjsipConnect mutes camera when upgrade video request received from remote side AND mode set as recvOnly
-    if (withVideo && isUpgradeModeRecvOnly && !_isUpgradingToVideo)
+    if (withVideo && isUpgradeModeRecvOnly && !_isUpgradingToVideo) {
       _isCamMuted = true;
+    }
 
     _hasVideo = withVideo;
     _isUpgradingToVideo = false;
@@ -739,8 +741,9 @@ class CallModel extends ChangeNotifier implements IPjsipConnectData {
 
   /// Handle player state changes
   bool onPlayerStateChanged(int playerId, PlayerState state) {
-    if (_playerId != playerId)
+    if (_playerId != playerId) {
       return false; //player doesn't belong to this call
+    }
     if (state != PlayerState.started) {
       _playerId = 0; //player finished or failed
       notifyListeners();
@@ -932,11 +935,11 @@ class CallsModel extends ChangeNotifier
 
   /// Handle pushkit notification received by library (parse payload, update CallKit window, wait on SIP call)
   void onIncomingPush(
-    String callkit_CallUUID,
+    String callkitCallUUID,
     Map<String, dynamic> pushPayload,
   ) {
     _logs?.print(
-      'onIncomingPush callkit_CallUUID:$callkit_CallUUID $pushPayload',
+      'onIncomingPush callkitCallUUID:$callkitCallUUID $pushPayload',
     );
   }
 
@@ -1125,8 +1128,9 @@ class CallsModel extends ChangeNotifier
   /// Handle call switched event raised by library
   void onPlayerStateChanged(int playerId, PlayerState state) {
     _logs?.print('onPlayerStateChanged playerId:$playerId $state');
-    for (final call in _callItems)
+    for (final call in _callItems) {
       if (call.onPlayerStateChanged(playerId, state)) break;
+    }
   }
 
   /// Serialize list of accounts+calls to json
@@ -1135,7 +1139,9 @@ class CallsModel extends ChangeNotifier
     Map<String, dynamic> ret = {};
     if (_callItems.isNotEmpty) {
       List<Map<String, dynamic>> callsList = [];
-      for (final call in _callItems) callsList.add(call.toJson());
+      for (final call in _callItems) {
+        callsList.add(call.toJson());
+      }
       ret['callsList'] = callsList;
       ret['switchedCallId'] = _switchedCallId;
     }

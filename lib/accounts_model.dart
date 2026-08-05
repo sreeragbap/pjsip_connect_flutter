@@ -106,13 +106,16 @@ class InitData implements IPjsipConnectData {
     if (enablePushKit != null) ret['enablePushKit'] = enablePushKit;
     if (enableCallKit != null) ret['enableCallKit'] = enableCallKit;
     if (enableCallKitMute != null) ret['enableCallKitMute'] = enableCallKitMute;
-    if (enableCallKitReportCallAsVideo != null)
+    if (enableCallKitReportCallAsVideo != null) {
       ret['enableCallKitReportCallAsVideo'] = enableCallKitReportCallAsVideo;
-    if (triggerOnIncomingCallByNotifOnly != null)
+    }
+    if (triggerOnIncomingCallByNotifOnly != null) {
       ret['triggerOnIncomingCallByNotifOnly'] =
           triggerOnIncomingCallByNotifOnly;
-    if (enableCallKitRecents != null)
+    }
+    if (enableCallKitRecents != null) {
       ret['enableCallKitRecents'] = enableCallKitRecents;
+    }
     if (serviceClassName != null) ret['serviceClassName'] = serviceClassName;
     if (unregOnDestroy != null) ret['unregOnDestroy'] = unregOnDestroy;
     if (useDnsSrv != null) ret['useDnsSrv'] = useDnsSrv;
@@ -513,8 +516,9 @@ class AccountModel implements IPjsipConnectData {
     if (keepAliveTime != null) ret['keepAliveTime'] = keepAliveTime;
     if (rewriteContactIp != null) ret['rewriteContactIp'] = rewriteContactIp;
     if (forceSipProxy != null) ret['forceSipProxy'] = forceSipProxy;
-    if (verifyIncomingCall != null)
+    if (verifyIncomingCall != null) {
       ret['verifyIncomingCall'] = verifyIncomingCall;
+    }
     if (secureMedia != null) ret['secureMedia'] = secureMedia?.id;
     if (stunServer != null) ret['stunServer'] = stunServer;
     if (turnServer != null) ret['turnServer'] = turnServer;
@@ -765,8 +769,9 @@ class AccountsModel extends ChangeNotifier implements IAccountsModel {
   Future<void> updateAccount(AccountModel acc) async {
     try {
       int index = _accounts.indexWhere((a) => a.myAccId == acc.myAccId);
-      if (index == -1)
+      if (index == -1) {
         return Future.error("Account with specified id not found");
+      }
 
       await PjsipConnectFlutter().updateAccount(acc);
 

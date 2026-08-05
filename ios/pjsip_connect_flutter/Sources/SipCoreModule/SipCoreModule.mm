@@ -570,8 +570,24 @@ void CoreBuddy::onBuddyState() {
 }
 
 - (void)handleIncomingPush {
-    // PushKit-triggered re-registration lands at P5; nothing engine-side yet.
-    [self writeLog:@"handleIncomingPush: PJSIP engine P5 pending"];
+    // A VoIP push means an INVITE is on its way, but iOS closed our sockets
+    // while the app was suspended — a plain re-REGISTER could try to reuse the
+    // dead TCP/TLS transport. handleIpChange() shuts transports down, restarts
+    // the listener, and refreshes every account registration (the sequence
+    // PJSIP recommends for waking on iOS).
+    if (!_eng->initialized) return;
+    ensurePjThreadRegistered();
+    try {
+        IpChangeParam prm;
+        [self writeLog:@"handleIncomingPush: restarting transports + re-registering"];
+        _eng->ep->handleIpChange(prm);
+    } catch (Error &err) {
+        _eng->lastError = err.info();
+        [self writeLog:@"handleIncomingPush: handleIpChange failed, falling back to re-REGISTER"];
+        for (auto &kv : _eng->accounts) {
+            try { kv.second->setRegistration(true); } catch (Error &) {}
+        }
+    }
 }
 
 ////////////////////////////////////////////////////////////////////// accounts

@@ -597,7 +597,7 @@ class CallStateListener {
   incoming;
 
   ///Triggered by library when received remote push notification (iOS only)
-  void Function(String callkit_CallUUID, Map<String, dynamic> pushPayload)?
+  void Function(String callkitCallUUID, Map<String, dynamic> pushPayload)?
   incomingPush;
 
   ///Triggered by library when call accepted by tap on notification (Android only)
@@ -1151,17 +1151,17 @@ class PjsipConnectFlutter {
   }
 
   ///Update CallKit call details (app can invoke it twice:
-  /// - first when got and extracted some data from push payload and second - when received INVITE and got 'sip_callId')
+  /// - first when got and extracted some data from push payload and second - when received INVITE and got 'sipCallId')
   Future<void>? updateCallKitCallDetails(
-    String callkit_CallUUID,
-    int? sip_callId, [
+    String callkitCallUUID,
+    int? sipCallId, [
     String? localizedCallerName,
     String? genericHandle,
     bool? withVideo,
   ]) {
     return _platform.updateCallKitCallDetails(
-      callkit_CallUUID,
-      sip_callId,
+      callkitCallUUID,
+      sipCallId,
       localizedCallerName,
       genericHandle,
       withVideo,
@@ -1169,13 +1169,13 @@ class PjsipConnectFlutter {
   }
 
   ///Get CallKit call UUID assigned with SIP callId (iOS only)
-  Future<String?>? getCallKitCallUUID(int sip_callId) {
-    return _platform.getCallKitCallUUID(sip_callId);
+  Future<String?>? getCallKitCallUUID(int sipCallId) {
+    return _platform.getCallKitCallUUID(sipCallId);
   }
 
   ///End CallKit call specified by its UUID (Allowed to use only when missed SIP signalling for that call)
-  Future<void>? endCallKitCall(String callkit_CallUUID) {
-    return _platform.endCallKitCall(callkit_CallUUID);
+  Future<void>? endCallKitCall(String callkitCallUUID) {
+    return _platform.endCallKitCall(callkitCallUUID);
   }
 
   //-//////////////////////////////////////////////////////////////////////////////////////
