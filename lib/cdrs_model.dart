@@ -108,7 +108,7 @@ typedef SaveChangesCallback = void Function(String jsonStr);
 
 /// CDRs list model (contains list of recent calls, methods for managing them)
 class CdrsModel extends ChangeNotifier {
-  CdrsModel({maxItems = 10}) : kMaxItems = maxItems;
+  CdrsModel({int maxItems = 10}) : kMaxItems = maxItems;
   final List<CdrModel> _cdrItems = [];
   final int kMaxItems;
 
