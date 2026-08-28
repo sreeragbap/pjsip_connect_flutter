@@ -1,14 +1,15 @@
 // ignore_for_file: constant_identifier_names
 
-import 'src/pjsip_connect_platform.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/material.dart';
-
-import 'dart:math';
 import 'dart:convert';
+import 'dart:math';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
 import 'logs_model.dart';
-import 'pjsip_connect.dart';
 import 'network_model.dart';
+import 'pjsip_connect.dart';
+import 'src/pjsip_connect_platform.dart';
 
 /// Holds lists of parameters using for initialization sipconnect module
 class InitData implements IPjsipConnectData {
@@ -770,7 +771,7 @@ class AccountsModel extends ChangeNotifier implements IAccountsModel {
     try {
       int index = _accounts.indexWhere((a) => a.myAccId == acc.myAccId);
       if (index == -1) {
-        return Future.error("Account with specified id not found");
+        return await Future.error("Account with specified id not found");
       }
 
       await PjsipConnectFlutter().updateAccount(acc);
