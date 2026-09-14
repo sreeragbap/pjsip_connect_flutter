@@ -36,7 +36,7 @@ Add the dependency:
 
 ```yaml
 dependencies:
-  pjsip_connect_flutter: ^1.0.1
+  pjsip_connect_flutter: ^1.0.2
 ```
 
 Initialize the engine and register an account:

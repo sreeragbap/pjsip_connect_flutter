@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.2
+
+- **Android 15+ (16 KB page size) support.** The bundled native libraries are
+  now 16 KB aligned, as required by Google Play for apps targeting Android 15+.
+  Without this the SIP engine could fail to load on 16 KB page devices.
+- Fixed analysis warnings and some deprecated Flutter API usages.
+
 ## 1.0.1
 
 - iOS: fixed PushKit wake-up — a VoIP push now restarts SIP transports and
