@@ -36,8 +36,8 @@ class _CallsListPageState extends State<CallsListPage> {
     if (calls.isEmpty) {
       _callDurationTimer?.cancel();
       _callDurationTimer = null;
-    } else if (_callDurationTimer == null) {
-      _callDurationTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+    } else {
+      _callDurationTimer ??= Timer.periodic(const Duration(seconds: 1), (timer) {
         calls.calcDuration();
       });
     }

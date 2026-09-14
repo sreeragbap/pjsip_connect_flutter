@@ -51,7 +51,7 @@ class _CallAddPageState extends State<CallAddPage> {
   Widget _buildBody(AccountsModel accounts) {
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       Container(
-          color: Theme.of(context).dialogBackgroundColor,
+          color: Theme.of(context).dialogTheme.backgroundColor,
           padding: const EdgeInsets.fromLTRB(10, 0, 10, 5),
           child: Column(children: [
             _buildAccountsMenu(accounts),
@@ -72,7 +72,7 @@ class _CallAddPageState extends State<CallAddPage> {
         border: UnderlineInputBorder(),
         labelText: 'Select account',
       ),
-      value: accounts.selAccountId,
+      initialValue: accounts.selAccountId,
       onChanged: (int? accId) {
         accounts.setSelectedAccountById(accId!);
       },
@@ -230,6 +230,7 @@ class _CallAddPageState extends State<CallAddPage> {
               _errText = "";
             }))
         .catchError((error) {
+      if (!mounted) return;
       setState(() {
         _errText = error.toString();
       });

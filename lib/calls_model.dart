@@ -293,42 +293,42 @@ class CallModel extends ChangeNotifier implements IPjsipConnectData {
   /// Creates instance of CallModel with values read from json
   static CallModel? fromJson(Map<dynamic, dynamic> jsonMap, ILogsModel? logs) {
     //Read required attributes
-    int? _myCallId;
-    String? _accUri, _remoteExt;
-    bool? _isIncoming, _hasSecureMedia, _hasVideo;
+    int? myCallId;
+    String? accUri, remoteExt;
+    bool? isIncoming, hasSecureMedia, hasVideo;
     jsonMap.forEach((key, value) {
       if ((key == 'myCallId') && (value is int)) {
-        _myCallId = value;
+        myCallId = value;
       } else if ((key == 'accUri') && (value is String)) {
-        _accUri = value;
+        accUri = value;
       } else if ((key == 'remoteExt') && (value is String)) {
-        _remoteExt = value;
+        remoteExt = value;
       } else if ((key == 'isIncoming') && (value is bool)) {
-        _isIncoming = value;
+        isIncoming = value;
       } else if ((key == 'hasSecureMedia') && (value is bool)) {
-        _hasSecureMedia = value;
+        hasSecureMedia = value;
       } else if ((key == 'hasVideo') && (value is bool)) {
-        _hasVideo = value;
+        hasVideo = value;
       }
     });
     //Check if present
-    if ((_myCallId == null) ||
-        (_accUri == null) ||
-        (_remoteExt == null) ||
-        (_isIncoming == null) ||
-        (_hasSecureMedia == null) ||
-        (_hasVideo == null)) {
+    if ((myCallId == null) ||
+        (accUri == null) ||
+        (remoteExt == null) ||
+        (isIncoming == null) ||
+        (hasSecureMedia == null) ||
+        (hasVideo == null)) {
       return null;
     }
 
     //Create new inst
     CallModel call = CallModel(
-      _myCallId!,
-      _accUri!,
-      _remoteExt!,
-      _isIncoming!,
-      _hasSecureMedia!,
-      _hasVideo!,
+      myCallId!,
+      accUri!,
+      remoteExt!,
+      isIncoming!,
+      hasSecureMedia!,
+      hasVideo!,
       logs,
     );
 

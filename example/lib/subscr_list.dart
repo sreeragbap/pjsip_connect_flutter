@@ -62,7 +62,7 @@ class _SubscrListPageState extends State<SubscrListPage> {
               leading: _getSubscrIcon(blfSubscr.state, blfSubscr.blfState),
               title: Text('${blfSubscr.label} (${blfSubscr.toExt})',
                   style: Theme.of(context).textTheme.titleSmall),
-              subtitle: Text('${blfSubscr.blfState.name}', //subscr.response
+              subtitle: Text(blfSubscr.blfState.name, //subscr.response
                   style: const TextStyle(
                       fontSize: 12.0,
                       fontStyle: FontStyle.italic,
@@ -121,6 +121,7 @@ class _SubscrListPageState extends State<SubscrListPage> {
         .read<SubscriptionsModel>()
         .deleteSubscription(index)
         .catchError((error) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(error)));
     });

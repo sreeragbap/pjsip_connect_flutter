@@ -13,8 +13,8 @@ class AppBlfSubscrModel extends SubscriptionModel {
             mimeSubType: "dialog-info+xml",
             eventType: "dialog");
 
-  AppBlfSubscrModel.fromJson(Map<String, dynamic> jsonMap)
-      : super.fromJson(jsonMap);
+  AppBlfSubscrModel.fromJson(super.jsonMap)
+      : super.fromJson();
 
   BLFState _blfState = BLFState.unknown;
 

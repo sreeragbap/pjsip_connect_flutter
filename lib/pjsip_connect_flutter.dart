@@ -4,7 +4,7 @@
 /// top of a PJSIP-based engine. Import this single file to access the full
 /// public API (the low-level [PjsipConnectFlutter] facade, the `ChangeNotifier`
 /// models, and the video widgets).
-library pjsip_connect_flutter;
+library;
 
 // `SaveChangesCallback` is declared identically in several model files; export it
 // once (from accounts_model) and hide the duplicates to avoid an ambiguous export.

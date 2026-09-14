@@ -1,3 +1,1 @@
-linter:
-  rules:
-    - public_member_api_docs
+include: package:flutter_lints/flutter.yaml

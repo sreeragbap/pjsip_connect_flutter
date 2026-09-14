@@ -165,8 +165,9 @@ class _MyAppState extends State<MyApp> {
         .writeRingtoneAsset(); //after initialize PjsipConnect as uses its 'homeFolder'
     _readSavedState();
 
-    if (Platform.isAndroid)
+    if (Platform.isAndroid) {
       _listener = AppLifecycleListener(onInactive: _onAndroidAppInactive);
+    }
   }
 
   @override
@@ -273,6 +274,8 @@ class _MyAppState extends State<MyApp> {
     await accs.loadFromJson(accJsonStr);
     subs.loadFromJson(subsJsonStr);
     cdrs.loadFromJson(cdrsJsonStr);
+
+    if (!mounted) return;
 
     //Assign contact name resolver
     context.read<AppCallsModel>().onResolveContactName = _resolveContactName;

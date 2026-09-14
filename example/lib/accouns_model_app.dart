@@ -6,6 +6,9 @@ import 'package:pjsip_connect_flutter/pjsip_connect.dart';
 
 /// Accounts list model (contains app level code of managing accіounts)
 class AppAccountsModel extends AccountsModel {
+  // Not a super parameter: AccountsModel._logs is private to the plugin
+  // library, so this subclass keeps its own reference to log from here.
+  // ignore: use_super_parameters
   AppAccountsModel([this._logs]) : super(_logs);
   final ILogsModel? _logs;
 

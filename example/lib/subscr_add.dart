@@ -26,8 +26,9 @@ class _SubscrAddPageState extends State<SubscrAddPage> {
   void initState() {
     super.initState();
     final accounts = context.read<AppAccountsModel>();
-    if (accounts.selAccountId != null)
+    if (accounts.selAccountId != null) {
       _subscr.fromAccId = accounts.selAccountId!;
+    }
   }
 
   @override
@@ -72,7 +73,7 @@ class _SubscrAddPageState extends State<SubscrAddPage> {
     return ButtonTheme(
         child: DropdownButtonFormField<int>(
       decoration: const InputDecoration(labelText: 'Select account:'),
-      value: _subscr.fromAccId,
+      initialValue: _subscr.fromAccId,
       onChanged: (int? accId) {
         setState(() {
           if (accId != null) _subscr.fromAccId = accId;
@@ -130,6 +131,7 @@ class _SubscrAddPageState extends State<SubscrAddPage> {
               _errText = "";
             }))
         .catchError((error) {
+      if (!mounted) return;
       setState(() {
         _errText = error.toString();
       });

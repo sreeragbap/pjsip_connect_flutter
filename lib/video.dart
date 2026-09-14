@@ -155,7 +155,7 @@ class PjsipConnectVideoRenderer extends ValueNotifier<RTCVideoValue> {
 
 /// PjsipConnectVideoView - widget which displays specified renderer
 class PjsipConnectVideoView extends StatelessWidget {
-  PjsipConnectVideoView(this._renderer, {Key? key}) : super(key: key);
+  const PjsipConnectVideoView(this._renderer, {super.key});
   final PjsipConnectVideoRenderer _renderer;
 
   @override

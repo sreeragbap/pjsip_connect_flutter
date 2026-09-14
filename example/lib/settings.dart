@@ -74,7 +74,7 @@ class _SettingsPageState extends State<SettingsPage> {
               labelText: labelText,
               contentPadding: const EdgeInsets.all(0),
             ),
-            value: (selIndex < 0) ? null : selIndex,
+            initialValue: (selIndex < 0) ? null : selIndex,
             onChanged: onChanged,
             items:
                 dvcList.map((element) => mediaDeviceItem(element)).toList()));

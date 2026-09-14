@@ -170,6 +170,7 @@ class _AccountsListPageState extends State<AccountsListPage> {
         return;
     }
     f.catchError((error) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(error)));
     });

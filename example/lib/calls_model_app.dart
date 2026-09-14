@@ -32,6 +32,9 @@ class CallMatcher {
 /// Calls list model (contains app level code of managing calls)
 /// Copy this class into own app and redesign as you need
 class AppCallsModel extends CallsModel {
+  // Not super parameters: CallsModel._logs is private to the plugin library,
+  // so this subclass keeps its own reference to log from here.
+  // ignore: use_super_parameters
   AppCallsModel(IAccountsModel accounts, [this._logs, CdrsModel? cdrs])
       : super(accounts, _logs, cdrs);
 
@@ -57,7 +60,7 @@ class AppCallsModel extends CallsModel {
     String genericHandle = apsPayload?["callerNumber"] ?? "genericHandle";
     String localizedCallerName = apsPayload?["callerName"] ?? "callerName";
     bool withVideo = apsPayload?["withVideo"] ?? false;
-    int? sipCallId = null;
+    int? sipCallId;
 
     int index = _callMatchers.indexWhere((c) => c.push_Hint == pushHint);
     if (index != -1) {

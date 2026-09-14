@@ -33,11 +33,11 @@ class AccountPageState extends State<AccountPage> {
     super.didChangeDependencies();
     if (!_isInitialized) {
       _isInitialized = true;
-      AccountModel? _inAcc =
+      AccountModel? inAcc =
           ModalRoute.of(context)!.settings.arguments as AccountModel?;
 
       //Clone account if exist (allows to drop copy when user canceled changes) or create new one
-      _account = AccountModel.cloneOrCreateNew(_inAcc);
+      _account = AccountModel.cloneOrCreateNew(inAcc);
       _audioCodecsList = Codec.getCodecsList(_account.aCodecs, audio: true);
       _videoCodecsList = Codec.getCodecsList(_account.vCodecs, audio: false);
     }
@@ -186,8 +186,9 @@ class AccountPageState extends State<AccountPage> {
       },
       onChanged: (String? value) {
         setState(() {
-          if ((value != null) && value.isNotEmpty)
+          if ((value != null) && value.isNotEmpty) {
             _account.sipExtension = value;
+          }
         });
       },
       initialValue: _account.sipExtension,
@@ -235,8 +236,9 @@ class AccountPageState extends State<AccountPage> {
       decoration: const InputDecoration(labelText: 'Expire time (seconds)'),
       onChanged: (String? val) {
         setState(() {
-          if ((val != null) && val.isNotEmpty)
+          if ((val != null) && val.isNotEmpty) {
             _account.expireTime = int.parse(val);
+          }
         });
       },
       initialValue: _account.expireTime?.toString(),
@@ -329,8 +331,9 @@ class AccountPageState extends State<AccountPage> {
         decoration: _buildDecoration('Sip port'),
         onChanged: (String? val) {
           setState(() {
-            if ((val != null) && (val.isNotEmpty))
+            if ((val != null) && (val.isNotEmpty)) {
               _account.port = int.parse(val);
+            }
           });
         },
         initialValue: _account.port?.toString(),
@@ -345,8 +348,9 @@ class AccountPageState extends State<AccountPage> {
           decoration: _buildDecoration('Keep alive time (seconds)'),
           onChanged: (String? val) {
             setState(() {
-              if ((val != null) && val.isNotEmpty)
+              if ((val != null) && val.isNotEmpty) {
                 _account.keepAliveTime = int.parse(val);
+              }
             });
           },
           initialValue: _account.keepAliveTime?.toString()),
@@ -379,11 +383,8 @@ class AccountPageState extends State<AccountPage> {
                 title: Text(Codec.name(items[c].id)),
                 trailing: const Icon(Icons.drag_handle)),
         ],
-        onReorder: (int oldIndex, int newIndex) {
+        onReorderItem: (int oldIndex, int newIndex) {
           setState(() {
-            if (oldIndex < newIndex) {
-              newIndex -= 1;
-            }
             final Codec item = items.removeAt(oldIndex);
             items.insert(newIndex, item);
           });
@@ -550,7 +551,9 @@ class AccountPageState extends State<AccountPage> {
     if (form == null ||
         !form.validate() ||
         !Codec.validateSel(_videoCodecsList) ||
-        !Codec.validateSel(_audioCodecsList)) return;
+        !Codec.validateSel(_audioCodecsList)) {
+      return;
+    }
 
     _account.aCodecs = Codec.getSelectedCodecsIds(_audioCodecsList);
     _account.vCodecs = Codec.getSelectedCodecsIds(_videoCodecsList);
@@ -564,6 +567,7 @@ class AccountPageState extends State<AccountPage> {
         ? context.read<AppAccountsModel>().addAccount(_account)
         : context.read<AppAccountsModel>().updateAccount(_account);
     action.then((_) {
+      if (!mounted) return;
       Navigator.pop(context, true);
     }).catchError((error) {
       setState(() {

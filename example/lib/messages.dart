@@ -130,7 +130,7 @@ class _MessagesListPagePageState extends State<MessagesListPage> {
       isExpanded: true,
       decoration: const InputDecoration(
           border: UnderlineInputBorder(), labelText: 'Source account'),
-      value: accounts.selAccountId,
+      initialValue: accounts.selAccountId,
       onChanged: (int? accId) {
         accounts.setSelectedAccountById(accId!);
       },
@@ -190,6 +190,7 @@ class _MessagesListPagePageState extends State<MessagesListPage> {
               _errText = "";
             }))
         .catchError((error) {
+      if (!mounted) return;
       setState(() {
         _errText = error.toString();
       });
