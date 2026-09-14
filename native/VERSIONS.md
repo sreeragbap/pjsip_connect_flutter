@@ -7,7 +7,7 @@ re-run the full build so the produced binaries stay reproducible.
 |---|---|---|
 | pjproject (PJSIP) | **2.15.1** | SIP + media engine (pjsua2 API) |
 | OpenSSL | **3.3.2** | TLS transport + DTLS-SRTP (static, per ABI/slice) |
-| Android NDK | **26.3.11579264** (r26d) | Stable LTS; PJSIP builds clean |
+| Android NDK | **27.0.12077973** (r27) | First NDK defaulting to 16 KB page alignment, required by Google Play for API 35+ targets since 2025-11-01 |
 | Android min API | **21** | Matches the plugin's `minSdkVersion` |
 | Android ABIs | armeabi-v7a, arm64-v8a, x86, x86_64 | Same 4 the old engine AAR shipped |
 | iOS min | **14.0** | Matches the podspec floor |

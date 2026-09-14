@@ -2,8 +2,12 @@
 #
 # Builds PJSIP (pjsua2 + JNI) for Android into the plugin's jniLibs.
 #
-# Prereqs: Android NDK r26 + a JDK (javac on PATH); macOS/Linux; network access.
-# Usage:   ANDROID_NDK_ROOT=/path/to/ndk/26.3.11579264 ./build-android.sh
+# Prereqs: Android NDK r27+ + a JDK (javac on PATH); macOS/Linux; network access.
+# Usage:   ANDROID_NDK_ROOT=/path/to/ndk/27.0.12077973 ./build-android.sh
+#
+# NDK r27+ is required so the bundled libc++_shared.so ships with 16 KB LOAD
+# alignment; r26 and older ship a 4 KB one, which Google Play rejects for apps
+# targeting Android 15+ (API 35).
 #
 # Output:
 #   ../android/src/main/jniLibs/<abi>/libpjsua2.so
@@ -23,8 +27,13 @@ SSL_SRC="$WORK/openssl-$SSL_VERSION"
 JNILIBS="$HERE/../android/src/main/jniLibs"
 JAVA_OUT="$HERE/../android/src/main/java"
 
-: "${ANDROID_NDK_ROOT:?Set ANDROID_NDK_ROOT to your NDK r26 path}"
+: "${ANDROID_NDK_ROOT:?Set ANDROID_NDK_ROOT to your NDK r27+ path}"
 command -v javac >/dev/null || { echo "error: javac (JDK) not on PATH"; exit 1; }
+
+# Google Play requires 16 KB LOAD-segment alignment for apps targeting
+# Android 15+ (API 35) since 2025-11-01. NDK r27+ does this by default; the
+# explicit flag keeps the output correct on older linkers too.
+PAGE_ALIGN_LDFLAGS="-Wl,-z,max-page-size=16384"
 
 TOOLCHAIN="$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/darwin-x86_64"
 
@@ -97,7 +106,10 @@ for ABI in "${ABIS[@]}"; do
     # libc++_shared.so next to it, and generates the org.pjsip.pjsua2 sources.
     # Its output/ dir is NOT covered by distclean — clear it so the wrapper
     # object from the previous ABI can't leak into this ABI's link.
-    ( cd pjsip-apps/src/swig/java && rm -rf output android/pjsua2/src/main/jniLibs && make )
+    # LDFLAGS is appended to the libpjsua2.so link line (see MY_LDFLAGS in that
+    # Makefile), which is where the 16 KB page alignment has to be applied.
+    ( cd pjsip-apps/src/swig/java && rm -rf output android/pjsua2/src/main/jniLibs \
+        && make LDFLAGS="$PAGE_ALIGN_LDFLAGS" )
   )
 
   # 3) Collect the .so + its libc++_shared.so dependency for this ABI.
@@ -105,6 +117,23 @@ for ABI in "${ABIS[@]}"; do
   find "$SRC/pjsip-apps/src/swig/java" -name "libpjsua2.so"   -exec cp -f {} "$JNILIBS/$ABI/" \;
   find "$SRC/pjsip-apps/src/swig/java" -name "libc++_shared.so" -exec cp -f {} "$JNILIBS/$ABI/" \;
   [ -f "$JNILIBS/$ABI/libpjsua2.so" ] || { echo "error: libpjsua2.so not produced for $ABI"; exit 1; }
+
+  # Fail loudly rather than shipping libs Google Play will reject. Only 64-bit
+  # ABIs are in scope: Android's 16 KB page mode is 64-bit-only, which is why
+  # the NDK itself ships a 4 KB libc++_shared.so for the 32-bit ABIs.
+  case "$ABI" in
+    arm64-v8a|x86_64)
+      for SO in "$JNILIBS/$ABI/libpjsua2.so" "$JNILIBS/$ABI/libc++_shared.so"; do
+        BAD=$("$TOOLCHAIN/bin/llvm-readelf" -l "$SO" \
+                | awk '$1=="LOAD" && $NF!="0x4000" {print $NF}' | sort -u)
+        [ -z "$BAD" ] || { echo "error: $SO has LOAD alignment $BAD, expected 0x4000 (16 KB)"; exit 1; }
+      done
+      echo "==> $ABI: 16 KB alignment verified"
+      ;;
+    *)
+      echo "==> $ABI: 32-bit ABI, 16 KB alignment not required"
+      ;;
+  esac
 done
 
 # 4) Copy the generated Java binding once (identical across ABIs).
