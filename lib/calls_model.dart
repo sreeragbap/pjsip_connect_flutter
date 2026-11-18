@@ -3,7 +3,7 @@
 import 'dart:collection';
 
 import 'src/pjsip_connect_platform.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 import 'pjsip_connect.dart';

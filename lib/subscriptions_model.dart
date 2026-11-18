@@ -2,7 +2,7 @@
 
 import 'src/pjsip_connect_platform.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
 import 'dart:convert';
 import 'pjsip_connect.dart';

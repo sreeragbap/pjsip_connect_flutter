@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.3
+
+- Replaced the deprecated `package:flutter/material.dart` import with
+  `package:flutter/foundation.dart` / `package:flutter/widgets.dart` to fix
+  static analysis issues reported by pub.dev.
+
 ## 1.0.2
 
 - **Android 15+ (16 KB page size) support.** The bundled native libraries are
