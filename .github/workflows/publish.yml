@@ -54,7 +54,7 @@ jobs:
           set -o pipefail
           if ! flutter pub publish --dry-run 2>&1 | tee dry_run.log; then
             # Surface the validation result as an annotation on the run summary.
-            MSG=$(sed -n '/Validating package/,$p' dry_run.log | tail -c 3000 | awk 1 ORS='%0A')
+            MSG=$(tail -n 60 dry_run.log | tr -d '\r' | sed 's/%/%25/g' | awk 1 ORS='%0A')
             echo "::error title=pub publish dry-run failed::${MSG}"
             exit 1
           fi
