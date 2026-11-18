@@ -49,12 +49,24 @@ jobs:
       - name: Analyze
         run: flutter analyze lib
 
+      # Newer Flutter SDKs may rewrite tracked files (e.g. analysis_options.yaml)
+      # during pub get / analyze, which makes `pub publish` refuse a dirty tree.
+      # Publish exactly what is committed, and record what was changed.
+      - name: Revert files modified by tooling
+        run: |
+          if ! git diff --quiet; then
+            DIFF=$(git diff | tr -d '\r' | sed 's/%/%25/g' | awk 1 ORS='%0A')
+            echo "::warning title=Reverted files modified by Flutter tooling::${DIFF}"
+            git checkout -- .
+          fi
+
       - name: Dry run
         run: |
           set -o pipefail
-          if ! flutter pub publish --dry-run 2>&1 | tee dry_run.log; then
+          LOG="$RUNNER_TEMP/dry_run.log"
+          if ! flutter pub publish --dry-run 2>&1 | tee "$LOG"; then
             # Surface the validation result as an annotation on the run summary.
-            MSG=$(tail -n 60 dry_run.log | tr -d '\r' | sed 's/%/%25/g' | awk 1 ORS='%0A')
+            MSG=$(tail -n 60 "$LOG" | tr -d '\r' | sed 's/%/%25/g' | awk 1 ORS='%0A')
             echo "::error title=pub publish dry-run failed::${MSG}"
             exit 1
           fi
